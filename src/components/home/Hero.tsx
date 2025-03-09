@@ -11,8 +11,8 @@ const Hero: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-subtle -z-10"></div>
       
       {/* Circle Decorations */}
-      <div className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full bg-realtor-100 blur-3xl opacity-50 -z-10"></div>
-      <div className="absolute bottom-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-50 blur-3xl opacity-50 -z-10"></div>
+      <div className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full bg-red-50 blur-3xl opacity-30 -z-10"></div>
+      <div className="absolute bottom-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-50 blur-3xl opacity-30 -z-10"></div>
       
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-24">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto">

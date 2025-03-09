@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-white pt-16 pb-8 relative">
       {/* Top Divider */}
-      <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-subtle"></div>
+      <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white to-gray-50"></div>
       
       <div className="container mx-auto px-4 md:px-6">
         {/* Newsletter Section */}

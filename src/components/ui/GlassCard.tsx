@@ -19,8 +19,8 @@ const GlassCard: React.FC<GlassCardProps> = ({
       className={cn(
         "glass-card",
         "border border-red-100 dark:border-red-900/30",
-        "shadow-[0_4px_16px_rgba(220,38,38,0.08)]",
-        hoverEffect && "hover-scale hover:shadow-[0_8px_24px_rgba(220,38,38,0.12)]",
+        "shadow-[0_4px_16px_rgba(220,38,38,0.04)]",
+        hoverEffect && "hover-scale hover:shadow-[0_8px_24px_rgba(220,38,38,0.08)]",
         className
       )}
       {...props}
