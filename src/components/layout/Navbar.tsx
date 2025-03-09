@@ -39,13 +39,21 @@ const Navbar: React.FC = () => {
         <div className="flex items-center justify-between">
           <a 
             href="#" 
-            className="flex items-center gap-2 text-2xl font-bold text-realtor-800"
+            className="flex items-center gap-2 text-2xl font-bold text-realtor-600"
           >
-            <span className="bg-realtor-500 text-white w-8 h-8 rounded-lg flex items-center justify-center">R</span>
-            <span className={cn(
-              "transition-opacity",
-              isScrolled ? "opacity-100" : "opacity-0 md:opacity-100",
-            )}>RealBroker</span>
+            <div className="flex items-center">
+              <div className="text-realtor-600 font-bold flex items-center">
+                <span className="text-3xl">R</span>
+                <span className="text-3xl -ml-1">B</span>
+              </div>
+              <div className={cn(
+                "ml-2 text-realtor-600 font-bold uppercase transition-opacity",
+                isScrolled ? "opacity-100" : "opacity-0 md:opacity-100",
+              )}>
+                <div className="text-sm leading-none">REAL</div>
+                <div className="text-sm leading-none">BROKER</div>
+              </div>
+            </div>
           </a>
 
           {/* Desktop Navigation */}

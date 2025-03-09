@@ -59,9 +59,15 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           {/* Column 1 */}
           <div>
-            <div className="flex items-center gap-2 text-2xl font-bold text-realtor-800 mb-4">
-              <span className="bg-realtor-500 text-white w-8 h-8 rounded-lg flex items-center justify-center">R</span>
-              <span>RealBroker</span>
+            <div className="flex items-center text-2xl font-bold text-realtor-600 mb-4">
+              <div className="flex items-center">
+                <span className="text-3xl">R</span>
+                <span className="text-3xl -ml-1">B</span>
+                <div className="ml-2 uppercase">
+                  <div className="text-sm leading-none">REAL</div>
+                  <div className="text-sm leading-none">BROKER</div>
+                </div>
+              </div>
             </div>
             <p className="text-muted-foreground mb-6">
               The exclusive platform for real estate professionals to connect, share listings, and close more deals.

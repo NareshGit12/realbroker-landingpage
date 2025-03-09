@@ -26,7 +26,7 @@ const Hero: React.FC = () => {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-balance">
               Connect with Brokers.
               <br />
-              <span className="text-gradient">Share Listings.</span>
+              <span className="text-realtor-600">Share Listings.</span>
               <br />
               Close More Deals.
             </h1>
