@@ -43,8 +43,8 @@ const Navbar: React.FC = () => {
           >
             <div className="flex items-center">
               <div className="text-realtor-600 font-bold flex items-center">
-                <span className="text-3xl">R</span>
-                <span className="text-3xl -ml-1">B</span>
+                <span className="text-4xl font-extrabold" style={{ letterSpacing: "-0.05em" }}>R</span>
+                <span className="text-4xl font-extrabold" style={{ letterSpacing: "-0.05em", marginLeft: "-0.15em" }}>B</span>
               </div>
               <div className={cn(
                 "ml-2 text-realtor-600 font-bold uppercase transition-opacity",

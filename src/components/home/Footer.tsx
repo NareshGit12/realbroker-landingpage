@@ -61,8 +61,8 @@ const Footer: React.FC = () => {
           <div>
             <div className="flex items-center text-2xl font-bold text-realtor-600 mb-4">
               <div className="flex items-center">
-                <span className="text-3xl">R</span>
-                <span className="text-3xl -ml-1">B</span>
+                <span className="text-4xl font-extrabold" style={{ letterSpacing: "-0.05em" }}>R</span>
+                <span className="text-4xl font-extrabold" style={{ letterSpacing: "-0.05em", marginLeft: "-0.15em" }}>B</span>
                 <div className="ml-2 uppercase">
                   <div className="text-sm leading-none">REAL</div>
                   <div className="text-sm leading-none">BROKER</div>
