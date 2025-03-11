@@ -17,6 +17,11 @@ const SmartAgreements: React.FC = () => {
               RB Smart Agreements
             </h1>
           </RevealAnimation>
+          <RevealAnimation delay={200}>
+            <p className="text-xl md:text-2xl text-center text-muted-foreground mb-8 max-w-3xl mx-auto">
+              Lock In Your Deals with Digital Agreements—Fast, Secure, & Hassle-Free!
+            </p>
+          </RevealAnimation>
         </section>
       </main>
       
