@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,8 +38,8 @@ const Navbar: React.FC = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <a 
-            href="#" 
+          <Link 
+            to="/" 
             className="flex items-center gap-2 text-2xl font-bold text-realtor-600"
           >
             <div className="flex items-center">
@@ -54,10 +55,13 @@ const Navbar: React.FC = () => {
                 <div className="text-sm leading-none">BROKER</div>
               </div>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
+            <Link to="/smart-agreements" className="text-sm font-medium hover:text-realtor-600 transition-colors">
+              Smart Agreements
+            </Link>
             <a href="#features" className="text-sm font-medium hover:text-realtor-600 transition-colors">
               Features
             </a>
@@ -95,6 +99,13 @@ const Navbar: React.FC = () => {
         )}
       >
         <nav className="flex flex-col items-center justify-center h-full space-y-8 p-4">
+          <Link 
+            to="/smart-agreements" 
+            className="text-lg font-medium hover:text-realtor-600 transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Smart Agreements
+          </Link>
           <a 
             href="#features" 
             className="text-lg font-medium hover:text-realtor-600 transition-colors"
