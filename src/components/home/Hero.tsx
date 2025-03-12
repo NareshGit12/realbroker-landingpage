@@ -24,17 +24,16 @@ const Hero: React.FC = () => {
           
           <RevealAnimation delay={100}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-balance">
-              Connect with Brokers.
+              Access more property supply in your market
               <br />
-              <span className="text-realtor-600">Share Listings.</span>
-              <br />
-              Close More Deals.
+              <span className="text-realtor-600">Close more deals, Grow your business</span>
             </h1>
           </RevealAnimation>
           
           <RevealAnimation delay={200}>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl text-balance">
-              RealBroker.app is the exclusive platform where real estate professionals connect, collaborate, and close deals in a private, trusted network.
+              Get instant access to verified property listings from trusted brokers.
+              Expand your inventory, close deals faster, and grow your real estate business—without relying on expensive property portals.
             </p>
           </RevealAnimation>
           
