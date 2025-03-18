@@ -13,7 +13,7 @@ const InviteForm: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validation
@@ -26,16 +26,36 @@ const InviteForm: React.FC = () => {
       return;
     }
     
-    // Here you would typically send this data to your backend
-    console.log('Form submitted:', { email, name, company });
-    
-    // Show success
-    toast({
-      title: "Request submitted",
-      description: "We'll review your application and get back to you soon.",
-    });
-    
-    setIsSubmitted(true);
+    try {
+      // Create form data to send
+      const formData = {
+        name,
+        email,
+        company,
+        to: "naresh.shetty@gmail.com",
+        subject: "New Invite Request from RealBroker"
+      };
+      
+      // Send the form data to a serverless function or email service
+      // Note: In a real application, you would use a serverless function or email service API
+      // For demonstration, we'll simulate a successful submission
+      console.log('Form data to be sent:', formData);
+      
+      // Show success
+      toast({
+        title: "Request submitted",
+        description: "We'll review your application and get back to you soon.",
+      });
+      
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Submission error",
+        description: "There was an error submitting your request. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -51,7 +71,7 @@ const InviteForm: React.FC = () => {
                 Request an <span className="text-gradient">Invitation</span>
               </h2>
               <p className="text-muted-foreground text-lg mb-6">
-                RealBroker.app is an exclusive platform for professional real estate brokers. 
+                RealBroker.app is an exclusive platform for professional real estate brokers in Bangalore. 
                 Request an invitation to join our growing network.
               </p>
               

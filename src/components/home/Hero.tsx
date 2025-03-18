@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import { ArrowDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Hero: React.FC = () => {
   return (
@@ -38,12 +39,16 @@ const Hero: React.FC = () => {
           
           <RevealAnimation delay={300}>
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
-              <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-6 px-8 rounded-xl text-lg shadow-md w-full">
-                Request an Invite
-              </Button>
-              <Button variant="outline" className="border-realtor-200 hover:bg-realtor-50 text-realtor-800 py-6 px-8 rounded-xl text-lg w-full">
-                Learn More
-              </Button>
+              <a href="#invite" className="w-full">
+                <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-6 px-8 rounded-xl text-lg shadow-md w-full">
+                  Request an Invite
+                </Button>
+              </a>
+              <Link to="/smart-agreements" className="w-full">
+                <Button variant="outline" className="border-realtor-200 hover:bg-realtor-50 text-realtor-800 py-6 px-8 rounded-xl text-lg w-full">
+                  Learn More
+                </Button>
+              </Link>
             </div>
           </RevealAnimation>
           

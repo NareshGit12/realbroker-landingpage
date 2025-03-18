@@ -6,6 +6,7 @@ import RevealAnimation from '@/components/ui/RevealAnimation';
 import GlassCard from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/button';
 import { FileText, Users, Pen, Archive, Shield, Clock, Award, CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const SmartAgreements: React.FC = () => {
   return (
@@ -247,7 +248,7 @@ const SmartAgreements: React.FC = () => {
                     "I used to lose deals because of handshake agreements. Now, everything is in writing and digital—it's a game changer!"
                   </p>
                   <p className="font-medium">
-                    <span className="text-realtor-600">🗣️</span> Amit, Broker in Mumbai
+                    <span className="text-realtor-600">🗣️</span> Amit, Broker in Bangalore
                   </p>
                 </GlassCard>
               </RevealAnimation>
@@ -279,9 +280,11 @@ const SmartAgreements: React.FC = () => {
               <p className="text-lg mb-6">
                 <span className="text-realtor-600">🔹</span> Sign up now & start using RealBroker Smart Agreements
               </p>
-              <Button className="bg-realtor-600 hover:bg-realtor-700 text-white px-8 py-6 rounded-full text-lg">
-                <span className="text-realtor-50 mr-2">👉</span> Sign Up for Early Access
-              </Button>
+              <Link to="/#invite">
+                <Button className="bg-realtor-600 hover:bg-realtor-700 text-white px-8 py-6 rounded-full text-lg">
+                  <span className="text-realtor-50 mr-2">👉</span> Sign Up for Early Access
+                </Button>
+              </Link>
             </GlassCard>
           </RevealAnimation>
         </section>

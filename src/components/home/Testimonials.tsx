@@ -55,29 +55,29 @@ const Testimonial: React.FC<TestimonialProps> = ({
 const Testimonials: React.FC = () => {
   const testimonials = [
     {
-      quote: "RealBroker.app has completely transformed how I collaborate with other agents. I've closed 3 deals in the first month alone through connections made on the platform.",
-      author: "Sarah Johnson",
+      quote: "RealBroker has completely transformed how I collaborate with other brokers in Bangalore. I've closed 3 premium deals in Koramangala through connections made on the platform.",
+      author: "Priya Sharma",
       role: "Senior Broker",
-      company: "Luxury Homes Realty",
+      company: "Prestige Properties, Bangalore",
       avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&h=256&q=80",
       rating: 5,
       delay: 0
     },
     {
-      quote: "The exclusive listings I've gained access to through this platform have given me a competitive edge. My clients are impressed with properties they can't find anywhere else.",
-      author: "Michael Chen",
-      role: "Real Estate Broker",
-      company: "Urban Property Group",
+      quote: "The exclusive listings I've gained access to through this platform have given me a significant edge in the Bangalore market. My clients love the properties in Indiranagar they can't find on MagicBricks.",
+      author: "Arjun Patel",
+      role: "Luxury Real Estate Broker",
+      company: "Brigade Properties, Bangalore",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&h=256&q=80",
       rating: 5,
       delay: 100
     },
     {
-      quote: "Being part of this invite-only network has elevated my professional reputation. The quality of brokers and listings on the platform is exceptional.",
-      author: "James Rodriguez",
+      quote: "Being part of this invite-only network has elevated my business in Whitefield. The quality of brokers and premium listings on the platform is unmatched in Bangalore's tech corridor.",
+      author: "Kavita Reddy",
       role: "Commercial Broker",
-      company: "Metropolitan Real Estate",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&h=256&q=80",
+      company: "Sobha Realty, Bangalore",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&h=256&q=80",
       rating: 4,
       delay: 200
     }
@@ -99,7 +99,7 @@ const Testimonials: React.FC = () => {
           </RevealAnimation>
           <RevealAnimation delay={200}>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Hear from real estate professionals who are already experiencing success on our platform.
+              Hear from real estate professionals who are already experiencing success on our platform in Bangalore.
             </p>
           </RevealAnimation>
         </div>

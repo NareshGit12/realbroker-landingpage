@@ -62,18 +62,20 @@ const Navbar: React.FC = () => {
             <Link to="/smart-agreements" className="text-sm font-medium hover:text-realtor-600 transition-colors">
               Smart Agreements
             </Link>
-            <a href="#features" className="text-sm font-medium hover:text-realtor-600 transition-colors">
+            <Link to="/#features" className="text-sm font-medium hover:text-realtor-600 transition-colors">
               Features
-            </a>
-            <a href="#how-it-works" className="text-sm font-medium hover:text-realtor-600 transition-colors">
+            </Link>
+            <Link to="/#how-it-works" className="text-sm font-medium hover:text-realtor-600 transition-colors">
               How it Works
-            </a>
-            <a href="#testimonials" className="text-sm font-medium hover:text-realtor-600 transition-colors">
+            </Link>
+            <Link to="/#testimonials" className="text-sm font-medium hover:text-realtor-600 transition-colors">
               Testimonials
-            </a>
-            <Button variant="default" size="sm" className="bg-realtor-600 hover:bg-realtor-700">
-              Request Invite
-            </Button>
+            </Link>
+            <Link to="/#invite">
+              <Button variant="default" size="sm" className="bg-realtor-600 hover:bg-realtor-700">
+                Request Invite
+              </Button>
+            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -106,35 +108,39 @@ const Navbar: React.FC = () => {
           >
             Smart Agreements
           </Link>
-          <a 
-            href="#features" 
+          <Link 
+            to="/#features" 
             className="text-lg font-medium hover:text-realtor-600 transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
             Features
-          </a>
-          <a 
-            href="#how-it-works" 
+          </Link>
+          <Link 
+            to="/#how-it-works" 
             className="text-lg font-medium hover:text-realtor-600 transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
             How it Works
-          </a>
-          <a 
-            href="#testimonials" 
+          </Link>
+          <Link 
+            to="/#testimonials" 
             className="text-lg font-medium hover:text-realtor-600 transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
             Testimonials
-          </a>
-          <Button 
-            variant="default" 
-            size="lg" 
-            className="bg-realtor-600 hover:bg-realtor-700 w-full max-w-xs"
+          </Link>
+          <Link 
+            to="/#invite"
             onClick={() => setIsMenuOpen(false)}
           >
-            Request Invite
-          </Button>
+            <Button 
+              variant="default" 
+              size="lg" 
+              className="bg-realtor-600 hover:bg-realtor-700 w-full max-w-xs"
+            >
+              Request Invite
+            </Button>
+          </Link>
         </nav>
       </div>
     </header>

@@ -1,17 +1,19 @@
 
 import React from 'react';
-import { Building, Search, Users2, Handshake, Shield, ArrowUpRight } from 'lucide-react';
+import { Building, Search, Users2, Handshake, Shield, ArrowUpRight, FileText } from 'lucide-react';
 import GlassCard from '@/components/ui/GlassCard';
 import RevealAnimation from '@/components/ui/RevealAnimation';
+import { Link } from 'react-router-dom';
 
 interface FeatureCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
   delay: number;
+  link?: string;
 }
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, delay }) => (
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, delay, link }) => (
   <RevealAnimation delay={delay}>
     <GlassCard hoverEffect className="h-full">
       <div className="p-4 flex flex-col h-full">
@@ -21,9 +23,15 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, del
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
         <p className="text-muted-foreground text-sm flex-grow">{description}</p>
         <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
-          <a href="#" className="text-realtor-600 text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all">
-            Learn more <ArrowUpRight className="h-3 w-3" />
-          </a>
+          {link ? (
+            <Link to={link} className="text-realtor-600 text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all">
+              Learn more <ArrowUpRight className="h-3 w-3" />
+            </Link>
+          ) : (
+            <a href="#" className="text-realtor-600 text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all">
+              Learn more <ArrowUpRight className="h-3 w-3" />
+            </a>
+          )}
         </div>
       </div>
     </GlassCard>
@@ -61,6 +69,13 @@ const Features: React.FC = () => {
       title: "Verified Members",
       description: "Every member is carefully vetted to ensure a network of trusted professionals.",
       delay: 400
+    },
+    {
+      icon: <FileText className="h-5 w-5" />,
+      title: "Smart Agreements",
+      description: "Create, sign, and manage digital agreements between brokers, buyers, and sellers with ease.",
+      delay: 500,
+      link: "/smart-agreements"
     }
   ];
 
@@ -95,6 +110,7 @@ const Features: React.FC = () => {
               title={feature.title}
               description={feature.description}
               delay={feature.delay}
+              link={feature.link}
             />
           ))}
         </div>
