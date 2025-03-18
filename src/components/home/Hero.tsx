@@ -32,8 +32,7 @@ const Hero: React.FC = () => {
           
           <RevealAnimation delay={200}>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl text-balance">
-              Get instant access to verified property listings from trusted brokers.
-              Expand your inventory, close deals faster, and grow your real estate business—without relying on expensive property portals.
+              Expand your inventory through your network and grow your business
             </p>
           </RevealAnimation>
           
