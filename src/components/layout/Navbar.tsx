@@ -87,7 +87,8 @@ const Navbar: React.FC = () => {
               Smart Agreements
             </Link>
             <Link 
-              to={getAnchorLink("#features")} 
+              to="/"
+              state={{ scrollTo: "features" }}
               className={cn(
                 "text-sm font-medium transition-colors",
                 isActive('/#features') 
@@ -98,7 +99,8 @@ const Navbar: React.FC = () => {
               Features
             </Link>
             <Link 
-              to={getAnchorLink("#how-it-works")} 
+              to="/"
+              state={{ scrollTo: "how-it-works" }}
               className={cn(
                 "text-sm font-medium transition-colors",
                 isActive('/#how-it-works') 
@@ -109,7 +111,8 @@ const Navbar: React.FC = () => {
               How it Works
             </Link>
             <Link 
-              to={getAnchorLink("#testimonials")} 
+              to="/"
+              state={{ scrollTo: "testimonials" }}
               className={cn(
                 "text-sm font-medium transition-colors",
                 isActive('/#testimonials') 
@@ -119,7 +122,10 @@ const Navbar: React.FC = () => {
             >
               Testimonials
             </Link>
-            <Link to={getAnchorLink("#invite")}>
+            <Link 
+              to="/"
+              state={{ scrollTo: "invite" }}
+            >
               <Button variant="default" size="sm" className="bg-realtor-600 hover:bg-realtor-700">
                 Request Invite
               </Button>
@@ -162,7 +168,8 @@ const Navbar: React.FC = () => {
             Smart Agreements
           </Link>
           <Link 
-            to={getAnchorLink("#features")} 
+            to="/"
+            state={{ scrollTo: "features" }}
             className={cn(
               "text-lg font-medium transition-colors",
               isActive('/#features') 
@@ -174,7 +181,8 @@ const Navbar: React.FC = () => {
             Features
           </Link>
           <Link 
-            to={getAnchorLink("#how-it-works")} 
+            to="/"
+            state={{ scrollTo: "how-it-works" }}
             className={cn(
               "text-lg font-medium transition-colors",
               isActive('/#how-it-works') 
@@ -186,7 +194,8 @@ const Navbar: React.FC = () => {
             How it Works
           </Link>
           <Link 
-            to={getAnchorLink("#testimonials")} 
+            to="/"
+            state={{ scrollTo: "testimonials" }}
             className={cn(
               "text-lg font-medium transition-colors",
               isActive('/#testimonials') 
@@ -198,7 +207,8 @@ const Navbar: React.FC = () => {
             Testimonials
           </Link>
           <Link 
-            to={getAnchorLink("#invite")}
+            to="/"
+            state={{ scrollTo: "invite" }}
             onClick={() => setIsMenuOpen(false)}
           >
             <Button 

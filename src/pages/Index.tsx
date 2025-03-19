@@ -1,5 +1,6 @@
 
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Hero from '@/components/home/Hero';
 import Features from '@/components/home/Features';
@@ -9,6 +10,21 @@ import Testimonials from '@/components/home/Testimonials';
 import Footer from '@/components/home/Footer';
 
 const Index: React.FC = () => {
+  const location = useLocation();
+  
+  // Handle scrolling to sections based on location state
+  useEffect(() => {
+    if (location.state && location.state.scrollTo) {
+      const element = document.getElementById(location.state.scrollTo);
+      if (element) {
+        // Add a slight delay to ensure rendering is complete
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [location.state]);
+
   // Add animation observer for reveal animations
   useEffect(() => {
     const observer = new IntersectionObserver(
