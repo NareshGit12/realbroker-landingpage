@@ -3,11 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-<<<<<<< HEAD
-import { Link } from 'react-router-dom';
-import {logo } from '@/assets/logo.webp'
-=======
->>>>>>> 93fe62f3c57e03f6fd4d224877f6a73d0e8a489e
 import Logo from './Logo';
 import NavLinks from './NavLinks';
 import MobileNav from './MobileNav';
