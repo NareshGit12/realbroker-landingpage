@@ -32,7 +32,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
           `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
           isActive('/#features') 
             ? "text-realtor-600 font-semibold" 
-            : "hover:text-realtor-600"
+            : "text-gray-700 hover:text-realtor-600"
         )}
       >
         Features
@@ -43,7 +43,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
           `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
           isActive('/#how-it-works') 
             ? "text-realtor-600 font-semibold" 
-            : "hover:text-realtor-600"
+            : "text-gray-700 hover:text-realtor-600"
         )}
       >
         How it Works
@@ -54,7 +54,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
           `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
           isActive('/#testimonials') 
             ? "text-realtor-600 font-semibold" 
-            : "hover:text-realtor-600"
+            : "text-gray-700 hover:text-realtor-600"
         )}
       >
         Testimonials
@@ -70,7 +70,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
           variant="default" 
           size={isMobile ? "lg" : "sm"} 
           className={cn(
-            "bg-realtor-600 hover:bg-realtor-700",
+            "bg-realtor-600 hover:bg-realtor-700 shadow-md",
             isMobile && "w-full"
           )}
         >

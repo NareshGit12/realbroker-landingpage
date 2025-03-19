@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 py-4 transition-all duration-300',
         isScrolled
-          ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm'
+          ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b border-realtor-100/50'
           : 'bg-transparent'
       )}
     >
@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden focus:outline-none"
+            className="md:hidden focus:outline-none text-realtor-600 hover:text-realtor-700"
             aria-label="Toggle Menu"
           >
             {isMenuOpen ? (
