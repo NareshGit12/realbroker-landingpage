@@ -37,6 +37,12 @@ const Navbar: React.FC = () => {
     return location.pathname === path;
   };
 
+  // Get the proper link for anchor tags
+  const getAnchorLink = (anchor: string) => {
+    // If we're not on the homepage, we need to navigate to home first
+    return location.pathname !== '/' ? `/${anchor}` : anchor;
+  };
+
   return (
     <header
       className={cn(
@@ -81,7 +87,7 @@ const Navbar: React.FC = () => {
               Smart Agreements
             </Link>
             <Link 
-              to="/#features" 
+              to={getAnchorLink("#features")} 
               className={cn(
                 "text-sm font-medium transition-colors",
                 isActive('/#features') 
@@ -92,7 +98,7 @@ const Navbar: React.FC = () => {
               Features
             </Link>
             <Link 
-              to="/#how-it-works" 
+              to={getAnchorLink("#how-it-works")} 
               className={cn(
                 "text-sm font-medium transition-colors",
                 isActive('/#how-it-works') 
@@ -103,7 +109,7 @@ const Navbar: React.FC = () => {
               How it Works
             </Link>
             <Link 
-              to="/#testimonials" 
+              to={getAnchorLink("#testimonials")} 
               className={cn(
                 "text-sm font-medium transition-colors",
                 isActive('/#testimonials') 
@@ -113,7 +119,7 @@ const Navbar: React.FC = () => {
             >
               Testimonials
             </Link>
-            <Link to="/#invite">
+            <Link to={getAnchorLink("#invite")}>
               <Button variant="default" size="sm" className="bg-realtor-600 hover:bg-realtor-700">
                 Request Invite
               </Button>
@@ -156,7 +162,7 @@ const Navbar: React.FC = () => {
             Smart Agreements
           </Link>
           <Link 
-            to="/#features" 
+            to={getAnchorLink("#features")} 
             className={cn(
               "text-lg font-medium transition-colors",
               isActive('/#features') 
@@ -168,7 +174,7 @@ const Navbar: React.FC = () => {
             Features
           </Link>
           <Link 
-            to="/#how-it-works" 
+            to={getAnchorLink("#how-it-works")} 
             className={cn(
               "text-lg font-medium transition-colors",
               isActive('/#how-it-works') 
@@ -180,7 +186,7 @@ const Navbar: React.FC = () => {
             How it Works
           </Link>
           <Link 
-            to="/#testimonials" 
+            to={getAnchorLink("#testimonials")} 
             className={cn(
               "text-lg font-medium transition-colors",
               isActive('/#testimonials') 
@@ -192,7 +198,7 @@ const Navbar: React.FC = () => {
             Testimonials
           </Link>
           <Link 
-            to="/#invite"
+            to={getAnchorLink("#invite")}
             onClick={() => setIsMenuOpen(false)}
           >
             <Button 
