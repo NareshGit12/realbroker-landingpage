@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Handle scroll event to change navbar style
   useEffect(() => {
@@ -37,10 +38,23 @@ const Navbar: React.FC = () => {
     return location.pathname === path;
   };
 
-  // Get the proper link for anchor tags
-  const getAnchorLink = (anchor: string) => {
-    // If we're not on the homepage, we need to navigate to home first
-    return location.pathname !== '/' ? `/${anchor}` : anchor;
+  // Handle navigation to sections - improved to work from any page
+  const handleSectionNavigation = (sectionId: string) => {
+    if (location.pathname === '/') {
+      // If already on home page, just scroll to the section
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // If on another page, navigate to home with the section info
+      navigate('/', { state: { scrollTo: sectionId } });
+    }
+    
+    // Close mobile menu if open
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
   };
 
   return (
@@ -86,50 +100,47 @@ const Navbar: React.FC = () => {
             >
               Smart Agreements
             </Link>
-            <Link 
-              to="/"
-              state={{ scrollTo: "features" }}
+            <button 
+              onClick={() => handleSectionNavigation("features")}
               className={cn(
-                "text-sm font-medium transition-colors",
+                "text-sm font-medium transition-colors bg-transparent border-none cursor-pointer p-0",
                 isActive('/#features') 
                   ? "text-realtor-600 font-semibold" 
                   : "hover:text-realtor-600"
               )}
             >
               Features
-            </Link>
-            <Link 
-              to="/"
-              state={{ scrollTo: "how-it-works" }}
+            </button>
+            <button 
+              onClick={() => handleSectionNavigation("how-it-works")}
               className={cn(
-                "text-sm font-medium transition-colors",
+                "text-sm font-medium transition-colors bg-transparent border-none cursor-pointer p-0",
                 isActive('/#how-it-works') 
                   ? "text-realtor-600 font-semibold" 
                   : "hover:text-realtor-600"
               )}
             >
               How it Works
-            </Link>
-            <Link 
-              to="/"
-              state={{ scrollTo: "testimonials" }}
+            </button>
+            <button 
+              onClick={() => handleSectionNavigation("testimonials")}
               className={cn(
-                "text-sm font-medium transition-colors",
+                "text-sm font-medium transition-colors bg-transparent border-none cursor-pointer p-0",
                 isActive('/#testimonials') 
                   ? "text-realtor-600 font-semibold" 
                   : "hover:text-realtor-600"
               )}
             >
               Testimonials
-            </Link>
-            <Link 
-              to="/"
-              state={{ scrollTo: "invite" }}
+            </button>
+            <button 
+              onClick={() => handleSectionNavigation("invite")}
+              className="p-0 border-none bg-transparent"
             >
               <Button variant="default" size="sm" className="bg-realtor-600 hover:bg-realtor-700">
                 Request Invite
               </Button>
-            </Link>
+            </button>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -167,58 +178,51 @@ const Navbar: React.FC = () => {
           >
             Smart Agreements
           </Link>
-          <Link 
-            to="/"
-            state={{ scrollTo: "features" }}
+          <button 
+            onClick={() => handleSectionNavigation("features")}
             className={cn(
-              "text-lg font-medium transition-colors",
+              "text-lg font-medium transition-colors bg-transparent border-none cursor-pointer p-0",
               isActive('/#features') 
                 ? "text-realtor-600 font-semibold" 
                 : "hover:text-realtor-600"
             )}
-            onClick={() => setIsMenuOpen(false)}
           >
             Features
-          </Link>
-          <Link 
-            to="/"
-            state={{ scrollTo: "how-it-works" }}
+          </button>
+          <button 
+            onClick={() => handleSectionNavigation("how-it-works")}
             className={cn(
-              "text-lg font-medium transition-colors",
+              "text-lg font-medium transition-colors bg-transparent border-none cursor-pointer p-0",
               isActive('/#how-it-works') 
                 ? "text-realtor-600 font-semibold" 
                 : "hover:text-realtor-600"
             )}
-            onClick={() => setIsMenuOpen(false)}
           >
             How it Works
-          </Link>
-          <Link 
-            to="/"
-            state={{ scrollTo: "testimonials" }}
+          </button>
+          <button 
+            onClick={() => handleSectionNavigation("testimonials")}
             className={cn(
-              "text-lg font-medium transition-colors",
+              "text-lg font-medium transition-colors bg-transparent border-none cursor-pointer p-0",
               isActive('/#testimonials') 
                 ? "text-realtor-600 font-semibold" 
                 : "hover:text-realtor-600"
             )}
-            onClick={() => setIsMenuOpen(false)}
           >
             Testimonials
-          </Link>
-          <Link 
-            to="/"
-            state={{ scrollTo: "invite" }}
-            onClick={() => setIsMenuOpen(false)}
+          </button>
+          <button 
+            onClick={() => handleSectionNavigation("invite")}
+            className="p-0 border-none bg-transparent w-full max-w-xs"
           >
             <Button 
               variant="default" 
               size="lg" 
-              className="bg-realtor-600 hover:bg-realtor-700 w-full max-w-xs"
+              className="bg-realtor-600 hover:bg-realtor-700 w-full"
             >
               Request Invite
             </Button>
-          </Link>
+          </button>
         </nav>
       </div>
     </header>
