@@ -1,16 +1,10 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import GlassCard from '@/components/ui/GlassCard';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from '@/integrations/supabase/client';
 
 const InviteForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -41,7 +35,7 @@ const InviteForm: React.FC = () => {
         name,
         email,
         company,
-        to: "naresh.shetty@gmail.com",
+        recipient_email: "naresh.shetty@gmail.com",
         subject: "New Invite Request from RealBroker",
         created_at: new Date().toISOString()
       };
