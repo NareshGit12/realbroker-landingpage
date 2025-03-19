@@ -15,8 +15,11 @@ const Logo: React.FC<LogoProps> = ({ isScrolled }) => {
     >
       <div className="flex items-center">
         <div className="text-realtor-600 font-bold flex items-center">
-          <span className="text-4xl font-extrabold" style={{ letterSpacing: "-0.05em" }}>R</span>
-          <span className="text-4xl font-extrabold" style={{ letterSpacing: "-0.05em", marginLeft: "-0.15em" }}>B</span>
+          <img 
+            src="/lovable-uploads/aee5ebaa-b383-4ca3-9647-ab8921ed5030.png" 
+            alt="RB Logo" 
+            className="h-8 w-auto" 
+          />
         </div>
         <div className={cn(
           "ml-2 text-realtor-600 font-bold uppercase transition-opacity",
