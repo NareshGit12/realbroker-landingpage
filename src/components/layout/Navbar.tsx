@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import {logo } from '@/assets/logo.webp'
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,8 +45,9 @@ const Navbar: React.FC = () => {
           >
             <div className="flex items-center">
               <div className="text-realtor-600 font-bold flex items-center">
-                <span className="text-4xl font-extrabold" style={{ letterSpacing: "-0.05em" }}>R</span>
-                <span className="text-4xl font-extrabold" style={{ letterSpacing: "-0.05em", marginLeft: "-0.15em" }}>B</span>
+                <Link to="/" className="flex items-center gap-2">
+                  <img src={logo} alt="Company Logo" className="h-10 w-auto" />
+                </Link>
               </div>
               <div className={cn(
                 "ml-2 text-realtor-600 font-bold uppercase transition-opacity",
