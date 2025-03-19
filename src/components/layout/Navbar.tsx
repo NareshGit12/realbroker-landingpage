@@ -1,14 +1,18 @@
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import {logo } from '@/assets/logo.webp'
+import NavLinks from './NavLinks';
+import MobileNav from './MobileNav';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // Handle scroll event to change navbar style
   useEffect(() => {
@@ -28,6 +32,34 @@ const Navbar: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Check if a given path is active or if we're on that path
+  const isActive = (path: string) => {
+    if (path.startsWith('/#')) {
+      // For homepage anchors, only consider active on the home page
+      return location.pathname === '/' && location.hash === path.substring(1);
+    }
+    return location.pathname === path;
+  };
+
+  // Handle navigation to sections - improved to work from any page
+  const handleSectionNavigation = (sectionId: string) => {
+    if (location.pathname === '/') {
+      // If already on home page, just scroll to the section
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // If on another page, navigate to home with the section info
+      navigate('/', { state: { scrollTo: sectionId } });
+    }
+    
+    // Close mobile menu if open
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  };
+
   return (
     <header
       className={cn(
@@ -39,6 +71,7 @@ const Navbar: React.FC = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
+<<<<<<< HEAD
           <Link 
             to="/" 
             className="flex items-center gap-2 text-2xl font-bold text-realtor-600"
@@ -58,26 +91,27 @@ const Navbar: React.FC = () => {
               </div>
             </div>
           </Link>
+=======
+          <Logo isScrolled={isScrolled} />
+>>>>>>> da3772311e72e644100993f7f05137221fdba254
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/smart-agreements" className="text-sm font-medium hover:text-realtor-600 transition-colors">
+            <Link 
+              to="/smart-agreements" 
+              className={cn(
+                "text-sm font-medium transition-colors",
+                isActive('/smart-agreements') 
+                  ? "text-realtor-600 font-semibold" 
+                  : "hover:text-realtor-600"
+              )}
+            >
               Smart Agreements
             </Link>
-            <Link to="/#features" className="text-sm font-medium hover:text-realtor-600 transition-colors">
-              Features
-            </Link>
-            <Link to="/#how-it-works" className="text-sm font-medium hover:text-realtor-600 transition-colors">
-              How it Works
-            </Link>
-            <Link to="/#testimonials" className="text-sm font-medium hover:text-realtor-600 transition-colors">
-              Testimonials
-            </Link>
-            <Link to="/#invite">
-              <Button variant="default" size="sm" className="bg-realtor-600 hover:bg-realtor-700">
-                Request Invite
-              </Button>
-            </Link>
+            <NavLinks 
+              handleSectionNavigation={handleSectionNavigation}
+              isActive={isActive}
+            />
           </nav>
 
           {/* Mobile Menu Button */}
@@ -96,55 +130,12 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <div
-        className={cn(
-          'fixed inset-0 top-16 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md transition-transform duration-300 md:hidden',
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        )}
-      >
-        <nav className="flex flex-col items-center justify-center h-full space-y-8 p-4">
-          <Link 
-            to="/smart-agreements" 
-            className="text-lg font-medium hover:text-realtor-600 transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Smart Agreements
-          </Link>
-          <Link 
-            to="/#features" 
-            className="text-lg font-medium hover:text-realtor-600 transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Features
-          </Link>
-          <Link 
-            to="/#how-it-works" 
-            className="text-lg font-medium hover:text-realtor-600 transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            How it Works
-          </Link>
-          <Link 
-            to="/#testimonials" 
-            className="text-lg font-medium hover:text-realtor-600 transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Testimonials
-          </Link>
-          <Link 
-            to="/#invite"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <Button 
-              variant="default" 
-              size="lg" 
-              className="bg-realtor-600 hover:bg-realtor-700 w-full max-w-xs"
-            >
-              Request Invite
-            </Button>
-          </Link>
-        </nav>
-      </div>
+      <MobileNav 
+        isMenuOpen={isMenuOpen}
+        isActive={isActive}
+        handleSectionNavigation={handleSectionNavigation}
+        onClose={() => setIsMenuOpen(false)}
+      />
     </header>
   );
 };
