@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   // Handle scroll event to change navbar style
   useEffect(() => {
@@ -25,6 +26,15 @@ const Navbar: React.FC = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  // Check if a given path is active or if we're on that path
+  const isActive = (path: string) => {
+    if (path.startsWith('/#')) {
+      // For homepage anchors, only consider active on the home page
+      return location.pathname === '/' && location.hash === path.substring(1);
+    }
+    return location.pathname === path;
   };
 
   return (
@@ -59,16 +69,48 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/smart-agreements" className="text-sm font-medium hover:text-realtor-600 transition-colors">
+            <Link 
+              to="/smart-agreements" 
+              className={cn(
+                "text-sm font-medium transition-colors",
+                isActive('/smart-agreements') 
+                  ? "text-realtor-600 font-semibold" 
+                  : "hover:text-realtor-600"
+              )}
+            >
               Smart Agreements
             </Link>
-            <Link to="/#features" className="text-sm font-medium hover:text-realtor-600 transition-colors">
+            <Link 
+              to="/#features" 
+              className={cn(
+                "text-sm font-medium transition-colors",
+                isActive('/#features') 
+                  ? "text-realtor-600 font-semibold" 
+                  : "hover:text-realtor-600"
+              )}
+            >
               Features
             </Link>
-            <Link to="/#how-it-works" className="text-sm font-medium hover:text-realtor-600 transition-colors">
+            <Link 
+              to="/#how-it-works" 
+              className={cn(
+                "text-sm font-medium transition-colors",
+                isActive('/#how-it-works') 
+                  ? "text-realtor-600 font-semibold" 
+                  : "hover:text-realtor-600"
+              )}
+            >
               How it Works
             </Link>
-            <Link to="/#testimonials" className="text-sm font-medium hover:text-realtor-600 transition-colors">
+            <Link 
+              to="/#testimonials" 
+              className={cn(
+                "text-sm font-medium transition-colors",
+                isActive('/#testimonials') 
+                  ? "text-realtor-600 font-semibold" 
+                  : "hover:text-realtor-600"
+              )}
+            >
               Testimonials
             </Link>
             <Link to="/#invite">
@@ -103,28 +145,48 @@ const Navbar: React.FC = () => {
         <nav className="flex flex-col items-center justify-center h-full space-y-8 p-4">
           <Link 
             to="/smart-agreements" 
-            className="text-lg font-medium hover:text-realtor-600 transition-colors"
+            className={cn(
+              "text-lg font-medium transition-colors",
+              isActive('/smart-agreements') 
+                ? "text-realtor-600 font-semibold" 
+                : "hover:text-realtor-600"
+            )}
             onClick={() => setIsMenuOpen(false)}
           >
             Smart Agreements
           </Link>
           <Link 
             to="/#features" 
-            className="text-lg font-medium hover:text-realtor-600 transition-colors"
+            className={cn(
+              "text-lg font-medium transition-colors",
+              isActive('/#features') 
+                ? "text-realtor-600 font-semibold" 
+                : "hover:text-realtor-600"
+            )}
             onClick={() => setIsMenuOpen(false)}
           >
             Features
           </Link>
           <Link 
             to="/#how-it-works" 
-            className="text-lg font-medium hover:text-realtor-600 transition-colors"
+            className={cn(
+              "text-lg font-medium transition-colors",
+              isActive('/#how-it-works') 
+                ? "text-realtor-600 font-semibold" 
+                : "hover:text-realtor-600"
+            )}
             onClick={() => setIsMenuOpen(false)}
           >
             How it Works
           </Link>
           <Link 
             to="/#testimonials" 
-            className="text-lg font-medium hover:text-realtor-600 transition-colors"
+            className={cn(
+              "text-lg font-medium transition-colors",
+              isActive('/#testimonials') 
+                ? "text-realtor-600 font-semibold" 
+                : "hover:text-realtor-600"
+            )}
             onClick={() => setIsMenuOpen(false)}
           >
             Testimonials
