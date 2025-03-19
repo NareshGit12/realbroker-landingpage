@@ -25,7 +25,7 @@ const Hero: React.FC = () => {
           
           <RevealAnimation delay={100}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-balance">
-              Access more property supply in your market
+              Access more property supply in your market, yes
               <br />
               <span className="text-realtor-600">Close more deals, Grow your business</span>
             </h1>
