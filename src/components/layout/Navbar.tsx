@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Logo from './Logo';
@@ -70,25 +70,6 @@ const Navbar: React.FC = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-          <Link 
-            to="/" 
-            className="flex items-center gap-2 text-2xl font-bold text-realtor-600"
-          >
-            <div className="flex items-center">
-              <div className="text-realtor-600 font-bold flex items-center">
-                <Link to="/" className="flex items-center gap-2">
-                  <img src={logo} alt="Company Logo" className="h-10 w-auto" />
-                </Link>
-              </div>
-              <div className={cn(
-                "ml-2 text-realtor-600 font-bold uppercase transition-opacity",
-                isScrolled ? "opacity-100" : "opacity-0 md:opacity-100",
-              )}>
-                <div className="text-sm leading-none">REAL</div>
-                <div className="text-sm leading-none">BROKER</div>
-              </div>
-            </div>
-          </Link>
           <Logo isScrolled={isScrolled} />
 
           {/* Desktop Navigation */}
