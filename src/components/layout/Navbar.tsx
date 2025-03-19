@@ -5,6 +5,7 @@ import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import {logo } from '@/assets/logo.webp'
+import Logo from './Logo';
 import NavLinks from './NavLinks';
 import MobileNav from './MobileNav';
 
@@ -71,7 +72,6 @@ const Navbar: React.FC = () => {
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
-<<<<<<< HEAD
           <Link 
             to="/" 
             className="flex items-center gap-2 text-2xl font-bold text-realtor-600"
@@ -91,9 +91,7 @@ const Navbar: React.FC = () => {
               </div>
             </div>
           </Link>
-=======
           <Logo isScrolled={isScrolled} />
->>>>>>> da3772311e72e644100993f7f05137221fdba254
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
