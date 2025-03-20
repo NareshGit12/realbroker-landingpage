@@ -11,31 +11,43 @@ export type Database = {
     Tables: {
       invite_requests: {
         Row: {
+          area: string | null
+          city: string | null
           company: string
           created_at: string
           email: string
           id: string
+          message: string | null
           name: string
           recipient_email: string | null
           subject: string | null
+          whatsapp_number: string | null
         }
         Insert: {
+          area?: string | null
+          city?: string | null
           company: string
           created_at?: string
           email: string
           id?: string
+          message?: string | null
           name: string
           recipient_email?: string | null
           subject?: string | null
+          whatsapp_number?: string | null
         }
         Update: {
+          area?: string | null
+          city?: string | null
           company?: string
           created_at?: string
           email?: string
           id?: string
+          message?: string | null
           name?: string
           recipient_email?: string | null
           subject?: string | null
+          whatsapp_number?: string | null
         }
         Relationships: []
       }
