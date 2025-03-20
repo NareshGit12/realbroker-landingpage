@@ -4,6 +4,7 @@ import { Facebook, Twitter, Instagram, Linkedin, ArrowRight } from 'lucide-react
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
+import Logo from '@/components/layout/Logo';
 
 const Footer: React.FC = () => {
   const [email, setEmail] = React.useState('');
@@ -60,15 +61,8 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           {/* Column 1 */}
           <div>
-            <div className="flex items-center text-2xl font-bold text-realtor-600 mb-4">
-              <div className="flex items-center">
-                <span className="text-4xl font-extrabold" style={{ letterSpacing: "-0.05em" }}>R</span>
-                <span className="text-4xl font-extrabold" style={{ letterSpacing: "-0.05em", marginLeft: "-0.15em" }}>B</span>
-                <div className="ml-2 uppercase">
-                  <div className="text-sm leading-none">REAL</div>
-                  <div className="text-sm leading-none">BROKER</div>
-                </div>
-              </div>
+            <div className="mb-4">
+              <Logo isScrolled={true} />
             </div>
             <p className="text-muted-foreground mb-6">
               The exclusive platform for real estate professionals to connect, share listings, and close more deals.
