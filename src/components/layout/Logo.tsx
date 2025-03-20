@@ -22,8 +22,8 @@ const Logo: React.FC<LogoProps> = ({ isScrolled }) => {
           />
         </div>
         <div className={cn(
-          "ml-2 text-realtor-600 font-bold uppercase transition-opacity",
-          isScrolled ? "opacity-100" : "opacity-0 md:opacity-100",
+          "ml-2 text-realtor-600 font-bold uppercase",
+          isScrolled ? "opacity-100" : "opacity-100", // Changed from opacity-0 to opacity-100 to always show
         )}>
           <div className="text-sm leading-none">REAL</div>
           <div className="text-sm leading-none">BROKER</div>
