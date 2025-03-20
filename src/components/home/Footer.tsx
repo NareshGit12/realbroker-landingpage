@@ -101,11 +101,19 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-semibold text-lg mb-4">Resources</h4>
             <ul className="space-y-3">
-              {["Blog", "Guides", "Support", "API Documentation", "Partner Program"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-muted-foreground hover:text-realtor-600 transition-colors">
-                    {item}
-                  </a>
+              {["Support", 
+                { name: "Certified RealBroker Program", path: "/certified-realbroker" }
+              ].map((item) => (
+                <li key={typeof item === 'string' ? item : item.name}>
+                  {typeof item === 'string' ? (
+                    <a href="#" className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                      {item}
+                    </a>
+                  ) : (
+                    <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                      {item.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -117,8 +125,6 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               {[
                 "About Us", 
-                "Careers", 
-                "Press", 
                 "Privacy Policy", 
                 { name: "Terms of Service", path: "/terms-of-use" }
               ].map((item) => (
