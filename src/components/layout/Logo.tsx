@@ -18,7 +18,7 @@ const Logo: React.FC<LogoProps> = ({ isScrolled }) => {
           <img 
             src="/lovable-uploads/aee5ebaa-b383-4ca3-9647-ab8921ed5030.png" 
             alt="RB Logo" 
-            className="h-12 w-auto" 
+            className="h-13 w-auto" 
           />
         </div>
         <div className={cn(
