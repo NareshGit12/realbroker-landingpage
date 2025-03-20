@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 interface NavLinksProps {
   handleSectionNavigation: (sectionId: string) => void;
@@ -18,6 +18,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
   onItemClick
 }) => {
   const textSizeClass = isMobile ? "text-lg" : "text-sm";
+  const location = useLocation();
   
   const handleClick = (sectionId: string) => {
     handleSectionNavigation(sectionId);
@@ -59,6 +60,18 @@ const NavLinks: React.FC<NavLinksProps> = ({
       >
         Testimonials
       </button>
+      <Link 
+        to="/terms-of-use"
+        className={cn(
+          `${textSizeClass} font-medium transition-colors`,
+          isActive('/terms-of-use') 
+            ? "text-realtor-600 font-semibold" 
+            : "text-gray-700 hover:text-realtor-600"
+        )}
+        onClick={onItemClick}
+      >
+        Terms of Use
+      </Link>
       <button 
         onClick={() => handleClick("invite")}
         className={cn(
