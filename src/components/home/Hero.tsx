@@ -18,7 +18,7 @@ const Hero: React.FC = () => {
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
           <RevealAnimation>
             <span className="inline-block py-1 px-3 mb-4 text-xs font-medium uppercase tracking-wider bg-realtor-100 text-realtor-800 rounded-full">
-              Invitation Only
+              By Invitation Only
             </span>
           </RevealAnimation>
           
@@ -26,7 +26,7 @@ const Hero: React.FC = () => {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-balance">
               Access more property supply in your market,
               <br />
-              <span className="text-realtor-600">Close more deals, Grow your business</span>
+              <span className="text-realtor-600">Share your deals, Grow your business</span>
             </h1>
           </RevealAnimation>
           
