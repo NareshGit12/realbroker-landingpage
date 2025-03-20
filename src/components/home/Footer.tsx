@@ -1,16 +1,18 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Facebook, Twitter, Instagram, Linkedin, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
 import Logo from '@/components/layout/Logo';
+import { supabase } from '@/integrations/supabase/client';
 
 const Footer: React.FC = () => {
-  const [email, setEmail] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
       toast({
@@ -20,13 +22,48 @@ const Footer: React.FC = () => {
       });
       return;
     }
+
+    setIsSubmitting(true);
     
-    toast({
-      title: "Success",
-      description: "You've been added to our newsletter",
-    });
-    
-    setEmail('');
+    try {
+      // Insert the email into the subscribers table
+      const { error } = await supabase
+        .from('subscribers')
+        .insert([{ email }]);
+      
+      if (error) {
+        if (error.code === '23505') {
+          // Unique violation error code
+          toast({
+            title: "Already subscribed",
+            description: "This email is already subscribed to our newsletter",
+            variant: "destructive",
+          });
+        } else {
+          console.error("Error saving subscriber:", error);
+          toast({
+            title: "Error",
+            description: "Failed to subscribe. Please try again later.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        toast({
+          title: "Success",
+          description: "You've been added to our newsletter",
+        });
+        setEmail('');
+      }
+    } catch (error) {
+      console.error("Subscription error:", error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -50,9 +87,15 @@ const Footer: React.FC = () => {
                 className="flex-grow px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={isSubmitting}
               />
-              <Button type="submit" className="bg-realtor-600 hover:bg-realtor-700">
-                Subscribe <ArrowRight className="ml-2 h-4 w-4" />
+              <Button 
+                type="submit" 
+                className="bg-realtor-600 hover:bg-realtor-700"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Subscribing...' : 'Subscribe'} 
+                {!isSubmitting && <ArrowRight className="ml-2 h-4 w-4" />}
               </Button>
             </form>
           </div>
