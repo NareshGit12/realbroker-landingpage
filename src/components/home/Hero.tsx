@@ -25,7 +25,7 @@ const Hero: React.FC = () => {
           
           <RevealAnimation delay={100}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-balance">
-              Access more property supply in your market, yes
+              Access more property supply in your market,
               <br />
               <span className="text-realtor-600">Close more deals, Grow your business</span>
             </h1>
@@ -33,7 +33,7 @@ const Hero: React.FC = () => {
           
           <RevealAnimation delay={200}>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl text-balance">
-              Expand your inventory through your network and grow your business
+              Expand your inventory through your network
             </p>
           </RevealAnimation>
           
