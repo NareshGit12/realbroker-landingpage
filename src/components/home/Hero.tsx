@@ -3,7 +3,8 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import { ArrowDown } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import InviteRequestForm from './InviteRequestForm';
 
 const Hero: React.FC = () => {
   return (
@@ -39,11 +40,19 @@ const Hero: React.FC = () => {
           
           <RevealAnimation delay={300}>
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mb-36"> {/* Increased space to mb-36 for more clearance */}
-              <a href="#invite" className="w-full">
-                <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-6 px-8 rounded-xl text-lg shadow-md w-full">
-                  Request an Invite
-                </Button>
-              </a>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-6 px-8 rounded-xl text-lg shadow-md w-full">
+                    Request an Invite
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Request an Invite</DialogTitle>
+                  </DialogHeader>
+                  <InviteRequestForm />
+                </DialogContent>
+              </Dialog>
               <a href="#features" className="w-full">
                 <Button variant="outline" className="border-realtor-200 hover:bg-realtor-50 text-realtor-800 py-6 px-8 rounded-xl text-lg w-full">
                   Learn More
