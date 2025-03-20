@@ -37,7 +37,7 @@ const Hero: React.FC = () => {
           </RevealAnimation>
           
           <RevealAnimation delay={300}>
-            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mb-36"> {/* Increased space to mb-36 for more clearance */}
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mb-16"> {/* Reduced space from mb-36 to mb-16 */}
               <a href="#invite" className="w-full">
                 <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-6 px-8 rounded-xl text-lg shadow-md w-full">
                   Request an Invite

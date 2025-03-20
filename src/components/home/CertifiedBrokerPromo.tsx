@@ -18,12 +18,12 @@ const CertifiedBrokerPromo: React.FC = () => {
                 Join our elite network of certified real estate professionals and gain access to exclusive tools, resources, and support to elevate your career.
               </p>
             </div>
-            <Link
-              to="/certified-real-broker"
+            <a
+              href="https://preview--broker-connect-hub.lovable.app/certified-realbroker"
               className="inline-flex items-center gap-2 bg-realtor-600 hover:bg-realtor-700 text-white px-5 py-3 rounded-lg font-medium transition-colors"
             >
               Learn More <ArrowRight className="h-5 w-5" />
-            </Link>
+            </a>
           </div>
         </RevealAnimation>
       </div>
