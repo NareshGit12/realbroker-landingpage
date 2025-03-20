@@ -105,8 +105,8 @@ const HowItWorks: React.FC = () => {
           <RevealAnimation direction="right">
             <div className="rounded-2xl overflow-hidden shadow-card">
               <img 
-                src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81" 
-                alt="Real estate professionals collaborating" 
+                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c" 
+                alt="Real estate professionals collaborating around a table with laptops" 
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
