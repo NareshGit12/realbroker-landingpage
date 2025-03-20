@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Hero from '@/components/home/Hero';
 import Features from '@/components/home/Features';
+import CertifiedBrokerPromo from '@/components/home/CertifiedBrokerPromo';
 import HowItWorks from '@/components/home/HowItWorks';
 import InviteForm from '@/components/home/InviteForm';
 import Testimonials from '@/components/home/Testimonials';
@@ -58,6 +59,7 @@ const Index: React.FC = () => {
       <main>
         <Hero />
         <Features />
+        <CertifiedBrokerPromo />
         <HowItWorks />
         <Testimonials />
         <InviteForm />
