@@ -3,6 +3,7 @@ import React from 'react';
 import { Facebook, Twitter, Instagram, Linkedin, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   const [email, setEmail] = React.useState('');
@@ -120,11 +121,23 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-semibold text-lg mb-4">Company</h4>
             <ul className="space-y-3">
-              {["About Us", "Careers", "Press", "Privacy Policy", "Terms of Service"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-muted-foreground hover:text-realtor-600 transition-colors">
-                    {item}
-                  </a>
+              {[
+                "About Us", 
+                "Careers", 
+                "Press", 
+                "Privacy Policy", 
+                { name: "Terms of Service", path: "/terms-of-use" }
+              ].map((item) => (
+                <li key={typeof item === 'string' ? item : item.name}>
+                  {typeof item === 'string' ? (
+                    <a href="#" className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                      {item}
+                    </a>
+                  ) : (
+                    <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                      {item.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

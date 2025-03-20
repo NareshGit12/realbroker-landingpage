@@ -60,18 +60,6 @@ const NavLinks: React.FC<NavLinksProps> = ({
       >
         Testimonials
       </button>
-      <Link 
-        to="/terms-of-use"
-        className={cn(
-          `${textSizeClass} font-medium transition-colors`,
-          isActive('/terms-of-use') 
-            ? "text-realtor-600 font-semibold" 
-            : "text-gray-700 hover:text-realtor-600"
-        )}
-        onClick={onItemClick}
-      >
-        Terms of Use
-      </Link>
       <button 
         onClick={() => handleClick("invite")}
         className={cn(
