@@ -13,6 +13,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 
 // Area data by city
 const areasByCity: Record<string, string[]> = {
@@ -26,7 +33,11 @@ const areasByCity: Record<string, string[]> = {
     "JP Nagar",
     "Bannerghatta Road",
     "Marathahalli",
-    "Sarjapur Road"
+    "Sarjapur Road",
+    "Hebbal",
+    "Yelahanka",
+    "Kalyan Nagar",
+    "Sadashiv Nagar"
   ],
   mumbai: [
     "Bandra", 
@@ -64,8 +75,8 @@ const InviteForm: React.FC = () => {
   const [selectedArea, setSelectedArea] = useState<string>('');
   const [customArea, setCustomArea] = useState('');
   const [message, setMessage] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const { toast } = useToast();
 
   // Update areas options when city changes
@@ -76,6 +87,18 @@ const InviteForm: React.FC = () => {
       setCustomArea('');
     }
   }, [city]);
+
+  const resetForm = () => {
+    setEmail('');
+    setName('');
+    setCompany('');
+    setWhatsappNumber('');
+    setCity('');
+    setAreas([]);
+    setSelectedArea('');
+    setCustomArea('');
+    setMessage('');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,7 +144,8 @@ const InviteForm: React.FC = () => {
         description: "Your information has been saved. We'll review your application and get back to you soon.",
       });
       
-      setIsSubmitted(true);
+      // Show success dialog instead of replacing the form
+      setDialogOpen(true);
     } catch (error) {
       console.error('Error saving form data:', error);
       toast({
@@ -169,166 +193,178 @@ const InviteForm: React.FC = () => {
 
           <RevealAnimation direction="right">
             <GlassCard className="overflow-hidden">
-              {!isSubmitted ? (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-1">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all"
-                      placeholder="John Smith"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium mb-1">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all"
-                      placeholder="you@example.com"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="whatsappNumber" className="block text-sm font-medium mb-1">
-                      WhatsApp Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="whatsappNumber"
-                      value={whatsappNumber}
-                      onChange={(e) => setWhatsappNumber(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all"
-                      placeholder="+91 98765 43210"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="company" className="block text-sm font-medium mb-1">
-                      Company Name
-                    </label>
-                    <input
-                      type="text"
-                      id="company"
-                      value={company}
-                      onChange={(e) => setCompany(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all"
-                      placeholder="Your company name"
-                    />
-                  </div>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium mb-1">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all"
+                    placeholder="John Smith"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium mb-1">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all"
+                    placeholder="you@example.com"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="whatsappNumber" className="block text-sm font-medium mb-1">
+                    WhatsApp Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="whatsappNumber"
+                    value={whatsappNumber}
+                    onChange={(e) => setWhatsappNumber(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all"
+                    placeholder="+91 98765 43210"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="company" className="block text-sm font-medium mb-1">
+                    Company Name
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all"
+                    placeholder="Your company name"
+                  />
+                </div>
 
+                <div>
+                  <label htmlFor="city" className="block text-sm font-medium mb-1">
+                    City
+                  </label>
+                  <Select onValueChange={setCity} value={city}>
+                    <SelectTrigger className="w-full px-4 py-3 h-auto">
+                      <SelectValue placeholder="Select a city" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="bangalore">Bangalore</SelectItem>
+                      <SelectItem value="mumbai">Mumbai</SelectItem>
+                      <SelectItem value="delhi">Delhi</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {city && (
                   <div>
-                    <label htmlFor="city" className="block text-sm font-medium mb-1">
-                      City
+                    <label htmlFor="area" className="block text-sm font-medium mb-1">
+                      Areas You Specialize In
                     </label>
-                    <Select onValueChange={setCity} value={city}>
+                    <Select onValueChange={setSelectedArea} value={selectedArea}>
                       <SelectTrigger className="w-full px-4 py-3 h-auto">
-                        <SelectValue placeholder="Select a city" />
+                        <SelectValue placeholder="Select an area" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="bangalore">Bangalore</SelectItem>
-                        <SelectItem value="mumbai">Mumbai</SelectItem>
-                        <SelectItem value="delhi">Delhi</SelectItem>
+                        {areas.map((area) => (
+                          <SelectItem key={area} value={area}>{area}</SelectItem>
+                        ))}
+                        <SelectItem value="custom">Other (specify below)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
+                )}
 
-                  {city && (
-                    <div>
-                      <label htmlFor="area" className="block text-sm font-medium mb-1">
-                        Areas You Specialize In
-                      </label>
-                      <Select onValueChange={setSelectedArea} value={selectedArea}>
-                        <SelectTrigger className="w-full px-4 py-3 h-auto">
-                          <SelectValue placeholder="Select an area" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {areas.map((area) => (
-                            <SelectItem key={area} value={area}>{area}</SelectItem>
-                          ))}
-                          <SelectItem value="custom">Other (specify below)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
-
-                  {selectedArea === 'custom' && (
-                    <div>
-                      <label htmlFor="customArea" className="block text-sm font-medium mb-1">
-                        Specify Your Area
-                      </label>
-                      <input
-                        type="text"
-                        id="customArea"
-                        value={customArea}
-                        onChange={(e) => setCustomArea(e.target.value)}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all"
-                        placeholder="Enter your area"
-                      />
-                    </div>
-                  )}
-                  
+                {selectedArea === 'custom' && (
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium mb-1">
-                      Message (Optional)
+                    <label htmlFor="customArea" className="block text-sm font-medium mb-1">
+                      Specify Your Area
                     </label>
-                    <textarea
-                      id="message"
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all min-h-[100px] resize-y"
-                      placeholder="Tell us more about your experience and interests..."
+                    <input
+                      type="text"
+                      id="customArea"
+                      value={customArea}
+                      onChange={(e) => setCustomArea(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all"
+                      placeholder="Enter your area"
                     />
                   </div>
-                  
-                  <Button 
-                    type="submit" 
-                    className="w-full mt-2 bg-realtor-600 hover:bg-realtor-700 py-6 text-white"
-                    disabled={isSubmitting}
-                  >
-                    <span>{isSubmitting ? "Submitting..." : "Request Access"}</span> 
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                  
-                  <p className="text-xs text-center text-muted-foreground pt-2">
-                    By submitting, you agree to our Terms of Service and Privacy Policy.
-                  </p>
-                </form>
-              ) : (
-                <div className="py-8 px-4 text-center">
-                  <div className="flex justify-center mb-4">
-                    <div className="rounded-full bg-green-100 p-4">
-                      <CheckCircle2 className="h-10 w-10 text-green-600" />
-                    </div>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2">Request Received!</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Thank you for your interest in RealBroker.app. We'll review your application
-                    and contact you soon.
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    className="border-realtor-200 hover:bg-realtor-50 text-realtor-800"
-                    onClick={() => setIsSubmitted(false)}
-                  >
-                    Submit Another Request
-                  </Button>
+                )}
+                
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium mb-1">
+                    Message (Optional)
+                  </label>
+                  <textarea
+                    id="message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all min-h-[100px] resize-y"
+                    placeholder="Tell us more about your experience and interests..."
+                  />
                 </div>
-              )}
+                
+                <Button 
+                  type="submit" 
+                  className="w-full mt-2 bg-realtor-600 hover:bg-realtor-700 py-6 text-white"
+                  disabled={isSubmitting}
+                >
+                  <span>{isSubmitting ? "Submitting..." : "Request Access"}</span> 
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+                
+                <p className="text-xs text-center text-muted-foreground pt-2">
+                  By submitting, you agree to our Terms of Service and Privacy Policy.
+                </p>
+              </form>
             </GlassCard>
           </RevealAnimation>
         </div>
       </div>
+
+      {/* Success Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center text-2xl">Request Received!</DialogTitle>
+            <DialogDescription className="text-center">
+              <div className="flex justify-center my-6">
+                <div className="rounded-full bg-green-100 p-4">
+                  <CheckCircle2 className="h-10 w-10 text-green-600" />
+                </div>
+              </div>
+              <p className="text-base text-muted-foreground mb-4">
+                Thank you for your interest in RealBroker.app. 
+              </p>
+              <p className="text-base text-muted-foreground mb-4">
+                We'll review your application and contact you soon via WhatsApp.
+              </p>
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-center mt-4">
+            <Button 
+              variant="outline" 
+              className="border-realtor-200 hover:bg-realtor-50 text-realtor-800"
+              onClick={() => {
+                setDialogOpen(false);
+                resetForm();
+              }}
+            >
+              Submit Another Request
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
