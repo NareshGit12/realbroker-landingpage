@@ -56,7 +56,7 @@ const Index: React.FC = () => {
   return (
     <div className="min-h-screen w-full overflow-x-hidden">
       <Navbar />
-      <main>
+      <main className="space-y-6 md:space-y-12 lg:space-y-16">
         <Hero />
         <Features />
         <CertifiedBrokerPromo />
