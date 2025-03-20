@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import GlassCard from '@/components/ui/GlassCard';
@@ -21,7 +20,6 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 
-// Area data by city
 const areasByCity: Record<string, string[]> = {
   bangalore: [
     "Koramangala", 
@@ -79,7 +77,6 @@ const InviteForm: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  // Update areas options when city changes
   useEffect(() => {
     if (city) {
       setAreas(areasByCity[city] || []);
@@ -103,7 +100,6 @@ const InviteForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validation
     if (!email || !name || !company || !whatsappNumber || !city || (!selectedArea && !customArea)) {
       toast({
         title: "Error",
@@ -116,7 +112,6 @@ const InviteForm: React.FC = () => {
     try {
       setIsSubmitting(true);
       
-      // Create form data to save
       const formData = {
         name,
         email,
@@ -130,7 +125,6 @@ const InviteForm: React.FC = () => {
         created_at: new Date().toISOString()
       };
       
-      // Save to Supabase
       const { error } = await supabase
         .from('invite_requests')
         .insert([formData]);
@@ -144,7 +138,6 @@ const InviteForm: React.FC = () => {
         description: "Your information has been saved. We'll review your application and get back to you soon.",
       });
       
-      // Show success dialog instead of replacing the form
       setDialogOpen(true);
     } catch (error) {
       console.error('Error saving form data:', error);
@@ -310,7 +303,7 @@ const InviteForm: React.FC = () => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-realtor-500 focus:border-transparent outline-none transition-all min-h-[100px] resize-y"
-                    placeholder="Tell us more about your experience and interests..."
+                    placeholder="Tell us about how you want to use RealBroker"
                   />
                 </div>
                 
@@ -332,7 +325,6 @@ const InviteForm: React.FC = () => {
         </div>
       </div>
 
-      {/* Success Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
