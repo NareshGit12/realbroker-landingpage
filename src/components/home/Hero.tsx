@@ -38,7 +38,7 @@ const Hero: React.FC = () => {
           </RevealAnimation>
           
           <RevealAnimation delay={300}>
-            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mb-24"> {/* Added mb-24 for more space below buttons */}
               <a href="#invite" className="w-full">
                 <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-6 px-8 rounded-xl text-lg shadow-md w-full">
                   Request an Invite
@@ -55,7 +55,7 @@ const Hero: React.FC = () => {
           <RevealAnimation delay={400}>
             <a 
               href="#features" 
-              className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-sm text-muted-foreground hover:text-foreground transition-colors mt-16"
+              className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <span className="mb-2">Discover More</span>
               <ArrowDown className="animate-bounce h-5 w-5" />
