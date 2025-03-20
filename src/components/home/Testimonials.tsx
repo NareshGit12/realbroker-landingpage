@@ -2,7 +2,7 @@
 import React from 'react';
 import GlassCard from '@/components/ui/GlassCard';
 import RevealAnimation from '@/components/ui/RevealAnimation';
-import { Star, UserRound, Users, HandShake } from 'lucide-react';
+import { Star, UserRound, Users, Handshake } from 'lucide-react';
 
 interface TestimonialProps {
   quote: string;
@@ -65,7 +65,7 @@ const Testimonials: React.FC = () => {
       author: "Arjun Patel",
       role: "Luxury Real Estate Broker",
       company: "Brigade Properties, Bangalore",
-      icon: <HandShake size={24} />,
+      icon: <Handshake size={24} />,
       rating: 5,
       delay: 100
     },
