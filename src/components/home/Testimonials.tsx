@@ -2,14 +2,14 @@
 import React from 'react';
 import GlassCard from '@/components/ui/GlassCard';
 import RevealAnimation from '@/components/ui/RevealAnimation';
-import { Star } from 'lucide-react';
+import { Star, UserRound, Users, HandShake } from 'lucide-react';
 
 interface TestimonialProps {
   quote: string;
   author: string;
   role: string;
   company: string;
-  avatar: string;
+  icon: React.ReactNode;
   rating: number;
   delay: number;
 }
@@ -19,7 +19,7 @@ const Testimonial: React.FC<TestimonialProps> = ({
   author, 
   role, 
   company, 
-  avatar, 
+  icon, 
   rating,
   delay 
 }) => (
@@ -37,12 +37,9 @@ const Testimonial: React.FC<TestimonialProps> = ({
       <blockquote className="text-lg mb-6 flex-grow">"{quote}"</blockquote>
       
       <div className="flex items-center gap-3 mt-auto pt-6 border-t border-gray-100">
-        <img 
-          src={avatar} 
-          alt={author}
-          className="w-12 h-12 rounded-full object-cover" 
-          loading="lazy"
-        />
+        <div className="w-12 h-12 rounded-full bg-realtor-100 flex items-center justify-center text-realtor-600">
+          {icon}
+        </div>
         <div>
           <p className="font-medium">{author}</p>
           <p className="text-sm text-muted-foreground">{role}, {company}</p>
@@ -59,7 +56,7 @@ const Testimonials: React.FC = () => {
       author: "Priya Sharma",
       role: "Senior Broker",
       company: "Prestige Properties, Bangalore",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&h=256&q=80",
+      icon: <UserRound size={24} />,
       rating: 5,
       delay: 0
     },
@@ -68,7 +65,7 @@ const Testimonials: React.FC = () => {
       author: "Arjun Patel",
       role: "Luxury Real Estate Broker",
       company: "Brigade Properties, Bangalore",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&h=256&q=80",
+      icon: <HandShake size={24} />,
       rating: 5,
       delay: 100
     },
@@ -77,7 +74,7 @@ const Testimonials: React.FC = () => {
       author: "Kavita Reddy",
       role: "Commercial Broker",
       company: "Sobha Realty, Bangalore",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&h=256&q=80",
+      icon: <Users size={24} />,
       rating: 4,
       delay: 200
     }
@@ -112,7 +109,7 @@ const Testimonials: React.FC = () => {
               author={testimonial.author}
               role={testimonial.role}
               company={testimonial.company}
-              avatar={testimonial.avatar}
+              icon={testimonial.icon}
               rating={testimonial.rating}
               delay={testimonial.delay}
             />
