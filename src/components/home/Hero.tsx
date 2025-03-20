@@ -44,11 +44,11 @@ const Hero: React.FC = () => {
                   Request an Invite
                 </Button>
               </a>
-              <Link to="/smart-agreements" className="w-full">
+              <a href="#features" className="w-full">
                 <Button variant="outline" className="border-realtor-200 hover:bg-realtor-50 text-realtor-800 py-6 px-8 rounded-xl text-lg w-full">
                   Learn More
                 </Button>
-              </Link>
+              </a>
             </div>
           </RevealAnimation>
           

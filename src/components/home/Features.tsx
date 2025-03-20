@@ -22,17 +22,13 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, del
         </div>
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
         <p className="text-muted-foreground text-sm flex-grow">{description}</p>
-        <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
-          {link ? (
+        {link && (
+          <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
             <Link to={link} className="text-realtor-600 text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all">
               Learn more <ArrowUpRight className="h-3 w-3" />
             </Link>
-          ) : (
-            <a href="#" className="text-realtor-600 text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all">
-              Learn more <ArrowUpRight className="h-3 w-3" />
-            </a>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </GlassCard>
   </RevealAnimation>
