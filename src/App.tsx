@@ -3,14 +3,27 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import ScrollToTop from "./components/layout/ScrollToTop";
+import { trackPageView } from "./utils/analytics";
 import Index from "./pages/Index";
 import SmartAgreements from "./pages/SmartAgreements";
 import TermsOfUse from "./pages/TermsOfUse";
 import CertifiedRealBroker from "./pages/CertifiedRealBroker";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
+
+// Track page views when route changes
+const PageViewTracker = () => {
+  const location = useLocation();
+  
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location]);
+  
+  return null;
+};
 
 const queryClient = new QueryClient();
 
@@ -21,6 +34,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
+        <PageViewTracker />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/smart-agreements" element={<SmartAgreements />} />
