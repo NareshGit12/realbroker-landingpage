@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import GlassCard from '@/components/ui/GlassCard';
@@ -19,6 +20,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import { getCurrentHeadingVariantId } from '@/utils/abTesting';
 
 const areasByCity: Record<string, string[]> = {
   bangalore: [
@@ -112,6 +114,9 @@ const InviteForm: React.FC = () => {
     try {
       setIsSubmitting(true);
       
+      // Get the current heading variant ID for conversion tracking
+      const headingVariantId = getCurrentHeadingVariantId();
+      
       const formData = {
         name,
         email,
@@ -122,7 +127,8 @@ const InviteForm: React.FC = () => {
         message,
         recipient_email: "naresh.shetty@gmail.com",
         subject: "New Invite Request from RealBroker",
-        created_at: new Date().toISOString()
+        created_at: new Date().toISOString(),
+        heading_variant_id: headingVariantId // Include the heading variant ID
       };
       
       const { error } = await supabase

@@ -1,10 +1,25 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import { ArrowDown } from 'lucide-react';
+import { getHeadingVariant, HeadingVariant } from '@/utils/abTesting';
 
 const Hero: React.FC = () => {
+  const [headingVariant, setHeadingVariant] = useState<HeadingVariant | null>(null);
+  
+  // Load the heading variant on component mount
+  useEffect(() => {
+    // Only run this effect once on mount to ensure consistency during the session
+    if (!headingVariant) {
+      setHeadingVariant(getHeadingVariant());
+    }
+  }, [headingVariant]);
+  
+  if (!headingVariant) {
+    return null; // Don't render until we have a heading variant
+  }
+
   return (
     <section className="relative min-h-[85vh] flex items-center pt-20 pb-10">
       {/* Gradient Background */}
@@ -24,9 +39,9 @@ const Hero: React.FC = () => {
           
           <RevealAnimation delay={100}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-balance">
-              Access more property supply in your market,
+              {headingVariant.title}
               <br />
-              <span className="text-realtor-600">Share your deals, Grow your business</span>
+              <span className="text-realtor-600">{headingVariant.subtitle}</span>
             </h1>
           </RevealAnimation>
           

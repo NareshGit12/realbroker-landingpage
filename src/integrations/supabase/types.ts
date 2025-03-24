@@ -16,6 +16,7 @@ export type Database = {
           company: string
           created_at: string
           email: string
+          heading_variant_id: number | null
           id: string
           message: string | null
           name: string
@@ -29,6 +30,7 @@ export type Database = {
           company: string
           created_at?: string
           email: string
+          heading_variant_id?: number | null
           id?: string
           message?: string | null
           name: string
@@ -42,6 +44,7 @@ export type Database = {
           company?: string
           created_at?: string
           email?: string
+          heading_variant_id?: number | null
           id?: string
           message?: string | null
           name?: string
