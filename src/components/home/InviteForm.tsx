@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import GlassCard from '@/components/ui/GlassCard';
@@ -21,6 +20,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { getCurrentHeadingVariantId } from '@/utils/abTesting';
+import { trackEvent } from '@/utils/analytics';
 
 const areasByCity: Record<string, string[]> = {
   bangalore: [
@@ -114,8 +114,12 @@ const InviteForm: React.FC = () => {
     try {
       setIsSubmitting(true);
       
-      // Get the current heading variant ID for conversion tracking
       const headingVariantId = getCurrentHeadingVariantId();
+      
+      trackEvent('form_submission', {
+        form: 'invite_request',
+        heading_variant_id: headingVariantId
+      });
       
       const formData = {
         name,
@@ -128,7 +132,7 @@ const InviteForm: React.FC = () => {
         recipient_email: "naresh.shetty@gmail.com",
         subject: "New Invite Request from RealBroker",
         created_at: new Date().toISOString(),
-        heading_variant_id: headingVariantId // Include the heading variant ID
+        heading_variant_id: headingVariantId
       };
       
       const { error } = await supabase
@@ -139,6 +143,11 @@ const InviteForm: React.FC = () => {
         throw error;
       }
       
+      trackEvent('form_submission_success', {
+        form: 'invite_request',
+        heading_variant_id: headingVariantId
+      });
+      
       toast({
         title: "Request submitted",
         description: "Your information has been saved. We'll review your application and get back to you soon.",
@@ -147,6 +156,12 @@ const InviteForm: React.FC = () => {
       setDialogOpen(true);
     } catch (error) {
       console.error('Error saving form data:', error);
+      
+      trackEvent('form_submission_error', {
+        form: 'invite_request',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+      
       toast({
         title: "Submission error",
         description: "There was an error saving your request. Please try again.",

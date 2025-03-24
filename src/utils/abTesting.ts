@@ -43,6 +43,14 @@ export const getHeadingVariant = (): HeadingVariant => {
   // Store the selected variant ID in localStorage
   localStorage.setItem('heading_variant_id', selectedVariant.id.toString());
   
+  // Track this variant view in analytics
+  if (window.gtag) {
+    window.gtag('event', 'view_heading_variant', {
+      'heading_variant_id': selectedVariant.id,
+      'heading_title': selectedVariant.title
+    });
+  }
+  
   return selectedVariant;
 };
 
