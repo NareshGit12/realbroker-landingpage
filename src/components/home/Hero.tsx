@@ -47,7 +47,7 @@ const Hero: React.FC = () => {
           
           <RevealAnimation delay={200}>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl text-balance">
-              Expand your inventory through your network
+              {headingVariant.description}
             </p>
           </RevealAnimation>
           

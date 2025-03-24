@@ -1,8 +1,10 @@
+
 // Define our heading variants
 export type HeadingVariant = {
   id: number;
   title: string;
   subtitle: string;
+  description: string;
 };
 
 export const headingVariants: HeadingVariant[] = [
@@ -10,16 +12,19 @@ export const headingVariants: HeadingVariant[] = [
     id: 1,
     title: "Access more property supply in your market,",
     subtitle: "Share your deals, Grow your business",
+    description: "Expand your inventory through your network",
   },
   {
     id: 2,
     title: "Expand your real estate network today,",
     subtitle: "Connect with verified brokers, Close more deals",
+    description: "Find exclusive opportunities through trusted connections",
   },
   {
     id: 3,
     title: "Unlock exclusive property listings,",
     subtitle: "Build strategic partnerships, Increase your revenue",
+    description: "Access off-market properties you won't find anywhere else",
   },
 ];
 
