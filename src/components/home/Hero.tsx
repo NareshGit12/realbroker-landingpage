@@ -8,13 +8,10 @@ import { getHeadingVariant, HeadingVariant } from '@/utils/abTesting';
 const Hero: React.FC = () => {
   const [headingVariant, setHeadingVariant] = useState<HeadingVariant | null>(null);
   
-  // Load the heading variant on component mount
+  // Load a new heading variant on each component mount
   useEffect(() => {
-    // Only run this effect once on mount to ensure consistency during the session
-    if (!headingVariant) {
-      setHeadingVariant(getHeadingVariant());
-    }
-  }, [headingVariant]);
+    setHeadingVariant(getHeadingVariant());
+  }, []);
   
   if (!headingVariant) {
     return null; // Don't render until we have a heading variant

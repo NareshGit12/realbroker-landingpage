@@ -26,24 +26,17 @@ export const headingVariants: HeadingVariant[] = [
     subtitle: "Build strategic partnerships, Increase your revenue",
     description: "Access off-market properties you won't find anywhere else",
   },
+  {
+    id: 4,
+    title: "RealBroker helps you collaborate with other trusted brokers",
+    subtitle: "Grow your business by building a trusted network,",
+    description: "Automatically create commission sharing agreements",
+  },
 ];
 
-// Retrieve the selected heading variant from localStorage or select a random one
+// Retrieve a heading variant - now shows different messages on refresh
 export const getHeadingVariant = (): HeadingVariant => {
-  // Check if we already have a stored variant
-  const storedVariantId = localStorage.getItem('heading_variant_id');
-  
-  if (storedVariantId) {
-    const variantId = parseInt(storedVariantId, 10);
-    const foundVariant = headingVariants.find(variant => variant.id === variantId);
-    
-    // If we have a valid variant, return it
-    if (foundVariant) {
-      return foundVariant;
-    }
-  }
-  
-  // Otherwise, select a random variant
+  // Always select a random variant on each page load/refresh
   const randomIndex = Math.floor(Math.random() * headingVariants.length);
   const selectedVariant = headingVariants[randomIndex];
   
