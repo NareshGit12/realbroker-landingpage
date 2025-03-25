@@ -9,6 +9,137 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      connections: {
+        Row: {
+          created_at: string
+          id: string
+          recipient_id: string
+          requester_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          recipient_id: string
+          requester_id: string
+          status: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          recipient_id?: string
+          requester_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      flyers: {
+        Row: {
+          created_at: string
+          custom_price_text: string | null
+          description: string | null
+          id: string
+          images: string[] | null
+          price: number | null
+          property_id: string
+          public_id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          custom_price_text?: string | null
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          price?: number | null
+          property_id: string
+          public_id?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          custom_price_text?: string | null
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          price?: number | null
+          property_id?: string
+          public_id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "flyers_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invitations: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          id: string
+          invite_code: string
+          invitee_company_name: string | null
+          invitee_email: string
+          invitee_first_name: string | null
+          invitee_last_name: string | null
+          invitee_name: string | null
+          invitee_phone: string | null
+          inviter_id: string
+          message: string | null
+          recipient_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          id?: string
+          invite_code: string
+          invitee_company_name?: string | null
+          invitee_email: string
+          invitee_first_name?: string | null
+          invitee_last_name?: string | null
+          invitee_name?: string | null
+          invitee_phone?: string | null
+          inviter_id: string
+          message?: string | null
+          recipient_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          id?: string
+          invite_code?: string
+          invitee_company_name?: string | null
+          invitee_email?: string
+          invitee_first_name?: string | null
+          invitee_last_name?: string | null
+          invitee_name?: string | null
+          invitee_phone?: string | null
+          inviter_id?: string
+          message?: string | null
+          recipient_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       invite_requests: {
         Row: {
           area: string | null
@@ -54,6 +185,415 @@ export type Database = {
         }
         Relationships: []
       }
+      messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          property_id: string | null
+          read_at: string | null
+          recipient_id: string
+          sender_id: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          property_id?: string | null
+          read_at?: string | null
+          recipient_id: string
+          sender_id: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          property_id?: string | null
+          read_at?: string | null
+          recipient_id?: string
+          sender_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_settings: {
+        Row: {
+          chat_messages: boolean
+          connection_requests: boolean
+          created_at: string
+          email_notifications: boolean
+          id: string
+          new_listings: boolean
+          new_members: boolean
+          property_views: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          chat_messages?: boolean
+          connection_requests?: boolean
+          created_at?: string
+          email_notifications?: boolean
+          id?: string
+          new_listings?: boolean
+          new_members?: boolean
+          property_views?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          chat_messages?: boolean
+          connection_requests?: boolean
+          created_at?: string
+          email_notifications?: boolean
+          id?: string
+          new_listings?: boolean
+          new_members?: boolean
+          property_views?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          action_url: string | null
+          content: Json
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          read_at: string | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          action_url?: string | null
+          content: Json
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          read_at?: string | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          action_url?: string | null
+          content?: Json
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          read_at?: string | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      post_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          post_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          post_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "social_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_comments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_likes: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "social_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          areas: string[] | null
+          avatar_url: string | null
+          bio: string | null
+          city: string | null
+          company_name: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          invitedby: string | null
+          member_since: string | null
+          phone: string | null
+          rating: number | null
+          updated_at: string | null
+          vanity_url: string | null
+          website: string | null
+        }
+        Insert: {
+          areas?: string[] | null
+          avatar_url?: string | null
+          bio?: string | null
+          city?: string | null
+          company_name?: string | null
+          email?: string | null
+          full_name?: string | null
+          id: string
+          invitedby?: string | null
+          member_since?: string | null
+          phone?: string | null
+          rating?: number | null
+          updated_at?: string | null
+          vanity_url?: string | null
+          website?: string | null
+        }
+        Update: {
+          areas?: string[] | null
+          avatar_url?: string | null
+          bio?: string | null
+          city?: string | null
+          company_name?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          invitedby?: string | null
+          member_since?: string | null
+          phone?: string | null
+          rating?: number | null
+          updated_at?: string | null
+          vanity_url?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      properties: {
+        Row: {
+          area: string | null
+          baths: number | null
+          bedrooms: number | null
+          city: string
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          images: string[] | null
+          price: number | null
+          sqft: number | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          area?: string | null
+          baths?: number | null
+          bedrooms?: number | null
+          city: string
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          price?: number | null
+          sqft?: number | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          area?: string | null
+          baths?: number | null
+          bedrooms?: number | null
+          city?: string
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          price?: number | null
+          sqft?: number | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      property_likes: {
+        Row: {
+          created_at: string
+          id: string
+          property_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          property_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          property_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_likes_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "property_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_views: {
+        Row: {
+          id: string
+          ip_address: string | null
+          property_id: string
+          user_agent: string | null
+          user_id: string | null
+          viewed_at: string
+        }
+        Insert: {
+          id?: string
+          ip_address?: string | null
+          property_id: string
+          user_agent?: string | null
+          user_id?: string | null
+          viewed_at?: string
+        }
+        Update: {
+          id?: string
+          ip_address?: string | null
+          property_id?: string
+          user_agent?: string | null
+          user_id?: string | null
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_views_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "property_views_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      social_posts: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscribers: {
         Row: {
           created_at: string
@@ -72,12 +612,79 @@ export type Database = {
         }
         Relationships: []
       }
+      testimonials: {
+        Row: {
+          author_id: string
+          broker_id: string
+          content: string
+          created_at: string
+          id: string
+          rating: number
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          broker_id: string
+          content: string
+          created_at?: string
+          id?: string
+          rating: number
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          broker_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          rating?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "testimonials_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "testimonials_broker_id_fkey"
+            columns: ["broker_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_invite_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      get_connection_degree: {
+        Args: {
+          start_user_id: string
+          end_user_id: string
+        }
+        Returns: number
+      }
+      get_network_posts: {
+        Args: {
+          user_uuid: string
+        }
+        Returns: {
+          content: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

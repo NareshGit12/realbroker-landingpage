@@ -20,7 +20,7 @@ const MobileNav: React.FC<MobileNavProps> = ({
   return (
     <div
       className={cn(
-        'fixed inset-0 top-16 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md transition-transform duration-300 md:hidden',
+        'fixed inset-0 top-16 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md transition-transform duration-300 md:hidden',
         isMenuOpen ? 'translate-x-0' : 'translate-x-full'
       )}
     >
