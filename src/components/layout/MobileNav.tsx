@@ -24,7 +24,7 @@ const MobileNav: React.FC<MobileNavProps> = ({
         isMenuOpen ? 'translate-x-0' : 'translate-x-full'
       )}
     >
-      <nav className="flex flex-col items-center justify-center h-full space-y-8 p-4">
+      <nav className="flex flex-col items-center justify-center h-full space-y-8 p-4 bg-white/80 dark:bg-gray-900/80 rounded-lg shadow-lg m-4">
         <Link 
           to="/smart-agreements" 
           className={cn(
