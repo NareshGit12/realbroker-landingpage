@@ -37,7 +37,7 @@ const MobileNav: React.FC<MobileNavProps> = ({
     }}>
       <SheetContent
         side="right"
-        className="bg-gradient-to-b from-realtor-50 to-realtor-100 dark:from-realtor-900 dark:to-realtor-950 border-l-realtor-200 dark:border-l-realtor-800 p-0 w-3/4 md:hidden"
+        className="bg-gray-100 dark:bg-gray-800 border-l-gray-200 dark:border-l-gray-700 p-0 w-3/4 md:hidden"
       >
         <ScrollArea className="h-full w-full">
           <div className="flex flex-col items-center justify-center h-full px-4 py-8">
