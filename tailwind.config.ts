@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -67,19 +66,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors
 				realtor: {
-					50: '#fff5f5',
-					100: '#fed7d7',
-					200: '#feb2b2',
-					300: '#fc8181',
-					400: '#f56565',
-					500: '#e53e3e',
-					600: '#c53030',
-					700: '#9b2c2c',
-					800: '#822727',
-					900: '#63171b',
-					950: '#450a0a',
+					50: '#fdf2f3',
+					100: '#fce6e9',
+					200: '#f9d0d6',
+					300: '#f4aab5',
+					400: '#ed7a8c',
+					500: '#ea384c',
+					600: '#d22a3d',
+					700: '#b01e33',
+					800: '#921c30',
+					900: '#7a1c2e',
+					950: '#430b15',
 				},
 			},
 			borderRadius: {

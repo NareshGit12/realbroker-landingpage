@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import GlassCard from '@/components/ui/GlassCard';
@@ -141,6 +142,38 @@ const InviteForm: React.FC = () => {
       
       if (error) {
         throw error;
+      }
+      
+      // Send notification email to invite_request@realbroker.app
+      try {
+        const emailPayload = {
+          to: "invite_request@realbroker.app",
+          subject: "New Invite Request from RealBroker",
+          body: `
+            New invite request received:
+            
+            Name: ${name}
+            Email: ${email}
+            Company: ${company}
+            WhatsApp: ${whatsappNumber}
+            City: ${city}
+            Area: ${selectedArea === 'custom' ? customArea : selectedArea}
+            Message: ${message || "No message provided"}
+            
+            Submitted on: ${new Date().toLocaleString()}
+          `
+        };
+
+        // Use the same supabase instance to call a server function or trigger an email
+        // This is a simplified example - in production you would use an edge function
+        await fetch('/api/send-notification-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(emailPayload)
+        });
+      } catch (emailError) {
+        console.error('Error sending notification email:', emailError);
+        // We don't want to fail the whole submission if just the email fails
       }
       
       trackEvent('form_submission_success', {

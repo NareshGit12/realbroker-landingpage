@@ -393,6 +393,7 @@ export type Database = {
           member_since: string | null
           phone: string | null
           rating: number | null
+          role: string
           updated_at: string | null
           vanity_url: string | null
           website: string | null
@@ -410,6 +411,7 @@ export type Database = {
           member_since?: string | null
           phone?: string | null
           rating?: number | null
+          role?: string
           updated_at?: string | null
           vanity_url?: string | null
           website?: string | null
@@ -427,6 +429,7 @@ export type Database = {
           member_since?: string | null
           phone?: string | null
           rating?: number | null
+          role?: string
           updated_at?: string | null
           vanity_url?: string | null
           website?: string | null
@@ -449,6 +452,7 @@ export type Database = {
           title: string
           updated_at: string
           user_id: string
+          visibility: string
         }
         Insert: {
           area?: string | null
@@ -465,6 +469,7 @@ export type Database = {
           title: string
           updated_at?: string
           user_id: string
+          visibility?: string
         }
         Update: {
           area?: string | null
@@ -481,6 +486,7 @@ export type Database = {
           title?: string
           updated_at?: string
           user_id?: string
+          visibility?: string
         }
         Relationships: []
       }
@@ -567,6 +573,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          image_url: string | null
           updated_at: string
           user_id: string
         }
@@ -574,6 +581,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          image_url?: string | null
           updated_at?: string
           user_id: string
         }
@@ -581,6 +589,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          image_url?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -662,6 +671,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      force_delete_connection: {
+        Args: {
+          connection_id: string
+        }
+        Returns: boolean
+      }
       generate_invite_code: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -681,8 +696,40 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          image_url: string | null
           updated_at: string
           user_id: string
+        }[]
+      }
+      get_network_properties_with_views: {
+        Args: {
+          user_uuid: string
+          limit_count: number
+        }
+        Returns: {
+          id: string
+          title: string
+          price: number
+          currency: string
+          images: string[]
+          bedrooms: number
+          baths: number
+          sqft: number
+          view_count: number
+        }[]
+      }
+      get_user_connections_with_profiles: {
+        Args: {
+          user_uuid: string
+          limit_count: number
+        }
+        Returns: {
+          id: string
+          user_id: string
+          full_name: string
+          avatar_url: string
+          property_count: number
+          last_active: string
         }[]
       }
     }

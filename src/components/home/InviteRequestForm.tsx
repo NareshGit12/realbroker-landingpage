@@ -134,7 +134,7 @@ const InviteRequestForm: React.FC = () => {
           </DialogClose>
           <Button 
             type="submit" 
-            className="bg-realtor-600 hover:bg-realtor-700 text-white"
+            className="bg-realtor-500 hover:bg-realtor-600 text-white"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Submitting..." : "Submit Request"}
