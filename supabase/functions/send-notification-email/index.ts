@@ -39,9 +39,9 @@ serve(async (req) => {
     console.log(`Subject: ${subject}`);
     console.log(`Body: ${body}`);
 
-    // Send email using Resend
+    // Send email using Resend with a default verified domain
     const emailResponse = await resend.emails.send({
-      from: "RealBroker <notifications@realbroker.app>", // Update this with your verified domain
+      from: "RealBroker <onboarding@resend.dev>", // Using Resend's default verified domain
       to: [to],
       subject: subject,
       html: body,
