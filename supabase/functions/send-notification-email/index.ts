@@ -1,5 +1,8 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { Resend } from "npm:resend@2.0.0";
+
+const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -32,16 +35,22 @@ serve(async (req) => {
       );
     }
 
-    // Log the email details (in a real implementation, you would send via SMTP or an email service)
     console.log(`Sending email to: ${to}`);
     console.log(`Subject: ${subject}`);
     console.log(`Body: ${body}`);
 
-    // In production, you would add code here to send the actual email via a service like SendGrid, Mailgun, etc.
-    // For now, we'll just log it and return success to simulate the email being sent
+    // Send email using Resend
+    const emailResponse = await resend.emails.send({
+      from: "RealBroker <notifications@realbroker.app>", // Update this with your verified domain
+      to: [to],
+      subject: subject,
+      html: body,
+    });
+
+    console.log("Email sent successfully:", emailResponse);
 
     return new Response(
-      JSON.stringify({ success: true, message: "Email notification sent" }),
+      JSON.stringify({ success: true, message: "Email notification sent", details: emailResponse }),
       { 
         status: 200, 
         headers: { ...corsHeaders, "Content-Type": "application/json" } 

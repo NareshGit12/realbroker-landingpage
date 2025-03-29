@@ -146,31 +146,36 @@ const InviteForm: React.FC = () => {
       
       // Send notification email to invite_request@realbroker.app
       try {
+        const emailBody = `
+          <h2>New Invite Request from RealBroker</h2>
+          
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Company:</strong> ${company}</p>
+          <p><strong>WhatsApp:</strong> ${whatsappNumber}</p>
+          <p><strong>City:</strong> ${city}</p>
+          <p><strong>Area:</strong> ${selectedArea === 'custom' ? customArea : selectedArea}</p>
+          <p><strong>Message:</strong> ${message || "No message provided"}</p>
+          
+          <p><em>Submitted on: ${new Date().toLocaleString()}</em></p>
+        `;
+
         const emailPayload = {
           to: "invite_request@realbroker.app",
           subject: "New Invite Request from RealBroker",
-          body: `
-            New invite request received:
-            
-            Name: ${name}
-            Email: ${email}
-            Company: ${company}
-            WhatsApp: ${whatsappNumber}
-            City: ${city}
-            Area: ${selectedArea === 'custom' ? customArea : selectedArea}
-            Message: ${message || "No message provided"}
-            
-            Submitted on: ${new Date().toLocaleString()}
-          `
+          body: emailBody
         };
 
-        // Use the same supabase instance to call a server function or trigger an email
-        // This is a simplified example - in production you would use an edge function
-        await fetch('/api/send-notification-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(emailPayload)
+        // Call the Supabase Edge Function
+        const { data, error: emailError } = await supabase.functions.invoke('send-notification-email', {
+          body: emailPayload
         });
+
+        if (emailError) {
+          console.error('Error sending notification email:', emailError);
+        } else {
+          console.log('Email notification sent:', data);
+        }
       } catch (emailError) {
         console.error('Error sending notification email:', emailError);
         // We don't want to fail the whole submission if just the email fails
