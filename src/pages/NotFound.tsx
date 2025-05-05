@@ -1,19 +1,30 @@
 
-import React from "react";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // Redirect from /privacy.html to /privacy
+    if (location.pathname === "/privacy.html") {
+      navigate("/privacy", { replace: true });
+      return;
+    }
+
     console.error(
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );
-  }, [location.pathname]);
+  }, [location.pathname, navigate]);
+
+  // If we're redirecting, don't show the 404 content
+  if (location.pathname === "/privacy.html") {
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-subtle p-4">
