@@ -168,7 +168,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               {[
                 "About Us", 
-                { name: "Privacy Policy", path: "/privacy.html" },
+                { name: "Privacy Policy", path: "/privacy" },
                 { name: "Terms of Service", path: "/terms-of-use" }
               ].map((item) => (
                 <li key={typeof item === 'string' ? item : item.name}>

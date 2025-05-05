@@ -188,7 +188,7 @@ const CertifiedPageFooter: React.FC = () => {
             <ul className="space-y-3">
               {[
                 { name: "About Us", action: () => navigateToHomeSection("") },
-                { name: "Privacy Policy", action: () => navigateToHomeSection("") },
+                { name: "Privacy Policy", path: "/privacy" },
                 { name: "Terms of Service", path: "/terms-of-use" }
               ].map((item) => (
                 <li key={typeof item === 'string' ? item : item.name}>
