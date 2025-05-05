@@ -42,7 +42,7 @@ const App = () => (
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/certified-realbroker" element={<CertifiedRealBroker />} />
           <Route path="/analytics" element={<Analytics />} />
-          <Route path="/privacy.html" element={<PrivacyPolicy />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
