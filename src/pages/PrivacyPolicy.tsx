@@ -100,7 +100,7 @@ const PrivacyPolicy: React.FC = () => {
             <h2 className="text-2xl font-bold mt-8 mb-4">11. Contact Us</h2>
             <p>If you have questions about this Privacy Policy, contact us at:</p>
             <p className="font-medium">RealBroker</p>
-            <p>Email: Privacy@realbroker.in</p>
+            <p>Email: Privacy@realbroker.app</p>
             <p>Phone: 77600 48805</p>
             <p>Address:</p>
             <p className="pl-4">
