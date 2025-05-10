@@ -38,7 +38,7 @@ const FeatureShowcase: React.FC = () => {
     {
       title: "Quick Create Broker-to-Broker Agreements",
       description: "Streamline your deal process with digital agreements that save time and increase efficiency.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/6-Broker_Agreements.png",
+      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/6a_b2bagreement_top.png",
       delay: 200
     }
   ];
