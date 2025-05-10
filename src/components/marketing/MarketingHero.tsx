@@ -53,8 +53,8 @@ const MarketingHero: React.FC = () => {
               <div className="absolute -inset-1 bg-gradient-to-r from-gold/30 to-deep-teal/30 rounded-2xl blur-sm"></div>
               <div className="relative rounded-2xl overflow-hidden shadow-premium border border-white/10">
                 <img 
-                  src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/1-Broker_profile.png"
-                  alt="RealBroker Professional Profile" 
+                  src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/2-Dash_board.png"
+                  alt="RealBroker Dashboard" 
                   className="w-full h-auto"
                   loading="lazy"
                 />
