@@ -8,7 +8,7 @@ const FeatureShowcase: React.FC = () => {
     {
       title: "Professional Branding Pages",
       description: "Showcase yourself with a sleek, customizable broker profile designed to impress clients and partners.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/1-Broker%20profile%20page%20screenshot.png",
+      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/1-Broker_profile.png",
       delay: 0
     },
     {
