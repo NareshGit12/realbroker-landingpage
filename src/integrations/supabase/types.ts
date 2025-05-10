@@ -27,6 +27,62 @@ export type Database = {
         }
         Relationships: []
       }
+      company: {
+        Row: {
+          Address: string | null
+          brai: boolean | null
+          City: string | null
+          CoKey: string | null
+          CoName: string | null
+          creai: boolean | null
+          created_at: string
+          id: number
+          "last modified": string | null
+          Logo: string | null
+          Manager: string | null
+          nar: boolean | null
+          realtor: boolean | null
+        }
+        Insert: {
+          Address?: string | null
+          brai?: boolean | null
+          City?: string | null
+          CoKey?: string | null
+          CoName?: string | null
+          creai?: boolean | null
+          created_at?: string
+          id?: number
+          "last modified"?: string | null
+          Logo?: string | null
+          Manager?: string | null
+          nar?: boolean | null
+          realtor?: boolean | null
+        }
+        Update: {
+          Address?: string | null
+          brai?: boolean | null
+          City?: string | null
+          CoKey?: string | null
+          CoName?: string | null
+          creai?: boolean | null
+          created_at?: string
+          id?: number
+          "last modified"?: string | null
+          Logo?: string | null
+          Manager?: string | null
+          nar?: boolean | null
+          realtor?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Company_City_fkey"
+            columns: ["City"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       connections: {
         Row: {
           created_at: string
@@ -435,12 +491,15 @@ export type Database = {
           avatar_url: string | null
           bio: string | null
           city: string | null
+          company_id: number | null
           company_name: string | null
           email: string | null
+          Featured_intro: boolean | null
           full_name: string | null
           id: string
           invitedby: string | null
           member_since: string | null
+          mkt_emails: boolean | null
           phone: string | null
           rating: number | null
           role: string
@@ -453,12 +512,15 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           city?: string | null
+          company_id?: number | null
           company_name?: string | null
           email?: string | null
+          Featured_intro?: boolean | null
           full_name?: string | null
           id: string
           invitedby?: string | null
           member_since?: string | null
+          mkt_emails?: boolean | null
           phone?: string | null
           rating?: number | null
           role?: string
@@ -471,12 +533,15 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           city?: string | null
+          company_id?: number | null
           company_name?: string | null
           email?: string | null
+          Featured_intro?: boolean | null
           full_name?: string | null
           id?: string
           invitedby?: string | null
           member_since?: string | null
+          mkt_emails?: boolean | null
           phone?: string | null
           rating?: number | null
           role?: string
@@ -484,7 +549,15 @@ export type Database = {
           vanity_url?: string | null
           website?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       properties: {
         Row: {
@@ -749,11 +822,54 @@ export type Database = {
           },
         ]
       }
+      whatsapp_outbound: {
+        Row: {
+          created_at: string
+          id: number
+          message: string | null
+          phone: string
+          send_status: string | null
+          send_when: string | null
+          sent_time: string | null
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          message?: string | null
+          phone: string
+          send_status?: string | null
+          send_when?: string | null
+          sent_time?: string | null
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          message?: string | null
+          phone?: string
+          send_status?: string | null
+          send_when?: string | null
+          sent_time?: string | null
+          url?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      admin_count_rows: {
+        Args: { table_name: string }
+        Returns: number
+      }
+      admin_get_tables: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          tablename: string
+        }[]
+      }
       force_delete_connection: {
         Args: { connection_id: string }
         Returns: boolean
@@ -811,6 +927,10 @@ export type Database = {
           property_count: number
           last_active: string
         }[]
+      }
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
       update_broker_rating: {
         Args: { input_broker_id: string }

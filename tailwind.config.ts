@@ -79,20 +79,32 @@ export default {
 					900: '#7a1c2e',
 					950: '#430b15',
 				},
+				// New marketing theme colors
+				'dark-charcoal': '#1A1F2C',
+				'deep-navy': '#0F172A',
+				'gold': '#D4AF37',
+				'deep-teal': '#00616F',
+				'refined-orange': '#E67E22',
+				'light-gray': '#F1F1F1',
+				'neutral-gray': '#8E9196',
+			},
+			fontFamily: {
+				sans: ['SF Pro Display', 'system-ui', 'sans-serif'],
+				serif: ['Georgia', 'serif'],
+				'playfair': ['Playfair Display', 'serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
-			fontFamily: {
-				sans: ['SF Pro Display', 'system-ui', 'sans-serif'],
-				serif: ['Georgia', 'serif'],
-			},
 			boxShadow: {
 				'soft': '0 2px 10px rgba(0, 0, 0, 0.05)',
 				'glass': '0 8px 32px rgba(0, 0, 0, 0.08)',
 				'card': '0 1px 3px rgba(0, 0, 0, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.05)',
+				// New marketing theme shadows
+				'premium': '0 10px 30px rgba(0, 0, 0, 0.25)',
+				'glow': '0 0 20px rgba(212, 175, 55, 0.5)',
 			},
 			keyframes: {
 				'accordion-down': {

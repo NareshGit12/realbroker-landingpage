@@ -13,6 +13,7 @@ import TermsOfUse from "./pages/TermsOfUse";
 import CertifiedRealBroker from "./pages/CertifiedRealBroker";
 import Analytics from "./pages/Analytics";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Home2 from "./pages/Home2";
 import NotFound from "./pages/NotFound";
 
 // Track page views when route changes
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/certified-realbroker" element={<CertifiedRealBroker />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/home2" element={<Home2 />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
