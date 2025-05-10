@@ -32,7 +32,7 @@ const FeatureShowcase: React.FC = () => {
     {
       title: "Connect with Other Brokers",
       description: "Experience seamless communication with top-tier professionals in Bangalore's real estate market.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/5-network_properties.png",
+      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/5a_network_top.jpg",
       delay: 100
     },
     {
