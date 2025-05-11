@@ -1,19 +1,16 @@
-
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
-
 const MarketingHero: React.FC = () => {
-  return (
-    <section className="relative min-h-[85vh] flex items-center pt-20 pb-10 bg-white">
+  return <section className="relative min-h-[85vh] flex items-center pt-20 pb-10 bg-white">
       {/* Background elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-white to-neutral-50 z-[-2]"></div>
       <div className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full bg-realtor-100/20 blur-3xl z-[-1]"></div>
       <div className="absolute bottom-1/4 left-1/4 w-96 h-96 rounded-full bg-realtor-50/30 blur-3xl z-[-1]"></div>
       
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-1 gap-12 items-center">
           <div className="text-center lg:text-left">
             <RevealAnimation>
               <div className="inline-block py-1 px-3 mb-6 text-xs font-medium uppercase tracking-wider bg-realtor-50 text-realtor-600 border border-realtor-100 rounded-full">
@@ -52,20 +49,13 @@ const MarketingHero: React.FC = () => {
               <div className="transform rotate-[-5deg] origin-center">
                 <div className="absolute -inset-1 bg-gradient-to-r from-realtor-300/30 to-realtor-500/30 rounded-2xl blur-sm"></div>
                 <div className="relative rounded-2xl overflow-hidden shadow-lg border border-realtor-100">
-                  <img 
-                    src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/1a_dash_top.png"
-                    alt="RealBroker Dashboard" 
-                    className="w-full h-auto"
-                    loading="lazy"
-                  />
+                  <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/1a_dash_top.png" alt="RealBroker Dashboard" className="w-full h-auto" loading="lazy" />
                 </div>
               </div>
             </div>
           </RevealAnimation>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default MarketingHero;
