@@ -49,7 +49,7 @@ const MarketingHero: React.FC = () => {
             <div className="mx-auto w-full">
               {/* Removed max-width, shadow and gradient effect */}
               <div className="relative">
-                <div className="relative rounded-2xl overflow-hidden border border-realtor-100">
+                <div className="relative rounded-2xl overflow-hidden  ">
                   <img 
                     src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/main-hero.png" 
                     alt="RealBroker Dashboard" 
