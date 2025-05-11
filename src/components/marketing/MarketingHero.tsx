@@ -51,8 +51,8 @@ const MarketingHero: React.FC = () => {
       {/* Background elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-white to-neutral-50 z-[-2]"></div>
       
-      <div className="container mx-auto px-4 md:px-6 py-12 md:py-20">
-        <div className="flex flex-col items-center justify-center gap-8 md:gap-12">
+      <div className="container mx-auto px-4 md:px-6 py-8 md:py-16">
+        <div className="flex flex-col items-center justify-center gap-6 md:gap-10">
           <div className="text-center w-full max-w-3xl mx-auto">
             <RevealAnimation>
               <div className="inline-block py-1 px-3 mb-6 text-xs font-medium uppercase tracking-wider bg-realtor-50 text-realtor-600 border border-realtor-100 rounded-full">
@@ -75,7 +75,7 @@ const MarketingHero: React.FC = () => {
             </RevealAnimation>
             
             <RevealAnimation delay={200}>
-              <p className="text-lg md:text-xl text-gray-600 mb-8 mx-auto max-w-2xl">
+              <p className="text-lg md:text-xl text-gray-600 mb-6 mx-auto max-w-2xl">
                 Join Bangalore's exclusive network of elite real estate brokers. 
                 Share inventory, discover collaborations, and close high-value deals faster.
               </p>
@@ -94,7 +94,7 @@ const MarketingHero: React.FC = () => {
           </div>
           
           <RevealAnimation delay={400}>
-            <div className="w-full max-w-[1200px] px-2 sm:px-4 md:px-6">
+            <div className="w-full max-w-[1200px] px-2 sm:px-4 md:px-6 mt-2">
               <div className="relative rounded-2xl overflow-hidden">
                 <img 
                   src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/main-hero.png" 
