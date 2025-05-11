@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface FeatureCardProps {
@@ -9,9 +10,9 @@ interface FeatureCardProps {
 const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, imagePath }) => {
   // Keep descriptions brief but consistent
   const truncateDescription = (text: string): string => {
-    // Shorten description to around 100 characters max
-    if (text.length > 100) {
-      return text.substring(0, 100) + "...";
+    // Shorten description to around 80 characters max for better fit
+    if (text.length > 80) {
+      return text.substring(0, 80) + "...";
     }
     return text;
   };
@@ -20,7 +21,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, imagePath
 
   return (
     <div className="rounded-xl overflow-hidden bg-white border border-realtor-100 shadow-lg h-full transition-transform duration-300 hover:scale-[1.02] group max-w-xs mx-auto">
-      <div className="relative h-[350px]">
+      <div className="relative h-[250px]">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white z-10"></div>
         <img 
           src={imagePath} 
@@ -29,9 +30,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, imagePath
           loading="lazy"
         />
       </div>
-      <div className="p-4">
-        <h3 className="text-lg font-bold mb-2 text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">{title}</h3>
-        <p className="text-gray-600 text-sm min-h-[40px]">{enhancedDescription}</p>
+      <div className="p-3">
+        <h3 className="text-base font-bold mb-1 text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">{title}</h3>
+        <p className="text-xs text-gray-600 min-h-[30px]">{enhancedDescription}</p>
       </div>
     </div>
   );
