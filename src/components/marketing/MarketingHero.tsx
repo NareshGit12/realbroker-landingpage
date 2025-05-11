@@ -6,8 +6,8 @@ import RevealAnimation from '@/components/ui/RevealAnimation';
 
 const headings = [
   "Elevate Your\nBrokerage Success",
-  "Collaborate with other \nQuality professionals",
-  "Expand your Real Estate\nnetwork today"
+  "Collaborate with other \nTop Brokers",
+  "Expand Your Real Estate\nNetwork Today"
 ];
 
 const MarketingHero: React.FC = () => {
