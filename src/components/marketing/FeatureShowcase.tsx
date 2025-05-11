@@ -1,3 +1,4 @@
+
 import React from 'react';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import FeatureCard from '@/components/marketing/FeatureCard';
@@ -65,7 +66,7 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* Slanted first feature */}
+        {/* Slanted first feature - updated to match the image layout exactly */}
         <div className="mb-16">
           <RevealAnimation>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
