@@ -16,13 +16,13 @@ const FeatureShowcase: React.FC = () => {
     },
     {
       title: "Rich Property Flyers",
-      description: "Create elegant, branded property marketing materials that stand out and close deals.",
+      description: "Effortlessly create elegant, branded property marketing materials that stand out and close deals.",
       imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/mobile/Mobile_flyer.png",
       delay: 200
     },
     {
       title: "Browse Network Properties",
-      description: "Access a clean, searchable directory of exclusive properties from other elite brokers.",
+      description: " Access a clean, easily searchable directory of exclusive properties shared by other brokers within the network.",
       imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/mobile/mobile_net_prop.png",
       delay: 0
     },
