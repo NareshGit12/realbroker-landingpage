@@ -1,4 +1,3 @@
-
 import React from 'react';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import FeatureCard from '@/components/marketing/FeatureCard';
@@ -46,40 +45,40 @@ const FeatureShowcase: React.FC = () => {
   const remainingFeatures = features.slice(1);
 
   return (
-    <section className="py-12 bg-white relative overflow-hidden">
+    <section className="py-8 bg-white relative overflow-hidden">
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-realtor-100/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-realtor-50/30 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <RevealAnimation>
-            <h2 className="text-2xl md:text-3xl font-bold mb-3 font-playfair">
+            <h2 className="text-xl md:text-2xl font-bold mb-2 font-playfair">
               <span className="text-gray-900">Powerful Features for</span>
               <span className="text-realtor-600"> Elite Brokers</span>
             </h2>
           </RevealAnimation>
           <RevealAnimation delay={100}>
-            <p className="text-gray-600 text-base max-w-2xl mx-auto">
+            <p className="text-gray-600 text-sm max-w-2xl mx-auto">
               RealBroker empowers you with tools designed specifically for high-end real estate professionals.
             </p>
           </RevealAnimation>
         </div>
         
         {/* Slanted first feature */}
-        <div className="mb-10">
+        <div className="mb-6">
           <RevealAnimation>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
               <div>
-                <h3 className="text-xl md:text-2xl font-bold mb-3 text-gray-900">{firstFeature.title}</h3>
-                <p className="text-gray-600 text-sm mb-3">{firstFeature.description}</p>
+                <h3 className="text-lg md:text-xl font-bold mb-2 text-gray-900">{firstFeature.title}</h3>
+                <p className="text-gray-600 text-sm mb-2">{firstFeature.description}</p>
               </div>
               <div className="transform rotate-[-5deg] origin-center">
-                <div className="relative rounded-xl overflow-hidden shadow-lg border border-realtor-100 max-w-xs mx-auto">
+                <div className="relative rounded-xl overflow-hidden shadow-lg border border-realtor-100 max-w-xs mx-auto h-[200px]">
                   <img 
                     src={firstFeature.imagePath} 
                     alt={firstFeature.title}
-                    className="w-full object-cover h-[250px]"
+                    className="w-full object-cover h-full"
                     loading="lazy"
                   />
                 </div>
@@ -89,14 +88,11 @@ const FeatureShowcase: React.FC = () => {
         </div>
         
         {/* Carousel with navigation for remaining features */}
-        <div className="mt-8 relative max-w-2xl mx-auto">
-          <div className="text-center mb-2">
-            <span className="text-xs text-gray-500">Swipe or use arrows to navigate</span>
-          </div>
+        <div className="mt-6 relative max-w-2xl mx-auto">
           <Carousel className="w-full" opts={{ loop: true }}>
-            <CarouselContent className="-ml-0.5">
+            <CarouselContent className="-ml-1">
               {remainingFeatures.map((feature, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 pl-0.5">
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 pl-1">
                   <RevealAnimation delay={feature.delay}>
                     <FeatureCard
                       title={feature.title}
@@ -107,9 +103,9 @@ const FeatureShowcase: React.FC = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="flex justify-center gap-2 mt-2">
-              <CarouselPrevious className="relative h-7 w-7 rounded-full bg-white border-realtor-200 hover:bg-realtor-50 static transform-none mr-1" />
-              <CarouselNext className="relative h-7 w-7 rounded-full bg-white border-realtor-200 hover:bg-realtor-50 static transform-none ml-1" />
+            <div className="flex justify-center gap-1 mt-2">
+              <CarouselPrevious className="relative h-6 w-6 rounded-full bg-white border-realtor-200 hover:bg-realtor-50 static transform-none mr-1" />
+              <CarouselNext className="relative h-6 w-6 rounded-full bg-white border-realtor-200 hover:bg-realtor-50 static transform-none ml-1" />
             </div>
           </Carousel>
         </div>
