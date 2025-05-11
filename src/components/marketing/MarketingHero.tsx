@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 
 const headings = [
-  'Elevate Your Brokerage Success',
-  'Collaborate with other Quality professionals',
-  'Expand your RealEstate network today'
+  'Elevate Your \nBrokerage Success',
+  'Collaborate with other \nQuality professionals',
+  'Expand your \nRealEstate Network today'
 ];
 
 const MarketingHero: React.FC = () => {
