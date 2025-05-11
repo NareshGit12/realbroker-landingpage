@@ -33,7 +33,7 @@ const FinalCTA: React.FC = () => {
           <RevealAnimation delay={200}>
             <Button 
               onClick={() => scrollToSection('invite')}
-              className="bg-realtor-600 hover:bg-realtor-700 text-white px-8 py-6 rounded-lg text-lg font-playfair"
+              className="bg-realtor-600 hover:bg-realtor-700 text-white px-8 py-6 rounded-lg text-lg"
             >
               Request Your Invitation <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
