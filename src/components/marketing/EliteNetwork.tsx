@@ -23,7 +23,7 @@ const EliteNetwork: React.FC = () => {
           <RevealAnimation direction="left">
             <div className="relative flex justify-center">
               <div className="absolute -inset-1 bg-gradient-to-r from-realtor-100/20 to-realtor-200/20 rounded-full blur-sm"></div>
-              <div className="relative rounded-full overflow-hidden border border-realtor-100 shadow-lg w-[70%] aspect-square bg-white">
+              <div className="relative rounded-full overflow-hidden shadow-lg w-[70%] aspect-square bg-white">
                 <img 
                   src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/RBlogo/emblem_cropped.png"
                   alt="RealBroker Logo" 

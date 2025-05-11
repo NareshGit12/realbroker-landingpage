@@ -1,3 +1,4 @@
+
 import React from 'react';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import FeatureCard from '@/components/marketing/FeatureCard';
@@ -68,13 +69,13 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* First feature - simplified card layout */}
+        {/* First feature - removed border */}
         <div className="mb-16 max-w-6xl mx-auto">
           <RevealAnimation>
-            <div className="flex flex-col md:flex-row gap-8 items-center bg-white rounded-2xl p-6 shadow-md border border-realtor-100">
+            <div className="flex flex-col md:flex-row gap-8 items-center bg-white rounded-2xl p-6">
               {/* Text content - full width on mobile, left side on desktop */}
               <div className="md:w-2/5 space-y-4">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900">{firstFeature.title}</h3>
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 font-playfair">{firstFeature.title}</h3>
                 <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
               </div>
               
