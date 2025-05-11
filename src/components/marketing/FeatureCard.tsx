@@ -10,7 +10,7 @@ interface FeatureCardProps {
 const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, imagePath }) => {
   return (
     <div className="rounded-xl overflow-hidden bg-white border border-realtor-100 shadow-lg h-full transition-transform duration-300 hover:scale-[1.02] group">
-      <div className="relative h-[450px]">
+      <div className="relative h-[500px]">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white z-10"></div>
         <img 
           src={imagePath} 
