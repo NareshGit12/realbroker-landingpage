@@ -11,7 +11,7 @@ const MarketingHero: React.FC = () => {
       
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-20">
         <div className="grid lg:grid-cols-1 gap-12 items-center">
-          <div className="text-center  flex-row flex justify-center">
+          <div className="text-center  flex-col items-center flex justify-center">
             <RevealAnimation>
               <div className="inline-block py-1 px-3 mb-6 text-xs font-medium uppercase tracking-wider bg-realtor-50 text-realtor-600 border border-realtor-100 rounded-full">
                 By Invitation Only
