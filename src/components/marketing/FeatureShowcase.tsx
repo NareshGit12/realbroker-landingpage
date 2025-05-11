@@ -1,10 +1,12 @@
-
 import React from 'react';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import FeatureCard from '@/components/marketing/FeatureCard';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const FeatureShowcase: React.FC = () => {
+  const isMobile = useIsMobile();
+  
   const features = [
     {
       title: "Professional Branding Pages",
@@ -66,29 +68,24 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* First feature - image positioned to the right with text overlapping slightly from the left */}
-        <div className="mb-16">
+        {/* First feature - simplified card layout */}
+        <div className="mb-16 max-w-6xl mx-auto">
           <RevealAnimation>
-            <div className="relative w-full overflow-hidden rounded-2xl">
-              {/* Container for right-aligned image */}
-              <div className="flex justify-end">
-                {/* The image container with right alignment */}
-                <div className="w-[85%] md:w-[90%]">
-                  <img 
-                    src={firstFeature.imagePath} 
-                    alt={firstFeature.title}
-                    className="w-full object-contain"
-                    loading="lazy"
-                  />
-                </div>
+            <div className="flex flex-col md:flex-row gap-8 items-center bg-white rounded-2xl p-6 shadow-md border border-realtor-100">
+              {/* Text content - full width on mobile, left side on desktop */}
+              <div className="md:w-2/5 space-y-4">
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900">{firstFeature.title}</h3>
+                <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
               </div>
               
-              {/* Text overlay positioned to overlap the left edge of the image */}
-              <div className="absolute top-0 left-0 p-6 md:p-12 z-20 max-w-md h-full flex flex-col justify-center">
-                <div className="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-sm">
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">{firstFeature.title}</h3>
-                  <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
-                </div>
+              {/* Image - full width on mobile, right side on desktop */}
+              <div className="md:w-3/5 mt-4 md:mt-0">
+                <img 
+                  src={firstFeature.imagePath} 
+                  alt={firstFeature.title}
+                  className="w-full rounded-lg object-contain"
+                  loading="lazy"
+                />
               </div>
             </div>
           </RevealAnimation>
