@@ -23,6 +23,29 @@ const MarketingHero: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Format the heading to ensure it always displays on two lines
+  const formatHeadingForDisplay = (heading: string) => {
+    const parts = heading.split('\n');
+    if (parts.length === 2) {
+      // Return the heading words before the last word and the last word separately
+      return {
+        mainText: parts[0],
+        highlightText: parts[1]
+      };
+    } else {
+      // If there's no explicit line break, find a suitable spot to break the heading
+      const words = heading.split(' ');
+      const breakPoint = Math.ceil(words.length / 2);
+      
+      return {
+        mainText: words.slice(0, breakPoint).join(' '),
+        highlightText: words.slice(breakPoint).join(' ')
+      };
+    }
+  };
+
+  const currentHeading = formatHeadingForDisplay(headings[currentHeadingIndex]);
+
   return (
     <section className="relative min-h-[85vh] flex items-center pt-20 pb-10 bg-white overflow-hidden">
       {/* Background elements */}
@@ -41,11 +64,11 @@ const MarketingHero: React.FC = () => {
               <div className="h-[120px] md:h-[150px] flex items-center justify-center">
                 <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair transition-opacity duration-500">
                   <span className="text-gray-900">
-                    {headings[currentHeadingIndex].split(' ').slice(0, -1).join(' ')}
+                    {currentHeading.mainText}
                   </span>
-                  <br className="hidden sm:block" />
+                  <br className="block" />
                   <span className="text-realtor-600">
-                    {headings[currentHeadingIndex].split(' ').slice(-1)[0]}
+                    {currentHeading.highlightText}
                   </span>
                 </h1>
               </div>
@@ -60,8 +83,8 @@ const MarketingHero: React.FC = () => {
             
             <RevealAnimation delay={300}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mx-auto max-w-md">
-                <a href="#request-invite" className="w-full sm:w-auto">
-                  <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-4 sm:py-6 px-4 sm:px-8 rounded-xl text-base sm:text-lg shadow-md w-full transition-all duration-300 hover:scale-105">
+                <a href="#invite" className="w-full sm:w-auto">
+                  <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-4 sm:py-6 px-4 sm:px-8 rounded-xl text-base sm:text-lg shadow-md w-full transition-all duration-300 hover:scale-105 font-playfair">
                     Request Your Invitation
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
