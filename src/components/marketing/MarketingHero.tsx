@@ -54,7 +54,7 @@ const MarketingHero: React.FC = () => {
                 <div className="absolute -inset-1 bg-gradient-to-r from-realtor-300/30 to-realtor-500/30 rounded-2xl blur-sm"></div>
                 <div className="relative rounded-2xl overflow-hidden shadow-lg border border-realtor-100">
                   <img 
-                    src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/1a_dash_top.png" 
+                    src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/main-hero.png" 
                     alt="RealBroker Dashboard" 
                     className="w-full h-auto" 
                     loading="lazy" 
