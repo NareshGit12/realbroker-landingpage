@@ -6,7 +6,7 @@ import RevealAnimation from '@/components/ui/RevealAnimation';
 
 const headings = [
   "Elevate Your\nBrokerage Success",
-  "Collaborate with other Quality\nRealEstate professionals on RealBroker",
+  "Collaborate with other \nQuality RealEstate professionals",
   "Expand your Real Estate\nnetwork today"
 ];
 
