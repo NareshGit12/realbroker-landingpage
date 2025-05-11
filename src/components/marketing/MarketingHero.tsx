@@ -41,11 +41,11 @@ const MarketingHero: React.FC = () => {
               <div className="h-[120px] md:h-[150px] flex items-center justify-center">
                 <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair transition-opacity duration-500">
                   <span className="text-gray-900">
-                    {headings[currentHeadingIndex].split('\n')[0]}
+                    {headings[currentHeadingIndex].split(' ').slice(0, -1).join(' ')}
                   </span>
-                  <br className="block" />
+                  <br className="hidden sm:block" />
                   <span className="text-realtor-600">
-                    {headings[currentHeadingIndex].split('\n')[1]}
+                    {headings[currentHeadingIndex].split(' ').slice(-1)[0]}
                   </span>
                 </h1>
               </div>
@@ -61,7 +61,7 @@ const MarketingHero: React.FC = () => {
             <RevealAnimation delay={300}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mx-auto max-w-md">
                 <a href="#request-invite" className="w-full sm:w-auto">
-                  <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-4 sm:py-6 px-4 sm:px-8 rounded-xl text-base sm:text-lg font-medium shadow-md w-full transition-all duration-300 hover:scale-105">
+                  <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-4 sm:py-6 px-4 sm:px-8 rounded-xl text-base sm:text-lg shadow-md w-full transition-all duration-300 hover:scale-105">
                     Request Your Invitation
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>

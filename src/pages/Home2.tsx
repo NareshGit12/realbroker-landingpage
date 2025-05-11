@@ -51,16 +51,14 @@ const Home2: React.FC = () => {
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-white text-gray-900">
       <Navbar />
-      <main className="space-y-4">
+      <main className="space-y-8">
         <MarketingHero />
-        <div id="features" className="pt-4">
+        <div id="features" className="pt-10">
           <FeatureShowcase />
         </div>
         <EliteNetwork />
         <HowToJoin />
-        <div className="pt-8">
-          <FinalCTA />
-        </div>
+        <FinalCTA />
         <div id="invite">
           <InviteForm />
         </div>
