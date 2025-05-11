@@ -20,8 +20,21 @@ const NavLinks: React.FC<NavLinksProps> = ({
   const textSizeClass = isMobile ? "text-lg" : "text-sm";
   const location = useLocation();
   
-  const handleClick = (sectionId: string) => {
-    handleSectionNavigation(sectionId);
+  const handleClick = (path: string) => {
+    // If it's a section on Home2
+    if (path === "features") {
+      handleSectionNavigation("features");
+    } 
+    // If it's a section on the original page
+    else if (path === "how-it-works" || path === "testimonials") {
+      if (location.pathname === "/original") {
+        handleSectionNavigation(path);
+      } else {
+        // If not on original page, navigate to original with section info
+        window.location.href = `/original#${path}`;
+      }
+    }
+    
     if (onItemClick) onItemClick();
   };
 
@@ -42,7 +55,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
         onClick={() => handleClick("how-it-works")}
         className={cn(
           `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
-          isActive('/#how-it-works') 
+          isActive('/original#how-it-works') 
             ? "text-realtor-600 font-semibold" 
             : "text-gray-700 hover:text-realtor-600"
         )}
@@ -53,7 +66,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
         onClick={() => handleClick("testimonials")}
         className={cn(
           `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
-          isActive('/#testimonials') 
+          isActive('/original#testimonials') 
             ? "text-realtor-600 font-semibold" 
             : "text-gray-700 hover:text-realtor-600"
         )}

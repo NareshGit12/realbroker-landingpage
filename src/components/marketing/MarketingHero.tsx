@@ -1,10 +1,27 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 
+const headings = [
+  "Elevate Your\nBrokerage Success",
+  "Collaborate with other Quality\nRealEstate professionals on RealBroker",
+  "Expand your Real Estate\nnetwork today"
+];
+
 const MarketingHero: React.FC = () => {
+  const [currentHeadingIndex, setCurrentHeadingIndex] = useState(0);
+
+  // Carousel effect for headings
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentHeadingIndex((prevIndex) => (prevIndex + 1) % headings.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative min-h-[85vh] flex items-center pt-20 pb-10 bg-white overflow-hidden">
       {/* Background elements */}
@@ -20,10 +37,18 @@ const MarketingHero: React.FC = () => {
             </RevealAnimation>
             
             <RevealAnimation delay={100}>
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair">
-                <span className="text-gray-900">Elevate Your</span>
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair h-32">
+                <span className="text-gray-900">
+                  {currentHeadingIndex === 0 && headings[0].split('\n')[0]}
+                  {currentHeadingIndex === 1 && headings[1].split('\n')[0]}
+                  {currentHeadingIndex === 2 && headings[2].split('\n')[0]}
+                </span>
                 <br className="hidden sm:block" />
-                <span className="text-realtor-600">Brokerage Success</span>
+                <span className="text-realtor-600">
+                  {currentHeadingIndex === 0 && headings[0].split('\n')[1]}
+                  {currentHeadingIndex === 1 && headings[1].split('\n')[1]}
+                  {currentHeadingIndex === 2 && headings[2].split('\n')[1]}
+                </span>
               </h1>
             </RevealAnimation>
             

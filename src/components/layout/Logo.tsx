@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 interface LogoProps {
@@ -8,9 +8,17 @@ interface LogoProps {
 }
 
 const Logo: React.FC<LogoProps> = ({ isScrolled }) => {
+  const navigate = useNavigate();
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate('/'); // Navigate to the root path (Home2)
+  };
+
   return (
-    <Link 
-      to="/" 
+    <a 
+      href="/" 
+      onClick={handleLogoClick}
       className="flex items-center gap-2 text-2xl font-bold text-realtor-600"
     >
       <div className="flex items-center">
@@ -29,7 +37,7 @@ const Logo: React.FC<LogoProps> = ({ isScrolled }) => {
           <div className="text-sm leading-none">BROKER</div>
         </div>
       </div>
-    </Link>
+    </a>
   );
 };
 

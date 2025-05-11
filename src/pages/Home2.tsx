@@ -21,13 +21,17 @@ const Home2: React.FC = () => {
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-white text-gray-900">
       <Navbar />
-      <main className="space-y-10">
+      <main className="space-y-0">
         <MarketingHero />
-        <FeatureShowcase />
+        <div id="features" className="-mt-10">
+          <FeatureShowcase />
+        </div>
         <EliteNetwork />
         <HowToJoin />
         <FinalCTA />
-        <InviteForm />
+        <div id="request-invite">
+          <InviteForm />
+        </div>
       </main>
       <Footer />
     </div>
