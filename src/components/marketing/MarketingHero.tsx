@@ -33,7 +33,7 @@ const MarketingHero: React.FC = () => {
             </RevealAnimation>
             
             <RevealAnimation delay={300}>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto lg:mx-0">
+              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto lg:mx-0 ">
                 <a href="#request-invite" className="w-full">
                   <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-6 px-8 rounded-xl text-lg shadow-md w-full transition-all duration-300 hover:scale-105">
                     Request Your Invitation
