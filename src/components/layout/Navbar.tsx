@@ -36,10 +36,6 @@ const Navbar: React.FC = () => {
     if (path.startsWith('/#')) {
       // For homepage anchors, only consider active on the home page
       return (location.pathname === '/' || location.pathname === '/home2') && location.hash === path.substring(1);
-    } 
-    else if (path.startsWith('/original#')) {
-      // For original page anchors
-      return location.pathname === '/original' && location.hash === path.substring(9);
     }
     return location.pathname === path;
   };
@@ -48,12 +44,6 @@ const Navbar: React.FC = () => {
   const handleSectionNavigation = (sectionId: string) => {
     if (location.pathname === '/' || location.pathname === '/home2') {
       // If already on home page, just scroll to the section
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else if (location.pathname === '/original') {
-      // If on original page, navigate within that page
       const element = document.getElementById(sectionId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });

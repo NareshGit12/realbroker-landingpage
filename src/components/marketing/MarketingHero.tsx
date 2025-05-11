@@ -1,27 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 
-const headings = [
-  "Elevate Your\nBrokerage Success",
-  "Collaborate with other \nTop Brokers",
-  "Expand Your Real Estate\nNetwork Today"
-];
-
 const MarketingHero: React.FC = () => {
-  const [currentHeadingIndex, setCurrentHeadingIndex] = useState(0);
-
-  // Carousel effect for headings
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentHeadingIndex((prevIndex) => (prevIndex + 1) % headings.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section className="relative min-h-[85vh] flex items-center pt-20 pb-10 bg-white overflow-hidden">
       {/* Background elements */}
@@ -37,14 +20,10 @@ const MarketingHero: React.FC = () => {
             </RevealAnimation>
             
             <RevealAnimation delay={100}>
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair h-32">
-                <span className="text-gray-900">
-                  {headings[currentHeadingIndex].split('\n')[0]}
-                </span>
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair">
+                <span className="text-gray-900">Elevate Your</span>
                 <br className="hidden sm:block" />
-                <span className="text-realtor-600">
-                  {headings[currentHeadingIndex].split('\n')[1]}
-                </span>
+                <span className="text-realtor-600">Brokerage Success</span>
               </h1>
             </RevealAnimation>
             
