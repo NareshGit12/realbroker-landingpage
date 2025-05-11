@@ -96,7 +96,7 @@ const FeatureShowcase: React.FC = () => {
           <Carousel className="w-full" opts={{ loop: true }}>
             <CarouselContent>
               {remainingFeatures.map((feature, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 px-4">
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 px-2">
                   <RevealAnimation delay={feature.delay}>
                     <FeatureCard
                       title={feature.title}
