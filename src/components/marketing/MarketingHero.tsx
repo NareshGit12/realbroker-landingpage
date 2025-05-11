@@ -26,7 +26,7 @@ const MarketingHero: React.FC = () => {
             </RevealAnimation>
             
             <RevealAnimation delay={200}>
-              <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0 w-full text-">
+              <p className="text-lg md:text-xl text-gray-600 mb-8   mx-auto lg:mx-0 w-full text-">
                 Join Bangalore's exclusive network of elite real estate brokers. 
                 Share inventory, discover collaborations, and close high-value deals faster.
               </p>
