@@ -1,3 +1,4 @@
+
 import React from 'react';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import FeatureCard from '@/components/marketing/FeatureCard';
@@ -94,9 +95,9 @@ const FeatureShowcase: React.FC = () => {
             <span className="text-sm text-gray-500">Swipe or use arrows to navigate</span>
           </div>
           <Carousel className="w-full" opts={{ loop: true }}>
-            <CarouselContent>
+            <CarouselContent className="-ml-2">
               {remainingFeatures.map((feature, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 px-4">
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 pl-2">
                   <RevealAnimation delay={feature.delay}>
                     <FeatureCard
                       title={feature.title}
