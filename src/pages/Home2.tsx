@@ -8,6 +8,7 @@ import FeatureShowcase from '@/components/marketing/FeatureShowcase';
 import EliteNetwork from '@/components/marketing/EliteNetwork';
 import HowToJoin from '@/components/marketing/HowToJoin';
 import FinalCTA from '@/components/marketing/FinalCTA';
+import InviteForm from '@/components/home/InviteForm';
 
 const Home2: React.FC = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const Home2: React.FC = () => {
         <FeatureShowcase />
         <EliteNetwork />
         <HowToJoin />
+        <InviteForm />
         <FinalCTA />
       </main>
       <Footer />
