@@ -2,123 +2,88 @@
 import React from 'react';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import FeatureCard from '@/components/marketing/FeatureCard';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { 
+  Share2, 
+  Users, 
+  FileText, 
+  BarChart4,
+  ShieldCheck,
+  Globe
+} from 'lucide-react';
 
 const FeatureShowcase: React.FC = () => {
-  const isMobile = useIsMobile();
-  
-  const features = [
-    {
-      title: "Professional Branding Pages",
-      description: "Showcase yourself with a sleek, customizable broker profile designed to impress clients and partners.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/2a_bro_profile_top.png",
-      delay: 0,
-      slanted: true
-    },
-    {
-      title: "Rich Property Flyers",
-      description: "Effortlessly create elegant, branded property marketing materials that stand out.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/mobile/Mobile_flyer.png",
-      delay: 200
-    },
-    {
-      title: "Browse Network Properties",
-      description: "Access a clean, easily searchable directory of exclusive properties shared by other brokers.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/mobile/mobile_net_prop.png",
-      delay: 0
-    },
-    {
-      title: "Connect with Other Brokers",
-      description: "Experience seamless communication with top-tier professionals in Bangalore's real estate market.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/mobile/mobile_network.png",
-      delay: 100
-    },
-    {
-      title: "Quick Create Broker Agreements",
-      description: "Streamline your deal process with digital agreements that save time and increase efficiency.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/mobile/mobile_b2b%20agreement.png",
-      delay: 200
-    }
-  ];
-
-  // First feature with slanted design
-  const firstFeature = features[0];
-  
-  // Rest of the features for the carousel
-  const remainingFeatures = features.slice(1);
-
   return (
-    <section className="py-14 bg-white relative overflow-hidden">
-      {/* Background accents */}
-      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-realtor-100/20 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-realtor-50/30 rounded-full blur-3xl"></div>
-      
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-10">
-          <RevealAnimation>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
-              <span className="text-gray-900">Powerful Features for</span>
-              <span className="text-realtor-600"> Elite Brokers</span>
-            </h2>
-          </RevealAnimation>
-          <RevealAnimation delay={100}>
-            <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-              RealBroker empowers you with tools designed specifically for high-end real estate professionals.
-            </p>
-          </RevealAnimation>
-        </div>
+    <div className="container mx-auto px-4 md:px-6 py-12 md:py-20">
+      <div className="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
+        <RevealAnimation>
+          <span className="py-1 px-3 text-xs font-medium uppercase tracking-wider bg-realtor-100 text-realtor-800 rounded-full mb-4 inline-block">
+            Powerful Features
+          </span>
+        </RevealAnimation>
         
-        {/* First feature - no border */}
-        <div className="mb-12 max-w-6xl mx-auto">
-          <RevealAnimation>
-            <div className="flex flex-col md:flex-row gap-8 items-center">
-              {/* Text content - full width on mobile, left side on desktop */}
-              <div className="md:w-2/5 space-y-4">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 font-playfair">{firstFeature.title}</h3>
-                <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
-              </div>
-              
-              {/* Image - full width on mobile, right side on desktop */}
-              <div className="md:w-3/5 mt-4 md:mt-0">
-                <img 
-                  src={firstFeature.imagePath} 
-                  alt={firstFeature.title}
-                  className="w-full rounded-lg object-contain"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          </RevealAnimation>
-        </div>
+        <RevealAnimation delay={100}>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 font-playfair">
+            Everything You Need to <span className="text-realtor-600">Succeed</span>
+          </h2>
+        </RevealAnimation>
         
-        {/* Carousel with navigation for remaining features */}
-        <div className="mt-10 relative max-w-3xl mx-auto">
-          <div className="text-center mb-3">
-            <span className="text-sm text-gray-500">Swipe or use arrows to navigate</span>
-          </div>
-          <Carousel className="w-full" opts={{ loop: true }}>
-            <CarouselContent className="-ml-1">
-              {remainingFeatures.map((feature, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 pl-1">
-                  <RevealAnimation delay={feature.delay}>
-                    <FeatureCard
-                      title={feature.title}
-                      description={feature.description}
-                      imagePath={feature.imagePath}
-                    />
-                  </RevealAnimation>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <div className="flex justify-center gap-2 mt-4">
-              <CarouselPrevious className="relative h-8 w-8 rounded-full bg-white border-realtor-200 hover:bg-realtor-50 static transform-none mr-2" />
-              <CarouselNext className="relative h-8 w-8 rounded-full bg-white border-realtor-200 hover:bg-realtor-50 static transform-none ml-2" />
-            </div>
-          </Carousel>
-        </div>
+        <RevealAnimation delay={200}>
+          <p className="text-gray-600 text-lg">
+            Our platform offers a complete suite of features designed specifically for real estate professionals to collaborate efficiently and grow their business.
+          </p>
+        </RevealAnimation>
       </div>
-    </section>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <RevealAnimation delay={300}>
+          <FeatureCard
+            icon={<Share2 className="h-8 w-8 text-realtor-600" />}
+            title="Inventory Sharing"
+            description="Share your property listings with trusted brokers in the network to expand your reach and close deals faster."
+          />
+        </RevealAnimation>
+        
+        <RevealAnimation delay={350}>
+          <FeatureCard
+            icon={<Users className="h-8 w-8 text-realtor-600" />}
+            title="Verified Broker Network"
+            description="Connect with pre-vetted, high-quality real estate professionals who meet our strict quality standards."
+          />
+        </RevealAnimation>
+        
+        <RevealAnimation delay={400}>
+          <FeatureCard
+            icon={<FileText className="h-8 w-8 text-realtor-600" />}
+            title="Smart Agreements"
+            description="Streamline collaboration with digital contracts and commission-sharing agreements built specifically for real estate."
+          />
+        </RevealAnimation>
+        
+        <RevealAnimation delay={450}>
+          <FeatureCard
+            icon={<BarChart4 className="h-8 w-8 text-realtor-600" />}
+            title="Performance Analytics"
+            description="Track your listings, leads, and closed deals with powerful analytics to optimize your business strategy."
+          />
+        </RevealAnimation>
+        
+        <RevealAnimation delay={500}>
+          <FeatureCard
+            icon={<ShieldCheck className="h-8 w-8 text-realtor-600" />}
+            title="Secure Communication"
+            description="Exchange sensitive client information and property details through our encrypted messaging system."
+          />
+        </RevealAnimation>
+        
+        <RevealAnimation delay={550}>
+          <FeatureCard
+            icon={<Globe className="h-8 w-8 text-realtor-600" />}
+            title="Professional <span class='text-realtor-600'>Branding</span> Pages"
+            description="Showcase your services with customized profile pages that highlight your expertise and listings."
+          />
+        </RevealAnimation>
+      </div>
+    </div>
   );
 };
 
