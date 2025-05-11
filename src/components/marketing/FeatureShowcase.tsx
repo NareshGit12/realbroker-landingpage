@@ -33,7 +33,7 @@ const FeatureShowcase: React.FC = () => {
           />
           <FeatureCard 
             imagePath="/lovable-uploads/0727a7dd-20d3-4c42-a4e5-4631797ba805.png"
-            title="Professional Branding Pages"
+            title="Professional <span class='text-realtor-600'>Branding</span> Pages"
             description="Showcase your expertise with customizable profile pages that highlight your success and specialties."
           />
         </div>

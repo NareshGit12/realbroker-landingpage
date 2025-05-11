@@ -39,15 +39,11 @@ const MarketingHero: React.FC = () => {
             <RevealAnimation delay={100}>
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair h-32">
                 <span className="text-gray-900">
-                  {currentHeadingIndex === 0 && headings[0].split('\n')[0]}
-                  {currentHeadingIndex === 1 && headings[1].split('\n')[0]}
-                  {currentHeadingIndex === 2 && headings[2].split('\n')[0]}
+                  {headings[currentHeadingIndex].split('\n')[0]}
                 </span>
                 <br className="hidden sm:block" />
                 <span className="text-realtor-600">
-                  {currentHeadingIndex === 0 && headings[0].split('\n')[1]}
-                  {currentHeadingIndex === 1 && headings[1].split('\n')[1]}
-                  {currentHeadingIndex === 2 && headings[2].split('\n')[1]}
+                  {headings[currentHeadingIndex].split('\n')[1]}
                 </span>
               </h1>
             </RevealAnimation>

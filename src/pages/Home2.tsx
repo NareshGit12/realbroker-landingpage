@@ -23,7 +23,7 @@ const Home2: React.FC = () => {
       <Navbar />
       <main className="space-y-0">
         <MarketingHero />
-        <div id="features" className="-mt-10">
+        <div id="features" className="-mt-20">
           <FeatureShowcase />
         </div>
         <EliteNetwork />
