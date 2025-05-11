@@ -68,9 +68,12 @@ const CertifiedPageFooter: React.FC = () => {
     }
   };
 
-  // Navigation helper function
-  const navigateToHomeSection = (sectionId: string) => {
-    navigate('/', { state: { scrollTo: sectionId } });
+  const navigateToSection = (path: string, section?: string) => {
+    if (section) {
+      navigate(`${path}?section=${section}`);
+    } else {
+      navigate(path);
+    }
   };
 
   return (
@@ -138,19 +141,25 @@ const CertifiedPageFooter: React.FC = () => {
             <h4 className="font-semibold text-lg mb-4">Explore</h4>
             <ul className="space-y-3">
               {[
-                { name: "Features", action: () => navigateToHomeSection("features") },
-                { name: "How It Works", action: () => navigateToHomeSection("how-it-works") },
-                { name: "Pricing", action: () => navigateToHomeSection("") },
-                { name: "Testimonials", action: () => navigateToHomeSection("testimonials") },
-                { name: "FAQ", action: () => navigateToHomeSection("") }
+                { name: "Features", action: () => navigateToSection("/", "features") },
+                { name: "How It Works", action: () => navigateToSection("/original", "how-it-works") },
+                { name: "Pricing", path: "/pricing" },
+                { name: "Testimonials", action: () => navigateToSection("/original", "testimonials") },
+                { name: "FAQ", path: "/faq" }
               ].map((item) => (
                 <li key={item.name}>
-                  <button 
-                    onClick={item.action}
-                    className="text-muted-foreground hover:text-realtor-600 transition-colors bg-transparent border-none cursor-pointer p-0"
-                  >
-                    {item.name}
-                  </button>
+                  {'path' in item ? (
+                    <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                      {item.name}
+                    </Link>
+                  ) : (
+                    <button 
+                      onClick={item.action}
+                      className="text-muted-foreground hover:text-realtor-600 transition-colors bg-transparent border-none cursor-pointer p-0"
+                    >
+                      {item.name}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
@@ -161,22 +170,13 @@ const CertifiedPageFooter: React.FC = () => {
             <h4 className="font-semibold text-lg mb-4">Resources</h4>
             <ul className="space-y-3">
               {[
-                { name: "Support", action: () => navigateToHomeSection("") },
+                { name: "Support", path: "/support" },
                 { name: "Certified RealBroker Program", path: "/certified-realbroker" }
               ].map((item) => (
-                <li key={typeof item === 'string' ? item : item.name}>
-                  {'path' in item ? (
-                    <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
-                      {item.name}
-                    </Link>
-                  ) : (
-                    <button 
-                      onClick={item.action}
-                      className="text-muted-foreground hover:text-realtor-600 transition-colors bg-transparent border-none cursor-pointer p-0"
-                    >
-                      {item.name}
-                    </button>
-                  )}
+                <li key={item.name}>
+                  <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -187,23 +187,14 @@ const CertifiedPageFooter: React.FC = () => {
             <h4 className="font-semibold text-lg mb-4">Company</h4>
             <ul className="space-y-3">
               {[
-                { name: "About Us", action: () => navigateToHomeSection("") },
+                { name: "About Us", path: "/about-us" },
                 { name: "Privacy Policy", path: "/privacy" },
                 { name: "Terms of Service", path: "/terms-of-use" }
               ].map((item) => (
-                <li key={typeof item === 'string' ? item : item.name}>
-                  {'path' in item ? (
-                    <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
-                      {item.name}
-                    </Link>
-                  ) : (
-                    <button 
-                      onClick={item.action}
-                      className="text-muted-foreground hover:text-realtor-600 transition-colors bg-transparent border-none cursor-pointer p-0"
-                    >
-                      {item.name}
-                    </button>
-                  )}
+                <li key={item.name}>
+                  <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>

@@ -15,6 +15,10 @@ import Analytics from "./pages/Analytics";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Home2 from "./pages/Home2";
 import NotFound from "./pages/NotFound";
+import AboutUs from "./pages/AboutUs";
+import Pricing from "./pages/Pricing";
+import Faq from "./pages/Faq";
+import Support from "./pages/Support";
 
 // Track page views when route changes
 const PageViewTracker = () => {
@@ -46,6 +50,10 @@ const App = () => (
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/home2" element={<Home2 />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/faq" element={<Faq />} />
+          <Route path="/support" element={<Support />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

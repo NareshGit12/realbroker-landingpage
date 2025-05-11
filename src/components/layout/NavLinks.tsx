@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 interface NavLinksProps {
   handleSectionNavigation: (sectionId: string) => void;
@@ -19,16 +19,26 @@ const NavLinks: React.FC<NavLinksProps> = ({
 }) => {
   const textSizeClass = isMobile ? "text-lg" : "text-sm";
   const location = useLocation();
+  const navigate = useNavigate();
   
   const handleClick = (sectionId: string) => {
     handleSectionNavigation(sectionId);
     if (onItemClick) onItemClick();
   };
 
+  const navigateToPage = (path: string) => {
+    navigate(path);
+    if (onItemClick) onItemClick();
+  };
+
   return (
     <>
       <button 
-        onClick={() => handleClick("features")}
+        onClick={() => {
+          // Always navigate to Home2 and jump to "features" section
+          navigate('/?section=features');
+          if (onItemClick) onItemClick();
+        }}
         className={cn(
           `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
           isActive('/#features') 
@@ -39,7 +49,11 @@ const NavLinks: React.FC<NavLinksProps> = ({
         Features
       </button>
       <button 
-        onClick={() => handleClick("how-it-works")}
+        onClick={() => {
+          // Navigate to original page and jump to "how-it-works" section
+          navigate('/original?section=how-it-works');
+          if (onItemClick) onItemClick();
+        }}
         className={cn(
           `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
           isActive('/#how-it-works') 
@@ -50,7 +64,11 @@ const NavLinks: React.FC<NavLinksProps> = ({
         How it Works
       </button>
       <button 
-        onClick={() => handleClick("testimonials")}
+        onClick={() => {
+          // Navigate to original page and jump to "testimonials" section
+          navigate('/original?section=testimonials');
+          if (onItemClick) onItemClick();
+        }}
         className={cn(
           `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
           isActive('/#testimonials') 

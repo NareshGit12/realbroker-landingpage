@@ -27,6 +27,25 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Handle URL search params for section scrolling
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const section = searchParams.get('section');
+    
+    if (section) {
+      setTimeout(() => {
+        const element = document.getElementById(section);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          
+          // Clear the URL parameter after scrolling
+          const newUrl = window.location.pathname;
+          window.history.replaceState({}, '', newUrl);
+        }
+      }, 100);
+    }
+  }, [location.search]);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };

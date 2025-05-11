@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Facebook, Twitter, Instagram, Linkedin, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '@/components/layout/Logo';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -11,6 +11,7 @@ const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,6 +64,14 @@ const Footer: React.FC = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const navigateToSection = (path: string, section?: string) => {
+    if (section) {
+      navigate(`${path}?section=${section}`);
+    } else {
+      navigate(path);
     }
   };
 
@@ -130,11 +139,26 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-semibold text-lg mb-4">Explore</h4>
             <ul className="space-y-3">
-              {["Features", "How It Works", "Pricing", "Testimonials", "FAQ"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-muted-foreground hover:text-realtor-600 transition-colors">
-                    {item}
-                  </a>
+              {[
+                { name: "Features", action: () => navigateToSection("/", "features") },
+                { name: "How It Works", action: () => navigateToSection("/original", "how-it-works") },
+                { name: "Pricing", path: "/pricing" },
+                { name: "Testimonials", action: () => navigateToSection("/original", "testimonials") },
+                { name: "FAQ", path: "/faq" }
+              ].map((item) => (
+                <li key={item.name}>
+                  {'path' in item ? (
+                    <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                      {item.name}
+                    </Link>
+                  ) : (
+                    <button 
+                      onClick={item.action}
+                      className="text-muted-foreground hover:text-realtor-600 transition-colors bg-transparent border-none cursor-pointer p-0"
+                    >
+                      {item.name}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
@@ -144,19 +168,14 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-semibold text-lg mb-4">Resources</h4>
             <ul className="space-y-3">
-              {["Support", 
+              {[
+                { name: "Support", path: "/support" },
                 { name: "Certified RealBroker Program", path: "/certified-realbroker" }
               ].map((item) => (
-                <li key={typeof item === 'string' ? item : item.name}>
-                  {typeof item === 'string' ? (
-                    <a href="#" className="text-muted-foreground hover:text-realtor-600 transition-colors">
-                      {item}
-                    </a>
-                  ) : (
-                    <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
-                      {item.name}
-                    </Link>
-                  )}
+                <li key={item.name}>
+                  <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -167,20 +186,14 @@ const Footer: React.FC = () => {
             <h4 className="font-semibold text-lg mb-4">Company</h4>
             <ul className="space-y-3">
               {[
-                "About Us", 
+                { name: "About Us", path: "/about-us" },
                 { name: "Privacy Policy", path: "/privacy" },
                 { name: "Terms of Service", path: "/terms-of-use" }
               ].map((item) => (
-                <li key={typeof item === 'string' ? item : item.name}>
-                  {typeof item === 'string' ? (
-                    <a href="#" className="text-muted-foreground hover:text-realtor-600 transition-colors">
-                      {item}
-                    </a>
-                  ) : (
-                    <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
-                      {item.name}
-                    </Link>
-                  )}
+                <li key={item.name}>
+                  <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
