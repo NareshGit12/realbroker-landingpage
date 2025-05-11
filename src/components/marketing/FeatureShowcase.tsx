@@ -66,25 +66,29 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* Full width image with overlaid text for first feature */}
+        {/* First feature - image positioned to the right with text overlapping slightly from the left */}
         <div className="mb-16">
           <RevealAnimation>
             <div className="relative w-full overflow-hidden rounded-2xl">
-              {/* Gradient overlay - fades from left to transparent */}
-              <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent z-10"></div>
+              {/* Container for right-aligned image */}
+              <div className="flex justify-end">
+                {/* The image container with right alignment */}
+                <div className="w-[85%] md:w-[90%]">
+                  <img 
+                    src={firstFeature.imagePath} 
+                    alt={firstFeature.title}
+                    className="w-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
               
-              {/* The image - adjusted to maintain aspect ratio and show full height */}
-              <img 
-                src={firstFeature.imagePath} 
-                alt={firstFeature.title}
-                className="w-full object-contain max-h-[600px]"
-                loading="lazy"
-              />
-              
-              {/* Text overlay positioned on the left side */}
+              {/* Text overlay positioned to overlap the left edge of the image */}
               <div className="absolute top-0 left-0 p-6 md:p-12 z-20 max-w-md h-full flex flex-col justify-center">
-                <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">{firstFeature.title}</h3>
-                <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
+                <div className="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-sm">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">{firstFeature.title}</h3>
+                  <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
+                </div>
               </div>
             </div>
           </RevealAnimation>
