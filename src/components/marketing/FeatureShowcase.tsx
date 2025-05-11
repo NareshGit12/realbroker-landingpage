@@ -22,18 +22,18 @@ const FeatureShowcase: React.FC = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           <FeatureCard 
-            icon="/lovable-uploads/4f63dd9f-6196-43d3-af90-96aa480244c9.png"
+            imagePath="/lovable-uploads/4f63dd9f-6196-43d3-af90-96aa480244c9.png"
             title="Property Matchmaking"
             description="Our smart algorithm connects your buyers with the perfect properties from trusted partner brokers."
           />
           <FeatureCard 
-            icon="/lovable-uploads/20059da1-2ba0-441c-9054-9453f4454710.png"
+            imagePath="/lovable-uploads/20059da1-2ba0-441c-9054-9453f4454710.png"
             title="Secure Transaction Hub"
             description="Manage offers, negotiations and closings in one secure digital environment with complete audit trails."
           />
           <FeatureCard 
-            icon="/lovable-uploads/0727a7dd-20d3-4c42-a4e5-4631797ba805.png"
-            title={<>Professional <span className="text-[#ea384c]">Branding</span> Pages</>}
+            imagePath="/lovable-uploads/0727a7dd-20d3-4c42-a4e5-4631797ba805.png"
+            title="Professional Branding Pages"
             description="Showcase your expertise with customizable profile pages that highlight your success and specialties."
           />
         </div>
