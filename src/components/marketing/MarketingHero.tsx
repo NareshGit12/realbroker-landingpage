@@ -7,10 +7,8 @@ import RevealAnimation from '@/components/ui/RevealAnimation';
 const MarketingHero: React.FC = () => {
   return (
     <section className="relative min-h-[85vh] flex items-center pt-20 pb-10 bg-white">
-      {/* Background elements */}
+      {/* Background elements - removed pink shadow */}
       <div className="absolute inset-0 bg-gradient-to-b from-white to-neutral-50 z-[-2]"></div>
-      <div className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full bg-realtor-100/20 blur-3xl z-[-1]"></div>
-      <div className="absolute bottom-1/4 left-1/4 w-96 h-96 rounded-full bg-realtor-50/30 blur-3xl z-[-1]"></div>
       
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-20">
         <div className="flex flex-col items-center justify-center gap-12">
@@ -48,11 +46,10 @@ const MarketingHero: React.FC = () => {
           </div>
           
           <RevealAnimation delay={400}>
-            <div className="max-w-3xl mx-auto w-full">
+            <div className="mx-auto w-full">
+              {/* Removed max-width, shadow and gradient effect */}
               <div className="relative">
-                {/* Removed the transform rotate class and adjusted styling */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-realtor-300/30 to-realtor-500/30 rounded-2xl blur-sm"></div>
-                <div className="relative rounded-2xl overflow-hidden shadow-lg border border-realtor-100">
+                <div className="relative rounded-2xl overflow-hidden border border-realtor-100">
                   <img 
                     src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/main-hero.png" 
                     alt="RealBroker Dashboard" 
