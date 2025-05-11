@@ -11,7 +11,7 @@ const MarketingHero: React.FC = () => {
       
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-20">
         <div className="grid lg:grid-cols-1 gap-12 items-center">
-          <div className="text-center  ">
+          <div className="text-center  flex-row flex justify-center">
             <RevealAnimation>
               <div className="inline-block py-1 px-3 mb-6 text-xs font-medium uppercase tracking-wider bg-realtor-50 text-realtor-600 border border-realtor-100 rounded-full">
                 By Invitation Only
@@ -26,7 +26,7 @@ const MarketingHero: React.FC = () => {
             </RevealAnimation>
             
             <RevealAnimation delay={200}>
-              <p className="text-lg md:text-xl text-gray-600 mb-8  mx-auto lg:mx-0 w-full text-center">
+              <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0 w-full text-">
                 Join Bangalore's exclusive network of elite real estate brokers. 
                 Share inventory, discover collaborations, and close high-value deals faster.
               </p>
