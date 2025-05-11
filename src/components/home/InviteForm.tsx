@@ -219,7 +219,7 @@ const InviteForm: React.FC = () => {
               <span className="inline-block py-1 px-3 mb-4 text-xs font-medium uppercase tracking-wider bg-realtor-100 text-realtor-800 rounded-full">
                 Join Our Network
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
                 Request an <span className="text-gradient">Invitation</span>
               </h2>
               <p className="text-muted-foreground text-lg mb-6">
