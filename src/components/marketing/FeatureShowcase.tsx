@@ -69,15 +69,15 @@ const FeatureShowcase: React.FC = () => {
         {/* Full width image with overlaid text for first feature */}
         <div className="mb-16">
           <RevealAnimation>
-            <div className="relative w-full h-[400px] md:h-[500px] overflow-hidden rounded-2xl">
+            <div className="relative w-full overflow-hidden rounded-2xl">
               {/* Gradient overlay - fades from left to transparent */}
               <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent z-10"></div>
               
-              {/* The image */}
+              {/* The image - adjusted to maintain aspect ratio and show full height */}
               <img 
                 src={firstFeature.imagePath} 
                 alt={firstFeature.title}
-                className="w-full h-full object-cover object-center"
+                className="w-full object-contain max-h-[600px]"
                 loading="lazy"
               />
               
