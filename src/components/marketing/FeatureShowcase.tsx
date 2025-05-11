@@ -12,7 +12,6 @@ const FeatureShowcase: React.FC = () => {
       delay: 0,
       slanted: true
     },
-    
     {
       title: "Rich Property Flyers",
       description: "Create elegant, branded property marketing materials that stand out and close deals.",
