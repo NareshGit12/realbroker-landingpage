@@ -19,7 +19,7 @@ const MarketingHero: React.FC = () => {
             </RevealAnimation>
             
             <RevealAnimation delay={100}>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair w-full">
                 <span className="text-gray-900">Elevate Your</span><br />
                 <span className="text-realtor-600">Brokerage Success</span>
               </h1>
