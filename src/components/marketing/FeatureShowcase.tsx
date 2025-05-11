@@ -10,7 +10,7 @@ const FeatureShowcase: React.FC = () => {
   
   const features = [
     {
-      title: "Professional Branding Pages",
+      title: "Professional <span class='text-realtor-600'>Branding</span> Pages",
       description: "Showcase yourself with a sleek, customizable broker profile designed to impress clients and partners.",
       imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/2a_bro_profile_top.png",
       delay: 0,
@@ -75,7 +75,7 @@ const FeatureShowcase: React.FC = () => {
             <div className="flex flex-col md:flex-row gap-8 items-center">
               {/* Text content - full width on mobile, left side on desktop */}
               <div className="md:w-2/5 space-y-4">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 font-playfair">{firstFeature.title}</h3>
+                <h3 className="text-2xl md:text-3xl font-bold font-playfair" dangerouslySetInnerHTML={{ __html: firstFeature.title }}></h3>
                 <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
               </div>
               
@@ -83,7 +83,7 @@ const FeatureShowcase: React.FC = () => {
               <div className="md:w-3/5 mt-4 md:mt-0">
                 <img 
                   src={firstFeature.imagePath} 
-                  alt={firstFeature.title}
+                  alt={firstFeature.title.replace(/<[^>]*>/g, '')}
                   className="w-full rounded-lg object-contain"
                   loading="lazy"
                 />

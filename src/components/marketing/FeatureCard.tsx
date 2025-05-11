@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface FeatureCardProps {
@@ -24,13 +25,13 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, imagePath
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white z-10"></div>
         <img 
           src={imagePath} 
-          alt={title}
+          alt={title.replace(/<[^>]*>/g, '')}
           className="w-full object-contain h-full transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
         />
       </div>
       <div className="p-4">
-        <h3 className="text-lg font-bold mb-2 text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">{title}</h3>
+        <h3 className="text-lg font-bold mb-2 text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis font-playfair" dangerouslySetInnerHTML={{ __html: title }}></h3>
         <p className="text-gray-600 text-sm min-h-[40px]">{enhancedDescription}</p>
       </div>
     </div>
