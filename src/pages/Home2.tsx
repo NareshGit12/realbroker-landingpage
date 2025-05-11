@@ -26,8 +26,8 @@ const Home2: React.FC = () => {
         <FeatureShowcase />
         <EliteNetwork />
         <HowToJoin />
-        <InviteForm />
         <FinalCTA />
+        <InviteForm />
       </main>
       <Footer />
     </div>

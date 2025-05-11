@@ -15,10 +15,7 @@ const FinalCTA: React.FC = () => {
   };
   
   return (
-    <section className="py-16 bg-white relative">
-      {/* Background accent */}
-      <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-realtor-50/20 rounded-full blur-3xl"></div>
-      
+    <section className="py-12 bg-white relative">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-3xl mx-auto text-center">
           <RevealAnimation>
@@ -35,7 +32,7 @@ const FinalCTA: React.FC = () => {
           
           <RevealAnimation delay={200}>
             <Button 
-              onClick={() => scrollToSection('request-invite')}
+              onClick={() => scrollToSection('invite')}
               className="bg-realtor-600 hover:bg-realtor-700 text-white px-8 py-6 rounded-lg text-lg"
             >
               Request Your Invitation <ArrowRight className="ml-2 h-5 w-5" />
