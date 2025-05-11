@@ -57,7 +57,7 @@ const RevealAnimation: React.FC<RevealAnimationProps> = ({
   };
   return <div ref={elementRef} style={{
     transitionDelay: `${delay}ms`
-  }} className="w-full">
+  }} className="w-full flex-row justify-center">
       {children}
     </div>;
 };
