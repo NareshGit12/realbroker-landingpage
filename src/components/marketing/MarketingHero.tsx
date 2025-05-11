@@ -20,9 +20,9 @@ const MarketingHero: React.FC = () => {
             </RevealAnimation>
             
             <RevealAnimation delay={100}>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl flex-row flex font-bold mb-6 tracking-tight font-playfair">
-                <span className="text-gray-900">Elevate Your     <span className="text-realtor-600 pl-2">Brokerage Success</span></span>{" "}
-            
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair whitespace-nowrap">
+                <span className="text-gray-900">Elevate Your</span>
+                <span className="text-realtor-600 ml-2">Brokerage Success</span>
               </h1>
             </RevealAnimation>
             
@@ -49,7 +49,7 @@ const MarketingHero: React.FC = () => {
             <div className="mx-auto w-full">
               {/* Removed max-width, shadow and gradient effect */}
               <div className="relative">
-                <div className="relative rounded-2xl overflow-hidden  ">
+                <div className="relative rounded-2xl overflow-hidden">
                   <img 
                     src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/main-hero.png" 
                     alt="RealBroker Dashboard" 
