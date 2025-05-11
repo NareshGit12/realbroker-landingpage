@@ -21,8 +21,8 @@ const MarketingHero: React.FC = () => {
             
             <RevealAnimation delay={100}>
               <h1 className="text-4xl md:text-5xl lg:text-6xl flex-row flex font-bold mb-6 tracking-tight font-playfair">
-                <span className="text-gray-900">Elevate Your</span>{" "}
-                <span className="text-realtor-600 pl-2">Brokerage Success</span>
+                <span className="text-gray-900">Elevate Your     <span className="text-realtor-600 pl-2">Brokerage Success</span></span>{" "}
+            
               </h1>
             </RevealAnimation>
             
