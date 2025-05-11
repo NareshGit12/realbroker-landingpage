@@ -74,7 +74,7 @@ const FeatureShowcase: React.FC = () => {
                 <p className="text-gray-600 text-sm mb-2">{firstFeature.description}</p>
               </div>
               <div className="transform rotate-[-5deg] origin-center">
-                <div className="relative rounded-xl overflow-hidden shadow-lg border border-realtor-100 max-w-xs mx-auto h-[200px]">
+                <div className="relative rounded-xl overflow-hidden shadow-lg border border-realtor-100 max-w-xs mx-auto h-[350px]">
                   <img 
                     src={firstFeature.imagePath} 
                     alt={firstFeature.title}

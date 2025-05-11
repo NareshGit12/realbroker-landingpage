@@ -22,7 +22,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, imagePath
 
   return (
     <div className="rounded-xl overflow-hidden bg-white border border-realtor-100 shadow-lg h-full transition-transform duration-300 hover:scale-[1.02] group max-w-xs mx-auto">
-      <div className="relative h-[200px]">
+      <div className="relative h-[350px]">
         <ScrollArea className="h-full">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white z-10"></div>
