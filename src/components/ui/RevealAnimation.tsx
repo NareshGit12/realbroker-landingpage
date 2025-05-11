@@ -1,7 +1,5 @@
-
 import React, { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-
 interface RevealAnimationProps {
   children: React.ReactNode;
   className?: string;
@@ -9,47 +7,38 @@ interface RevealAnimationProps {
   threshold?: number;
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
 }
-
 const RevealAnimation: React.FC<RevealAnimationProps> = ({
   children,
   className,
   delay = 0,
   threshold = 0.2,
-  direction = 'up',
+  direction = 'up'
 }) => {
   const elementRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              entry.target.classList.add('is-revealed');
-            }, delay);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        threshold,
-        rootMargin: '0px 0px -100px 0px',
-      }
-    );
-
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('is-revealed');
+          }, delay);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold,
+      rootMargin: '0px 0px -100px 0px'
+    });
     const currentElement = elementRef.current;
-
     if (currentElement) {
       observer.observe(currentElement);
     }
-
     return () => {
       if (currentElement) {
         observer.unobserve(currentElement);
       }
     };
   }, [delay, threshold]);
-
   const getDirectionClass = () => {
     switch (direction) {
       case 'up':
@@ -66,20 +55,10 @@ const RevealAnimation: React.FC<RevealAnimationProps> = ({
         return 'translate-y-8';
     }
   };
-
-  return (
-    <div
-      ref={elementRef}
-      className={cn(
-        'reveal-animation',
-        getDirectionClass(),
-        className
-      )}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
+  return <div ref={elementRef} style={{
+    transitionDelay: `${delay}ms`
+  }} className="w-full">
       {children}
-    </div>
-  );
+    </div>;
 };
-
 export default RevealAnimation;
