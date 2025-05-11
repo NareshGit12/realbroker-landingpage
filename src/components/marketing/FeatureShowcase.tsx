@@ -66,23 +66,25 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* Slanted first feature - updated to match the image layout exactly */}
+        {/* Full width image with overlaid text for first feature */}
         <div className="mb-16">
           <RevealAnimation>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div>
+            <div className="relative w-full h-[400px] md:h-[500px] overflow-hidden rounded-2xl">
+              {/* Gradient overlay - fades from left to transparent */}
+              <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent z-10"></div>
+              
+              {/* The image */}
+              <img 
+                src={firstFeature.imagePath} 
+                alt={firstFeature.title}
+                className="w-full h-full object-cover object-center"
+                loading="lazy"
+              />
+              
+              {/* Text overlay positioned on the left side */}
+              <div className="absolute top-0 left-0 p-6 md:p-12 z-20 max-w-md h-full flex flex-col justify-center">
                 <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">{firstFeature.title}</h3>
-                <p className="text-gray-600 mb-4">{firstFeature.description}</p>
-              </div>
-              <div className="transform rotate-[-5deg] origin-center">
-                <div className="relative rounded-xl overflow-hidden shadow-lg border border-realtor-100 max-w-sm mx-auto">
-                  <img 
-                    src={firstFeature.imagePath} 
-                    alt={firstFeature.title}
-                    className="w-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
+                <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
               </div>
             </div>
           </RevealAnimation>
