@@ -12,34 +12,29 @@ const FeatureShowcase: React.FC = () => {
       delay: 0,
       slanted: true
     },
-    {
-      title: "Streamlined Communications Dashboard",
-      description: "Post requirements and stay updated with what your elite network is discussing.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/2-Dash_board.png",
-      delay: 100
-    },
+    
     {
       title: "Rich Property Flyers",
       description: "Create elegant, branded property marketing materials that stand out and close deals.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/3-Property_Flyer.png",
+      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/mobile/Mobile_flyer.png",
       delay: 200
     },
     {
       title: "Browse Network Properties",
       description: "Access a clean, searchable directory of exclusive properties from other elite brokers.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/4-Broker_network.png",
+      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/mobile/mobile_net_prop.png",
       delay: 0
     },
     {
       title: "Connect with Other Brokers",
       description: "Experience seamless communication with top-tier professionals in Bangalore's real estate market.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/5a_network_top.jpg",
+      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/mobile/mobile_network.png",
       delay: 100
     },
     {
       title: "Quick Create Broker-to-Broker Agreements",
       description: "Streamline your deal process with digital agreements that save time and increase efficiency.",
-      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/6a_b2bagreement_top.png",
+      imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/mobile/mobile_b2b%20agreement.png",
       delay: 200
     }
   ];
