@@ -35,14 +35,14 @@ const Navbar: React.FC = () => {
   const isActive = (path: string) => {
     if (path.startsWith('/#')) {
       // For homepage anchors, only consider active on the home page
-      return location.pathname === '/' && location.hash === path.substring(1);
+      return (location.pathname === '/' || location.pathname === '/home2') && location.hash === path.substring(1);
     }
     return location.pathname === path;
   };
 
   // Handle navigation to sections - improved to work from any page
   const handleSectionNavigation = (sectionId: string) => {
-    if (location.pathname === '/') {
+    if (location.pathname === '/' || location.pathname === '/home2') {
       // If already on home page, just scroll to the section
       const element = document.getElementById(sectionId);
       if (element) {

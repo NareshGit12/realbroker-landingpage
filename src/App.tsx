@@ -38,7 +38,8 @@ const App = () => (
         <ScrollToTop />
         <PageViewTracker />
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Home2 />} />
+          <Route path="/original" element={<Index />} />
           <Route path="/smart-agreements" element={<SmartAgreements />} />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/certified-realbroker" element={<CertifiedRealBroker />} />
