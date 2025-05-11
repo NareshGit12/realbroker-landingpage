@@ -1,9 +1,7 @@
-
 import React from 'react';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import FeatureCard from '@/components/marketing/FeatureCard';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const FeatureShowcase: React.FC = () => {
   const features = [
@@ -22,7 +20,7 @@ const FeatureShowcase: React.FC = () => {
     },
     {
       title: "Browse Network Properties",
-      description: " Access a clean, easily searchable directory of exclusive properties shared by other brokers within the network.",
+      description: "Access a clean, easily searchable directory of exclusive properties shared by other brokers within the network.",
       imagePath: "https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/mobile/mobile_net_prop.png",
       delay: 0
     },
@@ -77,7 +75,7 @@ const FeatureShowcase: React.FC = () => {
                 <p className="text-gray-600 mb-6">{firstFeature.description}</p>
               </div>
               <div className="transform rotate-[-5deg] origin-center">
-                <div className="relative rounded-xl overflow-hidden shadow-lg border border-realtor-100">
+                <div className="relative rounded-xl overflow-hidden shadow-lg border border-realtor-100 max-w-sm mx-auto">
                   <img 
                     src={firstFeature.imagePath} 
                     alt={firstFeature.title}
@@ -91,14 +89,14 @@ const FeatureShowcase: React.FC = () => {
         </div>
         
         {/* Carousel with navigation for remaining features */}
-        <div className="mt-16 relative">
+        <div className="mt-16 relative max-w-4xl mx-auto">
           <div className="text-center mb-4">
             <span className="text-sm text-gray-500">Swipe or use arrows to navigate</span>
           </div>
           <Carousel className="w-full" opts={{ loop: true }}>
             <CarouselContent>
               {remainingFeatures.map((feature, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 px-4">
                   <RevealAnimation delay={feature.delay}>
                     <FeatureCard
                       title={feature.title}
