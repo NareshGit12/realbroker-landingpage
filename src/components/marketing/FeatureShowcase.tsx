@@ -1,7 +1,9 @@
+
 import React from 'react';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import FeatureCard from '@/components/marketing/FeatureCard';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const FeatureShowcase: React.FC = () => {
   const features = [
@@ -88,9 +90,12 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* Carousel for remaining features */}
-        <div className="mt-16">
-          <Carousel className="w-full">
+        {/* Carousel with navigation for remaining features */}
+        <div className="mt-16 relative">
+          <div className="text-center mb-4">
+            <span className="text-sm text-gray-500">Swipe or use arrows to navigate</span>
+          </div>
+          <Carousel className="w-full" opts={{ loop: true }}>
             <CarouselContent>
               {remainingFeatures.map((feature, index) => (
                 <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
@@ -104,6 +109,10 @@ const FeatureShowcase: React.FC = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
+            <div className="flex justify-center gap-2 mt-8">
+              <CarouselPrevious className="relative h-10 w-10 rounded-full bg-white border-realtor-200 hover:bg-realtor-50 static transform-none mr-2" />
+              <CarouselNext className="relative h-10 w-10 rounded-full bg-white border-realtor-200 hover:bg-realtor-50 static transform-none ml-2" />
+            </div>
           </Carousel>
         </div>
       </div>
