@@ -49,13 +49,13 @@ const FeatureShowcase: React.FC = () => {
   const remainingFeatures = features.slice(1);
 
   return (
-    <section className="py-16 bg-white relative overflow-hidden">
+    <section className="py-14 bg-white relative overflow-hidden">
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-realtor-100/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-realtor-50/30 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <RevealAnimation>
             <h2 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
               <span className="text-gray-900">Powerful Features for</span>
@@ -69,10 +69,10 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* First feature - removed border */}
-        <div className="mb-16 max-w-6xl mx-auto">
+        {/* First feature - no border */}
+        <div className="mb-12 max-w-6xl mx-auto">
           <RevealAnimation>
-            <div className="flex flex-col md:flex-row gap-8 items-center bg-white rounded-2xl p-6">
+            <div className="flex flex-col md:flex-row gap-8 items-center">
               {/* Text content - full width on mobile, left side on desktop */}
               <div className="md:w-2/5 space-y-4">
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-900 font-playfair">{firstFeature.title}</h3>
@@ -93,7 +93,7 @@ const FeatureShowcase: React.FC = () => {
         </div>
         
         {/* Carousel with navigation for remaining features */}
-        <div className="mt-12 relative max-w-3xl mx-auto">
+        <div className="mt-10 relative max-w-3xl mx-auto">
           <div className="text-center mb-3">
             <span className="text-sm text-gray-500">Swipe or use arrows to navigate</span>
           </div>

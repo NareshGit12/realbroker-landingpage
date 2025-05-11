@@ -14,7 +14,7 @@ const EliteNetwork: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 bg-white relative">
+    <section className="py-16 bg-white relative">
       {/* Background accent */}
       <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-realtor-50/30 rounded-full blur-3xl"></div>
       
@@ -22,7 +22,6 @@ const EliteNetwork: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <RevealAnimation direction="left">
             <div className="relative flex justify-center">
-              <div className="absolute -inset-1 bg-gradient-to-r from-realtor-100/20 to-realtor-200/20 rounded-full blur-sm"></div>
               <div className="relative rounded-full overflow-hidden shadow-lg w-[70%] aspect-square bg-white">
                 <img 
                   src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/RBlogo/emblem_cropped.png"

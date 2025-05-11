@@ -32,12 +32,12 @@ const Step: React.FC<StepProps> = ({ number, title, description, delay }) => (
 
 const HowToJoin: React.FC = () => {
   return (
-    <section id="request-invite" className="py-20 bg-white relative">
+    <section id="request-invite" className="py-14 bg-white relative">
       {/* Background accent */}
       <div className="absolute top-0 left-1/4 w-1/2 h-1/2 bg-realtor-50/10 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <RevealAnimation>
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 font-playfair">
               How to <span className="text-realtor-600">Join the Network</span>
@@ -51,7 +51,7 @@ const HowToJoin: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        <div className="max-w-2xl mx-auto space-y-12">
+        <div className="max-w-2xl mx-auto space-y-10">
           <Step 
             number={1}
             title="Request Your Invitation"
