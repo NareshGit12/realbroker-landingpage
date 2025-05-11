@@ -1,10 +1,28 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 
+const headings = [
+  'Elevate Your Brokerage Success',
+  'Collaborate with other Quality professionals',
+  'Expand your RealEstate network today'
+];
+
 const MarketingHero: React.FC = () => {
+  const [currentHeadingIndex, setCurrentHeadingIndex] = useState(0);
+
+  useEffect(() => {
+    // Set up the carousel to rotate every 5 seconds
+    const interval = setInterval(() => {
+      setCurrentHeadingIndex((prevIndex) => (prevIndex + 1) % headings.length);
+    }, 5000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative min-h-[85vh] flex items-center pt-20 pb-10 bg-white overflow-hidden">
       {/* Background elements */}
@@ -20,11 +38,17 @@ const MarketingHero: React.FC = () => {
             </RevealAnimation>
             
             <RevealAnimation delay={100}>
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair">
-                <span className="text-gray-900">Elevate Your</span>
-                <br className="hidden sm:block" />
-                <span className="text-realtor-600">Brokerage Success</span>
-              </h1>
+              <div className="h-[120px] md:h-[150px] flex items-center justify-center">
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight font-playfair transition-opacity duration-500">
+                  <span className="text-gray-900">
+                    {headings[currentHeadingIndex].split(' ').slice(0, -1).join(' ')}
+                  </span>
+                  <br className="hidden sm:block" />
+                  <span className="text-realtor-600">
+                    {headings[currentHeadingIndex].split(' ').slice(-1)[0]}
+                  </span>
+                </h1>
+              </div>
             </RevealAnimation>
             
             <RevealAnimation delay={200}>
