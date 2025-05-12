@@ -14,7 +14,7 @@ const EliteNetwork: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 bg-white relative">
+    <section className="py-12 bg-white relative">
       {/* Background accent */}
       <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-realtor-50/30 rounded-full blur-3xl"></div>
       
@@ -22,7 +22,7 @@ const EliteNetwork: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <RevealAnimation direction="left">
             <div className="relative flex justify-center">
-              <div className="relative rounded-full overflow-hidden shadow-lg w-[70%] aspect-square bg-white">
+              <div className="relative rounded-full overflow-hidden w-[70%] aspect-square bg-white">
                 <img 
                   src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/RBlogo/emblem_cropped.png"
                   alt="RealBroker Logo" 
@@ -30,10 +30,7 @@ const EliteNetwork: React.FC = () => {
                   loading="lazy"
                 />
               </div>
-              <div className="absolute -bottom-4 -right-4 bg-white border border-realtor-100 rounded-lg p-4 shadow-lg">
-                <div className="text-realtor-600 font-bold text-4xl">100</div>
-                <div className="text-gray-700 text-sm">Elite Brokers</div>
-              </div>
+              {/* Removed the "100 Elite Brokers" text element */}
             </div>
           </RevealAnimation>
           

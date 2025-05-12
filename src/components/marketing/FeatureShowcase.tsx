@@ -49,13 +49,13 @@ const FeatureShowcase: React.FC = () => {
   const remainingFeatures = features.slice(1);
 
   return (
-    <section className="py-14 bg-white relative overflow-hidden">
+    <section className="py-10 bg-white relative overflow-hidden">
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-realtor-100/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-realtor-50/30 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <RevealAnimation>
             <h2 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
               <span className="text-gray-900">Powerful Features for</span>
@@ -69,18 +69,18 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* First feature - no border */}
-        <div className="mb-12 max-w-6xl mx-auto">
+        {/* First feature - improved grid layout */}
+        <div className="mb-10 max-w-6xl mx-auto">
           <RevealAnimation>
             <div className="flex flex-col md:flex-row gap-8 items-center">
-              {/* Text content - full width on mobile, left side on desktop */}
-              <div className="md:w-2/5 space-y-4">
+              {/* Text content - balanced width on desktop */}
+              <div className="md:w-1/2 lg:w-2/5 space-y-4">
                 <h3 className="text-2xl md:text-3xl font-bold font-playfair" dangerouslySetInnerHTML={{ __html: firstFeature.title }}></h3>
                 <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
               </div>
               
-              {/* Image - full width on mobile, right side on desktop */}
-              <div className="md:w-3/5 mt-4 md:mt-0">
+              {/* Image - balanced width on desktop */}
+              <div className="md:w-1/2 lg:w-3/5 mt-4 md:mt-0">
                 <img 
                   src={firstFeature.imagePath} 
                   alt={firstFeature.title.replace(/<[^>]*>/g, '')}
@@ -92,15 +92,22 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* Carousel with navigation for remaining features */}
-        <div className="mt-10 relative max-w-3xl mx-auto">
+        {/* Carousel section with new heading */}
+        <div className="mt-8 relative max-w-6xl mx-auto">
+          <RevealAnimation>
+            <h3 className="text-2xl md:text-3xl font-bold mb-6 text-center font-playfair">
+              <span className="text-gray-900">Tools to </span>
+              <span className="text-realtor-600">Elevate Your Brokerage</span>
+            </h3>
+          </RevealAnimation>
+          
           <div className="text-center mb-3">
             <span className="text-sm text-gray-500">Swipe or use arrows to navigate</span>
           </div>
           <Carousel className="w-full" opts={{ loop: true }}>
             <CarouselContent className="-ml-1">
               {remainingFeatures.map((feature, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/2 pl-1">
+                <CarouselItem key={index} className="pl-1 md:basis-1/2">
                   <RevealAnimation delay={feature.delay}>
                     <FeatureCard
                       title={feature.title}
