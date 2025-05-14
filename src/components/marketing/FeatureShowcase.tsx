@@ -1,8 +1,6 @@
-
 import React from 'react';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import FeatureCard from '@/components/marketing/FeatureCard';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const FeatureShowcase: React.FC = () => {
@@ -45,19 +43,19 @@ const FeatureShowcase: React.FC = () => {
   // First feature with slanted design
   const firstFeature = features[0];
   
-  // Rest of the features for the carousel
+  // Rest of the features for the grid layout
   const remainingFeatures = features.slice(1);
 
   return (
-    <section className="py-10 bg-white relative overflow-hidden">
+    <section className="py-8 bg-white relative overflow-hidden">
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-realtor-100/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-realtor-50/30 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <RevealAnimation>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
+            <h2 className="text-3xl md:text-4xl font-bold mb-3 font-playfair">
               <span className="text-gray-900">Powerful Features for</span>
               <span className="text-realtor-600"> Elite Brokers</span>
             </h2>
@@ -69,22 +67,22 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* First feature - improved grid layout */}
-        <div className="mb-10 max-w-6xl mx-auto">
+        {/* First feature - improved balanced layout */}
+        <div className="mb-8 max-w-6xl mx-auto">
           <RevealAnimation>
-            <div className="flex flex-col md:flex-row gap-8 items-center">
+            <div className="flex flex-col lg:flex-row gap-6 items-center">
               {/* Text content - balanced width on desktop */}
-              <div className="md:w-1/2 lg:w-2/5 space-y-4">
+              <div className="lg:w-2/5 space-y-4">
                 <h3 className="text-2xl md:text-3xl font-bold font-playfair" dangerouslySetInnerHTML={{ __html: firstFeature.title }}></h3>
                 <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
               </div>
               
               {/* Image - balanced width on desktop */}
-              <div className="md:w-1/2 lg:w-3/5 mt-4 md:mt-0">
+              <div className="lg:w-3/5 mt-4 lg:mt-0">
                 <img 
                   src={firstFeature.imagePath} 
                   alt={firstFeature.title.replace(/<[^>]*>/g, '')}
-                  className="w-full rounded-lg object-contain"
+                  className="w-full rounded-lg object-contain shadow-md"
                   loading="lazy"
                 />
               </div>
@@ -92,37 +90,26 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* Carousel section with new heading */}
-        <div className="mt-8 relative max-w-6xl mx-auto">
+        {/* Grid section replacing carousel */}
+        <div className="mt-10 relative max-w-6xl mx-auto">
           <RevealAnimation>
-            <h3 className="text-2xl md:text-3xl font-bold mb-6 text-center font-playfair">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center font-playfair">
               <span className="text-gray-900">Tools to </span>
               <span className="text-realtor-600">Elevate Your Brokerage</span>
-            </h3>
+            </h2>
           </RevealAnimation>
           
-          <div className="text-center mb-3">
-            <span className="text-sm text-gray-500">Swipe or use arrows to navigate</span>
+          <div className="grid md:grid-cols-2 gap-6">
+            {remainingFeatures.map((feature, index) => (
+              <RevealAnimation key={index} delay={feature.delay}>
+                <FeatureCard
+                  title={feature.title}
+                  description={feature.description}
+                  imagePath={feature.imagePath}
+                />
+              </RevealAnimation>
+            ))}
           </div>
-          <Carousel className="w-full" opts={{ loop: true }}>
-            <CarouselContent className="-ml-1">
-              {remainingFeatures.map((feature, index) => (
-                <CarouselItem key={index} className="pl-1 md:basis-1/2">
-                  <RevealAnimation delay={feature.delay}>
-                    <FeatureCard
-                      title={feature.title}
-                      description={feature.description}
-                      imagePath={feature.imagePath}
-                    />
-                  </RevealAnimation>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <div className="flex justify-center gap-2 mt-4">
-              <CarouselPrevious className="relative h-8 w-8 rounded-full bg-white border-realtor-200 hover:bg-realtor-50 static transform-none mr-2" />
-              <CarouselNext className="relative h-8 w-8 rounded-full bg-white border-realtor-200 hover:bg-realtor-50 static transform-none ml-2" />
-            </div>
-          </Carousel>
         </div>
       </div>
     </section>

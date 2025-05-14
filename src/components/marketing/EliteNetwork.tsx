@@ -14,7 +14,7 @@ const EliteNetwork: React.FC = () => {
   ];
 
   return (
-    <section className="py-12 bg-white relative">
+    <section className="py-10 bg-white relative">
       {/* Background accent */}
       <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-realtor-50/30 rounded-full blur-3xl"></div>
       
@@ -30,7 +30,6 @@ const EliteNetwork: React.FC = () => {
                   loading="lazy"
                 />
               </div>
-              {/* Removed the "100 Elite Brokers" text element */}
             </div>
           </RevealAnimation>
           

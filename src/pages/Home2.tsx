@@ -53,7 +53,7 @@ const Home2: React.FC = () => {
       <Navbar />
       <main className="space-y-6">
         <MarketingHero />
-        <div id="features" className="pt-6">
+        <div id="features" className="pt-4">
           <FeatureShowcase />
         </div>
         <EliteNetwork />
