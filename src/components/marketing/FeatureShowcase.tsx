@@ -68,24 +68,27 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* First feature - full width image layout with text below */}
+        {/* First feature - full width image layout with text overlay */}
         <div className="mb-6 max-w-6xl mx-auto">
           <RevealAnimation>
             <div className="flex flex-col gap-4 items-center">
-              {/* Image - full width centered */}
-              <div className="w-full">
+              {/* Image - full width centered with text overlay */}
+              <div className="w-full relative">
                 <img 
                   src={firstFeature.imagePath} 
                   alt={firstFeature.title.replace(/<[^>]*>/g, '')}
-                  className="w-full max-w-5xl mx-auto rounded-lg object-contain shadow-md"
+                  className="w-full max-w-full mx-auto rounded-lg object-contain shadow-md"
                   loading="lazy"
                 />
-              </div>
-              
-              {/* Text content - centered below image */}
-              <div className="max-w-3xl mx-auto text-center space-y-3 mt-4">
-                <h3 className="text-2xl md:text-3xl font-bold font-playfair" dangerouslySetInnerHTML={{ __html: firstFeature.title }}></h3>
-                <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
+                
+                {/* Text overlay with semi-transparent red background */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="bg-realtor-500/70 px-8 py-6 rounded-lg max-w-md text-center">
+                    <h3 className="text-2xl md:text-3xl font-bold font-playfair text-white" 
+                        dangerouslySetInnerHTML={{ __html: firstFeature.title }}></h3>
+                    <p className="text-white/90 md:text-lg mt-2">{firstFeature.description}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </RevealAnimation>
