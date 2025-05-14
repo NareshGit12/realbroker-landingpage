@@ -51,15 +51,15 @@ const Home2: React.FC = () => {
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-white text-gray-900">
       <Navbar />
-      <main className="space-y-3"> {/* Reduced from space-y-4 (25% reduction) */}
+      <main className="space-y-4"> {/* Reduced from space-y-6 (25% reduction) */}
         <MarketingHero />
-        <div id="features" className="pt-2"> {/* Reduced from pt-3 */}
+        <div id="features" className="pt-3"> {/* Reduced from pt-4 */}
           <FeatureShowcase />
         </div>
         <EliteNetwork />
         <HowToJoin />
         <FinalCTA />
-        <div id="invite" className="mt-0"> 
+        <div id="invite" className="mt-0"> {/* Removed additional spacing */}
           <InviteForm />
         </div>
       </main>
