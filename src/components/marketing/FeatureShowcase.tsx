@@ -1,3 +1,4 @@
+
 import React from 'react';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import FeatureCard from '@/components/marketing/FeatureCard';
@@ -47,13 +48,13 @@ const FeatureShowcase: React.FC = () => {
   const remainingFeatures = features.slice(1);
 
   return (
-    <section className="py-8 bg-white relative overflow-hidden">
+    <section className="py-6 bg-white relative overflow-hidden">
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-realtor-100/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-realtor-50/30 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-6">
+        <div className="text-center mb-4">
           <RevealAnimation>
             <h2 className="text-3xl md:text-4xl font-bold mb-3 font-playfair">
               <span className="text-gray-900">Powerful Features for</span>
@@ -67,33 +68,33 @@ const FeatureShowcase: React.FC = () => {
           </RevealAnimation>
         </div>
         
-        {/* First feature - improved balanced layout */}
-        <div className="mb-8 max-w-6xl mx-auto">
+        {/* First feature - full width image layout with text below */}
+        <div className="mb-6 max-w-6xl mx-auto">
           <RevealAnimation>
-            <div className="flex flex-col lg:flex-row gap-6 items-center">
-              {/* Text content - balanced width on desktop */}
-              <div className="lg:w-2/5 space-y-4">
-                <h3 className="text-2xl md:text-3xl font-bold font-playfair" dangerouslySetInnerHTML={{ __html: firstFeature.title }}></h3>
-                <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
-              </div>
-              
-              {/* Image - balanced width on desktop */}
-              <div className="lg:w-3/5 mt-4 lg:mt-0">
+            <div className="flex flex-col gap-4 items-center">
+              {/* Image - full width centered */}
+              <div className="w-full">
                 <img 
                   src={firstFeature.imagePath} 
                   alt={firstFeature.title.replace(/<[^>]*>/g, '')}
-                  className="w-full rounded-lg object-contain shadow-md"
+                  className="w-full max-w-5xl mx-auto rounded-lg object-contain shadow-md"
                   loading="lazy"
                 />
+              </div>
+              
+              {/* Text content - centered below image */}
+              <div className="max-w-3xl mx-auto text-center space-y-3 mt-4">
+                <h3 className="text-2xl md:text-3xl font-bold font-playfair" dangerouslySetInnerHTML={{ __html: firstFeature.title }}></h3>
+                <p className="text-gray-700 md:text-lg">{firstFeature.description}</p>
               </div>
             </div>
           </RevealAnimation>
         </div>
         
-        {/* Grid section replacing carousel */}
-        <div className="mt-10 relative max-w-6xl mx-auto">
+        {/* Grid section for remaining features */}
+        <div className="mt-8 relative max-w-6xl mx-auto">
           <RevealAnimation>
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center font-playfair">
+            <h2 className="text-2xl md:text-3xl font-bold mb-5 text-center font-playfair">
               <span className="text-gray-900">Tools to </span>
               <span className="text-realtor-600">Elevate Your Brokerage</span>
             </h2>

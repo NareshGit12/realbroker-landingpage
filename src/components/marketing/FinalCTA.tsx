@@ -15,17 +15,17 @@ const FinalCTA: React.FC = () => {
   };
   
   return (
-    <section className="py-12 bg-white relative">
+    <section className="py-9 bg-white relative"> {/* Reduced from py-12 (25% reduction) */}
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-3xl mx-auto text-center">
           <RevealAnimation>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 font-playfair">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 font-playfair"> {/* Reduced from mb-6 */}
               Ready to <span className="text-realtor-600">Elevate Your Business</span>?
             </h2>
           </RevealAnimation>
           
           <RevealAnimation delay={100}>
-            <p className="text-gray-600 text-lg mb-8">
+            <p className="text-gray-600 text-lg mb-6"> {/* Reduced from mb-8 */}
               Join Bangalore's exclusive broker network and start growing your real estate business today.
             </p>
           </RevealAnimation>
