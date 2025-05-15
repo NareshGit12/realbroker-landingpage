@@ -170,7 +170,8 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               {[
                 { name: "Support", path: "/support" },
-                { name: "Certified RealBroker Program", path: "/certified-realbroker" }
+                { name: "Certified RealBroker Program", path: "/certified-realbroker" },
+                { name: "Charter & Code of Conduct", path: "/charter-and-conduct" }
               ].map((item) => (
                 <li key={item.name}>
                   <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
