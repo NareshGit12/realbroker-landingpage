@@ -74,10 +74,16 @@ const CharterAndConduct = () => {
       <div className="space-y-8">
         {points.length > 0 ? (
           <>
-            {/* If there's content before the first point */}
+            {/* Introduction section with consistent styling */}
             {sections[0] && (
-              <div className="mb-6">
-                {formatText(sections[0])}
+              <div className="border-l-4 border-realtor-500 pl-6 py-2 mb-8">
+                <h3 className="text-2xl font-bold mb-4 text-gray-800">
+                  RealBroker Code of Conduct
+                </h3>
+                <div className="space-y-3 ml-4">
+                  <p className="text-gray-600 font-medium">Built for Trust. Backed by Professionals.</p>
+                  <p className="text-gray-600">By joining RealBroker, you agree to a few simple rules. These are here to protect your deals, your relationships, and your reputation in the market.</p>
+                </div>
               </div>
             )}
             
