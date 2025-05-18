@@ -5,6 +5,8 @@ import Footer from '@/components/home/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const CharterAndConduct = () => {
   const [conductText, setConductText] = useState<string>('Loading...');
@@ -16,21 +18,28 @@ const CharterAndConduct = () => {
       setIsLoading(true);
       try {
         // Fetch Code of Conduct
-        const conductResponse = await fetch(
-          'https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/documents/rb_code_of_conduct%20.txt'
-        );
-        const conductData = await conductResponse.text();
+        const { data: conductData, error: conductError } = await supabase
+          .from('rb_documents')
+          .select('content')
+          .eq('doc_name', 'RB_code_of_conduct_long')
+          .single();
+        
+        if (conductError) throw conductError;
         
         // Fetch Network Charter
-        const charterResponse = await fetch(
-          'https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/documents/rb_network_charter.txt'
-        );
-        const charterData = await charterResponse.text();
+        const { data: charterData, error: charterError } = await supabase
+          .from('rb_documents')
+          .select('content')
+          .eq('doc_name', 'RB_network_charter_long')
+          .single();
         
-        setConductText(conductData);
-        setCharterText(charterData);
+        if (charterError) throw charterError;
+        
+        setConductText(conductData.content || 'No content available');
+        setCharterText(charterData.content || 'No content available');
       } catch (error) {
         console.error('Error fetching documents:', error);
+        toast.error('Failed to load content. Please try again later.');
         setConductText('Failed to load content. Please try again later.');
         setCharterText('Failed to load content. Please try again later.');
       } finally {

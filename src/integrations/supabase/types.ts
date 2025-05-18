@@ -9,6 +9,75 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      broker_lead_management: {
+        Row: {
+          areas: string[] | null
+          company: string | null
+          created_at: string | null
+          email: string | null
+          first_interaction: string | null
+          fname: string | null
+          fourth_interaction: string | null
+          id: string
+          last_interaction: string | null
+          lname: string | null
+          notes: string | null
+          phone1: string | null
+          phone2: string | null
+          second_interaction: string | null
+          source: string | null
+          status: string | null
+          team_member: string | null
+          third_interaction: string | null
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          areas?: string[] | null
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          first_interaction?: string | null
+          fname?: string | null
+          fourth_interaction?: string | null
+          id?: string
+          last_interaction?: string | null
+          lname?: string | null
+          notes?: string | null
+          phone1?: string | null
+          phone2?: string | null
+          second_interaction?: string | null
+          source?: string | null
+          status?: string | null
+          team_member?: string | null
+          third_interaction?: string | null
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          areas?: string[] | null
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          first_interaction?: string | null
+          fname?: string | null
+          fourth_interaction?: string | null
+          id?: string
+          last_interaction?: string | null
+          lname?: string | null
+          notes?: string | null
+          phone1?: string | null
+          phone2?: string | null
+          second_interaction?: string | null
+          source?: string | null
+          status?: string | null
+          team_member?: string | null
+          third_interaction?: string | null
+          updated_at?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       cities: {
         Row: {
           created_at: string
@@ -500,6 +569,7 @@ export type Database = {
           invitedby: string | null
           member_since: string | null
           mkt_emails: boolean | null
+          notes: string | null
           phone: string | null
           rating: number | null
           role: string
@@ -521,6 +591,7 @@ export type Database = {
           invitedby?: string | null
           member_since?: string | null
           mkt_emails?: boolean | null
+          notes?: string | null
           phone?: string | null
           rating?: number | null
           role?: string
@@ -542,6 +613,7 @@ export type Database = {
           invitedby?: string | null
           member_since?: string | null
           mkt_emails?: boolean | null
+          notes?: string | null
           phone?: string | null
           rating?: number | null
           role?: string
@@ -724,6 +796,27 @@ export type Database = {
           },
         ]
       }
+      rb_documents: {
+        Row: {
+          content: string | null
+          created_at: string
+          doc_name: string | null
+          id: number
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          doc_name?: string | null
+          id?: number
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          doc_name?: string | null
+          id?: number
+        }
+        Relationships: []
+      }
       social_posts: {
         Row: {
           content: string
@@ -826,7 +919,9 @@ export type Database = {
         Row: {
           created_at: string
           id: number
+          image: string | null
           message: string | null
+          Message_type: string | null
           phone: string
           send_status: string | null
           send_when: string | null
@@ -836,7 +931,9 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: number
+          image?: string | null
           message?: string | null
+          Message_type?: string | null
           phone: string
           send_status?: string | null
           send_when?: string | null
@@ -846,7 +943,9 @@ export type Database = {
         Update: {
           created_at?: string
           id?: number
+          image?: string | null
           message?: string | null
+          Message_type?: string | null
           phone?: string
           send_status?: string | null
           send_when?: string | null
