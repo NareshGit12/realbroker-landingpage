@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { supabase } from '@/integrations/supabase/client';
@@ -13,7 +12,6 @@ const CharterAndConduct = () => {
   const [conductText, setConductText] = useState<string>('Loading...');
   const [charterText, setCharterText] = useState<string>('Loading...');
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<string>('conduct');
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -53,7 +51,7 @@ const CharterAndConduct = () => {
   }, []);
 
   // Function to format content into points with numbers
-  const formatNumberedContent = (text: string) => {
+  const formatNumberedContent = (text: string, title: string, subtitle?: string, description?: string) => {
     // Split the text by numbered points (1., 2., etc.)
     const sections = text.split(/(\d+\.)\s+/);
     
@@ -75,17 +73,15 @@ const CharterAndConduct = () => {
         {points.length > 0 ? (
           <>
             {/* Introduction section with consistent styling */}
-            {sections[0] && (
-              <div className="border-l-4 border-realtor-500 pl-6 py-2 mb-8">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">
-                  RealBroker Code of Conduct
-                </h3>
-                <div className="space-y-3 ml-4">
-                  <p className="text-gray-600 font-medium">Built for Trust. Backed by Professionals.</p>
-                  <p className="text-gray-600">By joining RealBroker, you agree to a few simple rules. These are here to protect your deals, your relationships, and your reputation in the market.</p>
-                </div>
+            <div className="border-l-4 border-realtor-500 pl-6 py-2 mb-8">
+              <h3 className="text-2xl font-bold mb-4 text-gray-800">
+                {title}
+              </h3>
+              <div className="space-y-3 ml-4">
+                {subtitle && <p className="text-gray-600 font-medium">{subtitle}</p>}
+                {description && <p className="text-gray-600">{description}</p>}
               </div>
-            )}
+            </div>
             
             {/* Numbered points */}
             {points.map((point, index) => (
@@ -143,7 +139,7 @@ const CharterAndConduct = () => {
               </div>
               <div className="hidden md:block">
                 <img 
-                  src="/lovable-uploads/e58793d4-4e7a-475b-ad85-1480ea6d246d.png" 
+                  src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/RBlogo/emblem_cropped.png" 
                   alt="RealBroker Badge" 
                   className="w-24 h-24"
                 />
@@ -160,52 +156,53 @@ const CharterAndConduct = () => {
       {/* Main Content */}
       <div className="flex-grow container mx-auto px-4 py-8 mb-16">
         <div className="max-w-4xl mx-auto">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-8">
-            <TabsList className="w-full grid grid-cols-2 mb-8">
-              <TabsTrigger value="conduct" className="text-lg py-3">Code of Conduct</TabsTrigger>
-              <TabsTrigger value="charter" className="text-lg py-3">Network Charter</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="conduct" className="pt-4">
-              <RevealAnimation>
-                <Card className="border-0 shadow-md overflow-hidden bg-white">
-                  <CardContent className="p-8">
-                    {isLoading ? (
-                      <div className="space-y-4">
-                        <div className="h-6 bg-gray-200 rounded animate-pulse w-3/4"></div>
-                        <div className="h-6 bg-gray-200 rounded animate-pulse w-full"></div>
-                        <div className="h-6 bg-gray-200 rounded animate-pulse w-5/6"></div>
-                      </div>
-                    ) : (
-                      <div className="prose prose-lg max-w-none">
-                        {formatNumberedContent(conductText)}
-                      </div>
+          {/* Code of Conduct Section */}
+          <RevealAnimation>
+            <Card className="border-0 shadow-md overflow-hidden bg-white mb-12">
+              <CardContent className="p-8">
+                {isLoading ? (
+                  <div className="space-y-4">
+                    <div className="h-6 bg-gray-200 rounded animate-pulse w-3/4"></div>
+                    <div className="h-6 bg-gray-200 rounded animate-pulse w-full"></div>
+                    <div className="h-6 bg-gray-200 rounded animate-pulse w-5/6"></div>
+                  </div>
+                ) : (
+                  <div className="prose prose-lg max-w-none">
+                    {formatNumberedContent(
+                      conductText, 
+                      "RealBroker Code of Conduct", 
+                      "Built for Trust. Backed by Professionals.", 
+                      "By joining RealBroker, you agree to a few simple rules. These are here to protect your deals, your relationships, and your reputation in the market."
                     )}
-                  </CardContent>
-                </Card>
-              </RevealAnimation>
-            </TabsContent>
-            
-            <TabsContent value="charter" className="pt-4">
-              <RevealAnimation>
-                <Card className="border-0 shadow-md overflow-hidden bg-white">
-                  <CardContent className="p-8">
-                    {isLoading ? (
-                      <div className="space-y-4">
-                        <div className="h-6 bg-gray-200 rounded animate-pulse w-3/4"></div>
-                        <div className="h-6 bg-gray-200 rounded animate-pulse w-full"></div>
-                        <div className="h-6 bg-gray-200 rounded animate-pulse w-5/6"></div>
-                      </div>
-                    ) : (
-                      <div className="prose prose-lg max-w-none">
-                        {formatNumberedContent(charterText)}
-                      </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </RevealAnimation>
+          
+          {/* Network Charter Section */}
+          <RevealAnimation>
+            <Card className="border-0 shadow-md overflow-hidden bg-white">
+              <CardContent className="p-8">
+                {isLoading ? (
+                  <div className="space-y-4">
+                    <div className="h-6 bg-gray-200 rounded animate-pulse w-3/4"></div>
+                    <div className="h-6 bg-gray-200 rounded animate-pulse w-full"></div>
+                    <div className="h-6 bg-gray-200 rounded animate-pulse w-5/6"></div>
+                  </div>
+                ) : (
+                  <div className="prose prose-lg max-w-none">
+                    {formatNumberedContent(
+                      charterText, 
+                      "RealBroker Network Charter", 
+                      "Our Network Philosophy", 
+                      "The RealBroker Network Charter establishes the foundational principles that guide how members interact, collaborate, and grow together."
                     )}
-                  </CardContent>
-                </Card>
-              </RevealAnimation>
-            </TabsContent>
-          </Tabs>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </RevealAnimation>
 
           {/* FAQs Section */}
           <RevealAnimation>
