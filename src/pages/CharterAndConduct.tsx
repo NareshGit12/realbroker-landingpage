@@ -129,7 +129,7 @@ const CharterAndConduct = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <div className="pt-28 pb-16 bg-white">
+      <div className="pt-28 pb-8 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center justify-between mb-6">
@@ -154,7 +154,7 @@ const CharterAndConduct = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-grow container mx-auto px-4 py-8 mb-16">
+      <div className="flex-grow container mx-auto px-4 py-0 mb-16">
         <div className="max-w-4xl mx-auto">
           {/* Code of Conduct Section */}
           <RevealAnimation>
@@ -195,7 +195,7 @@ const CharterAndConduct = () => {
                     {formatNumberedContent(
                       charterText, 
                       "RealBroker Network Charter", 
-                      "Our Network Philosophy", 
+                      "Built for Trust. Backed by Professionals.", 
                       "The RealBroker Network Charter establishes the foundational principles that guide how members interact, collaborate, and grow together."
                     )}
                   </div>
