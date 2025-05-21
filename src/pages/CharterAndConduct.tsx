@@ -11,6 +11,7 @@ import { formatNumberedContent } from '@/components/charter/ContentFormatter';
 
 const CharterAndConduct = () => {
   const [conductText, setConductText] = useState<string>('Loading...');
+  const [charterText, setCharterText] = useState<string>('Loading...');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -26,16 +27,29 @@ const CharterAndConduct = () => {
         
         if (conductError) throw conductError;
         
+        // Fetch Network Charter
+        const { data: charterData, error: charterError } = await supabase
+          .from('rb_documents')
+          .select('content')
+          .eq('doc_name', 'RB_network_charter_long')
+          .single();
+        
+        if (charterError) throw charterError;
+        
         // Format the text to ensure consistent formatting
         const conductFormatted = conductData.content?.trim() || 'No content available';
+        const charterFormatted = charterData.content?.trim() || 'No content available';
         
         setConductText(conductFormatted);
+        setCharterText(charterFormatted);
         
         console.log('Conduct text format:', conductFormatted);
+        console.log('Charter text format:', charterFormatted);
       } catch (error) {
         console.error('Error fetching documents:', error);
         toast.error('Failed to load content. Please try again later.');
         setConductText('Failed to load content. Please try again later.');
+        setCharterText('Failed to load content. Please try again later.');
       } finally {
         setIsLoading(false);
       }
@@ -75,7 +89,7 @@ const CharterAndConduct = () => {
 
       <div className="flex-grow container mx-auto px-4 py-0 mb-16">
         <div className="max-w-4xl mx-auto">
-          {/* First Code of Conduct Section */}
+          {/* Code of Conduct Section */}
           <DocumentSection
             content={conductText}
             isLoading={isLoading}
@@ -86,9 +100,9 @@ const CharterAndConduct = () => {
             className="document-section conduct-section mb-12"
           />
           
-          {/* Second Code of Conduct Section with updated title to Network Charter */}
+          {/* Network Charter Section */}
           <DocumentSection
-            content={conductText}
+            content={charterText}
             isLoading={isLoading}
             formatContent={formatNumberedContent}
             title="Real Broker Network Charter"
