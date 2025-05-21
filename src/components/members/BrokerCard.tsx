@@ -19,23 +19,23 @@ export interface BrokerInfo {
 
 const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
   return (
-    <Card className="border border-realtor-100 shadow-md overflow-hidden w-full max-w-xs">
+    <Card className="border border-realtor-100 shadow-md overflow-hidden w-full max-w-xs h-full bg-white" style={{ borderRadius: '0' }}>
       {/* Red header */}
       <div className="bg-realtor-500 h-12"></div>
       
-      <div className="flex flex-col items-center px-4 pt-0 pb-4 relative">
+      <div className="flex flex-col items-center px-4 pt-0 pb-4 relative h-full">
         {/* Avatar - positioned to overlap the red header */}
         <div className="relative -mt-8 mb-2">
-          <Avatar className="w-20 h-20 border-4 border-white shadow-sm">
+          <Avatar className="w-24 h-24 border-4 border-white shadow-sm">
             <AvatarImage src={broker.imageSrc} alt={broker.name} />
-            <AvatarFallback className="text-xl font-bold">
+            <AvatarFallback className="text-xl font-bold text-gray-900">
               {broker.name.charAt(0)}
             </AvatarFallback>
           </Avatar>
         </div>
         
         {/* Name and agency */}
-        <h3 className="text-xl font-bold text-center">{broker.name}</h3>
+        <h3 className="text-xl font-bold text-center text-gray-900">{broker.name}</h3>
         
         {/* Rating stars */}
         <div className="flex items-center gap-1 my-1">
@@ -49,21 +49,22 @@ const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
         
         {/* Agency and location */}
         <p className="text-realtor-500 font-medium text-center">{broker.agency}</p>
-        <p className="text-sm text-muted-foreground mb-3">{broker.location}</p>
+        <p className="text-sm text-gray-700 mb-3">{broker.location}</p>
         
         {/* Description - with truncation */}
-        <p className="text-sm text-center line-clamp-3 mb-4">
+        <p className="text-sm text-center line-clamp-3 mb-4 text-gray-900">
           {broker.description}
         </p>
         
         {/* Areas of expertise */}
         <div className="w-full">
-          <p className="text-sm text-center font-medium mb-2">Areas of Expertise:</p>
+          <p className="text-sm text-center font-medium mb-2 text-gray-900">Areas of Expertise:</p>
           <div className="flex flex-wrap justify-center gap-2 mb-3">
             {broker.expertiseAreas.map((area) => (
               <span 
                 key={area} 
-                className="bg-red-50 text-realtor-500 text-xs px-3 py-1 rounded-full"
+                className="bg-red-50 text-realtor-500 text-xs px-3 py-1"
+                style={{ borderRadius: '0' }}
               >
                 {area}
               </span>
@@ -72,12 +73,12 @@ const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
         </div>
         
         {/* Properties and member since */}
-        <div className="flex flex-col items-center mt-1 border-t border-gray-100 pt-3 w-full">
+        <div className="flex flex-col items-center mt-auto border-t border-gray-100 pt-3 w-full">
           <div className="flex items-center gap-1">
-            <span className="text-sm">{broker.propertiesCount} Properties listed on</span>
+            <span className="text-sm text-gray-900">{broker.propertiesCount} Properties listed on</span>
             <span className="text-realtor-500 font-bold">RB</span>
           </div>
-          <p className="text-sm text-muted-foreground">Member since {broker.memberSince}</p>
+          <p className="text-sm text-gray-700">Member since {broker.memberSince}</p>
         </div>
       </div>
     </Card>
