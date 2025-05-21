@@ -99,7 +99,7 @@ We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate f
             className="document-section conduct-section mb-12"
           />
           
-          {/* Second Code of Conduct Section with updated title to Network Charter */}
+          {/* Network Charter Section */}
           <DocumentSection
             content={charterText}
             isLoading={false}
