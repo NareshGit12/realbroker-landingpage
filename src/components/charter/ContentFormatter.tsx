@@ -21,8 +21,6 @@ export const formatNumberedContent = (text: string, title: string, subtitle?: st
     }
   }
   
-  console.log('Formatted points:', points);
-  
   return (
     <div className="space-y-8">
       {points.length > 0 ? (

@@ -10,11 +10,10 @@ import FAQSection from '@/components/charter/FAQSection';
 import { formatNumberedContent } from '@/components/charter/ContentFormatter';
 
 const CharterAndConduct = () => {
-  const [conductText, setConductText] = useState<string>('Loading...');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Combined text with Network Charter included
-  const fullConductText = `1-Core Values
+  // Code of Conduct text
+  const codeOfConductText = `1-Core Values
 We expect all members to maintain the highest standards of professional conduct, integrity, and transparency.
 
 2-Communication Standards
@@ -30,11 +29,10 @@ Listings must have accurate information, quality photos, and complete documentat
 Agents cannot shop deals to multiple brokers or privately negotiate deals already presented by another broker.
 
 6-Conflict Resolution
-Any disputes will be handled through our dedicated mediation process, not through public channels.
+Any disputes will be handled through our dedicated mediation process, not through public channels.`;
 
-Network Charter
-
-1-What We Stand For
+  // Network Charter text
+  const networkCharterText = `1-What We Stand For
 Trust First- We work with brokers we can count on. No cutting corners, no backdoor deals.
 
 2-Work Together
@@ -47,31 +45,12 @@ Good photos, real listings, clear terms. Let's raise the bar for how our industr
 We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate faster, simpler, and more profitable.`;
 
   useEffect(() => {
-    const fetchDocuments = async () => {
-      setIsLoading(true);
-      try {
-        // Fetch Code of Conduct
-        const { data: conductData, error: conductError } = await supabase
-          .from('rb_documents')
-          .select('content')
-          .eq('doc_name', 'RB_code_of_conduct_long')
-          .single();
-        
-        if (conductError) throw conductError;
-        
-        // We'll use our combined text instead of the database text to ensure formatting consistency
-        setConductText(fullConductText);
-        
-      } catch (error) {
-        console.error('Error fetching documents:', error);
-        toast.error('Failed to load content. Please try again later.');
-        setConductText(fullConductText); // Fall back to hardcoded content on error
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDocuments();
+    // Simulate loading for consistency
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   // FAQ data
@@ -105,15 +84,26 @@ We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate f
 
       <div className="flex-grow container mx-auto px-4 py-0 mb-16">
         <div className="max-w-4xl mx-auto">
-          {/* Combined Code of Conduct and Network Charter Section */}
+          {/* Code of Conduct Section */}
           <DocumentSection
-            content={conductText}
+            content={codeOfConductText}
             isLoading={isLoading}
             formatContent={formatNumberedContent}
-            title="RealBroker Code of Conduct & Network Charter"
+            title="RealBroker Code of Conduct"
             subtitle="Built for Trust. Backed by Professionals."
             description="By joining RealBroker, you agree to these principles. They're designed to protect your deals, relationships, and reputation in the market."
             className="document-section conduct-section mb-12"
+          />
+          
+          {/* Network Charter Section */}
+          <DocumentSection
+            content={networkCharterText}
+            isLoading={isLoading}
+            formatContent={formatNumberedContent}
+            title="Real Broker Network Charter"
+            subtitle="Our Mission"
+            description="To create a network of high quality trusted brokers connect, to share leads, and close deals faster with full transparency and professionalism."
+            className="document-section charter-section mb-12"
           />
           
           {/* FAQs Section */}
