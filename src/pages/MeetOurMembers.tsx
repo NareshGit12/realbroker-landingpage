@@ -27,7 +27,7 @@ const MeetOurMembers = () => {
       align: "start",
       slidesToScroll: 1,
       skipSnaps: false,
-      speed: 10 // Slower transition for smoother effect
+      duration: 10 // Use duration instead of speed for transition time (in milliseconds)
     },
     [Autoplay(autoplayOptions)]
   );
