@@ -11,8 +11,30 @@ import { formatNumberedContent } from '@/components/charter/ContentFormatter';
 
 const CharterAndConduct = () => {
   const [conductText, setConductText] = useState<string>('Loading...');
-  const [charterText, setCharterText] = useState<string>(
-    `1-What We Stand For
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Combined text with Network Charter included
+  const fullConductText = `1-Core Values
+We expect all members to maintain the highest standards of professional conduct, integrity, and transparency.
+
+2-Communication Standards
+All communication is respectful, responsive, and professional. No spammy messages or mass-forwarded listings.
+
+3-Deal Transparency
+Brokers agree to clear commission splits from the start, written confirmation of deals, and no last-minute changes to terms.
+
+4-Property Standards
+Listings must have accurate information, quality photos, and complete documentation including title status.
+
+5-No Double-Dealing
+Agents cannot shop deals to multiple brokers or privately negotiate deals already presented by another broker.
+
+6-Conflict Resolution
+Any disputes will be handled through our dedicated mediation process, not through public channels.
+
+Network Charter
+
+1-What We Stand For
 Trust First- We work with brokers we can count on. No cutting corners, no backdoor deals.
 
 2-Work Together
@@ -22,9 +44,7 @@ This is a network built for collaboration — share clean inventory, respect dea
 Good photos, real listings, clear terms. Let's raise the bar for how our industry works.
 
 4-Use Smart Tools
-We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate faster, simpler, and more profitable.`
-  );
-  const [isLoading, setIsLoading] = useState(true);
+We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate faster, simpler, and more profitable.`;
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -39,16 +59,13 @@ We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate f
         
         if (conductError) throw conductError;
         
-        // Format the text to ensure consistent formatting
-        const conductFormatted = conductData.content?.trim() || 'No content available';
+        // We'll use our combined text instead of the database text to ensure formatting consistency
+        setConductText(fullConductText);
         
-        setConductText(conductFormatted);
-        
-        console.log('Conduct text format:', conductFormatted);
       } catch (error) {
         console.error('Error fetching documents:', error);
         toast.error('Failed to load content. Please try again later.');
-        setConductText('Failed to load content. Please try again later.');
+        setConductText(fullConductText); // Fall back to hardcoded content on error
       } finally {
         setIsLoading(false);
       }
@@ -88,26 +105,15 @@ We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate f
 
       <div className="flex-grow container mx-auto px-4 py-0 mb-16">
         <div className="max-w-4xl mx-auto">
-          {/* First Code of Conduct Section */}
+          {/* Combined Code of Conduct and Network Charter Section */}
           <DocumentSection
             content={conductText}
             isLoading={isLoading}
             formatContent={formatNumberedContent}
-            title="RealBroker Code of Conduct"
+            title="RealBroker Code of Conduct & Network Charter"
             subtitle="Built for Trust. Backed by Professionals."
-            description="By joining RealBroker, you agree to a few simple rules. These are here to protect your deals, your relationships, and your reputation in the market."
+            description="By joining RealBroker, you agree to these principles. They're designed to protect your deals, relationships, and reputation in the market."
             className="document-section conduct-section mb-12"
-          />
-          
-          {/* Network Charter Section */}
-          <DocumentSection
-            content={charterText}
-            isLoading={false}
-            formatContent={formatNumberedContent}
-            title="Real Broker Network Charter"
-            subtitle="Our Mission"
-            description="To create a network of high quality trusted brokers connect, to share leads, and close deals faster with full transparency and professionalism."
-            className="document-section conduct-section"
           />
           
           {/* FAQs Section */}
