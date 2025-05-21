@@ -20,6 +20,7 @@ import Pricing from "./pages/Pricing";
 import Faq from "./pages/Faq";
 import Support from "./pages/Support";
 import CharterAndConduct from "./pages/CharterAndConduct";
+import Charter from "./pages/Charter";
 
 // Track page views when route changes
 const PageViewTracker = () => {
@@ -56,6 +57,7 @@ const App = () => (
           <Route path="/faq" element={<Faq />} />
           <Route path="/support" element={<Support />} />
           <Route path="/charter-and-conduct" element={<CharterAndConduct />} />
+          <Route path="/charter" element={<Charter />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
