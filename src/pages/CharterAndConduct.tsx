@@ -75,7 +75,7 @@ const CharterAndConduct = () => {
       <Navbar />
 
       <DocumentHero 
-        title="Anaya is Fabulous and will do wonderful"
+        title="Member Guidelines"
         subtitle="Built for Trust. Backed by Professionals."
         description="By joining RealBroker, you agree to these principles. They're designed to protect your deals, relationships, and reputation in the market."
       />
