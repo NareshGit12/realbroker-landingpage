@@ -11,6 +11,19 @@ import { formatNumberedContent } from '@/components/charter/ContentFormatter';
 
 const CharterAndConduct = () => {
   const [conductText, setConductText] = useState<string>('Loading...');
+  const [charterText, setCharterText] = useState<string>(
+    `1-What We Stand For
+Trust First- We work with brokers we can count on. No cutting corners, no backdoor deals.
+
+2-Work Together
+This is a network built for collaboration — share clean inventory, respect deals, and grow together.
+
+3-Keep It Professional
+Good photos, real listings, clear terms. Let's raise the bar for how our industry works.
+
+4-Use Smart Tools
+We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate faster, simpler, and more profitable.`
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -88,8 +101,8 @@ const CharterAndConduct = () => {
           
           {/* Second Code of Conduct Section with updated title to Network Charter */}
           <DocumentSection
-            content={conductText}
-            isLoading={isLoading}
+            content={charterText}
+            isLoading={false}
             formatContent={formatNumberedContent}
             title="Real Broker Network Charter"
             subtitle="Our Mission"
