@@ -10,6 +10,7 @@ interface DocumentSectionProps {
   title: string;
   subtitle?: string;
   description?: string;
+  className?: string; // Added className prop
 }
 
 const DocumentSection: React.FC<DocumentSectionProps> = ({
@@ -18,11 +19,12 @@ const DocumentSection: React.FC<DocumentSectionProps> = ({
   formatContent,
   title,
   subtitle,
-  description
+  description,
+  className
 }) => {
   return (
     <RevealAnimation>
-      <Card className="border-0 shadow-md overflow-hidden bg-white mb-12">
+      <Card className={`border-0 shadow-md overflow-hidden bg-white mb-12 ${className || ''}`}>
         <CardContent className="p-8">
           {isLoading ? (
             <div className="space-y-4">

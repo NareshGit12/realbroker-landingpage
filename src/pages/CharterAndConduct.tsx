@@ -36,8 +36,15 @@ const CharterAndConduct = () => {
         
         if (charterError) throw charterError;
         
-        setConductText(conductData.content || 'No content available');
-        setCharterText(charterData.content || 'No content available');
+        // Format the text to ensure consistent formatting between both documents
+        const conductFormatted = conductData.content?.trim() || 'No content available';
+        const charterFormatted = charterData.content?.trim() || 'No content available';
+        
+        setConductText(conductFormatted);
+        setCharterText(charterFormatted);
+        
+        console.log('Conduct text format:', conductFormatted);
+        console.log('Charter text format:', charterFormatted);
       } catch (error) {
         console.error('Error fetching documents:', error);
         toast.error('Failed to load content. Please try again later.');
@@ -90,9 +97,10 @@ const CharterAndConduct = () => {
             title="RealBroker Code of Conduct"
             subtitle="Built for Trust. Backed by Professionals."
             description="By joining RealBroker, you agree to a few simple rules. These are here to protect your deals, your relationships, and your reputation in the market."
+            className="document-section conduct-section"
           />
           
-          {/* Network Charter Section */}
+          {/* Network Charter Section - Using identical styling to Code of Conduct */}
           <DocumentSection
             content={charterText}
             isLoading={isLoading}
@@ -100,6 +108,7 @@ const CharterAndConduct = () => {
             title="RealBroker Network Charter"
             subtitle="Built for Trust. Backed by Professionals."
             description="The RealBroker Network Charter establishes the foundational principles that guide how members interact, collaborate, and grow together."
+            className="document-section charter-section"
           />
 
           {/* FAQs Section */}

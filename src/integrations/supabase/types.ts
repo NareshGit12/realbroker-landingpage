@@ -14,6 +14,7 @@ export type Database = {
           areas: string[] | null
           company: string | null
           created_at: string | null
+          DoNotContact: boolean | null
           email: string | null
           first_interaction: string | null
           fname: string | null
@@ -36,6 +37,7 @@ export type Database = {
           areas?: string[] | null
           company?: string | null
           created_at?: string | null
+          DoNotContact?: boolean | null
           email?: string | null
           first_interaction?: string | null
           fname?: string | null
@@ -58,6 +60,7 @@ export type Database = {
           areas?: string[] | null
           company?: string | null
           created_at?: string | null
+          DoNotContact?: boolean | null
           email?: string | null
           first_interaction?: string | null
           fname?: string | null
@@ -559,6 +562,7 @@ export type Database = {
           areas: string[] | null
           avatar_url: string | null
           bio: string | null
+          brokercard: string | null
           city: string | null
           company_id: number | null
           company_name: string | null
@@ -581,6 +585,7 @@ export type Database = {
           areas?: string[] | null
           avatar_url?: string | null
           bio?: string | null
+          brokercard?: string | null
           city?: string | null
           company_id?: number | null
           company_name?: string | null
@@ -603,6 +608,7 @@ export type Database = {
           areas?: string[] | null
           avatar_url?: string | null
           bio?: string | null
+          brokercard?: string | null
           city?: string | null
           company_id?: number | null
           company_name?: string | null
@@ -921,7 +927,7 @@ export type Database = {
           id: number
           image: string | null
           message: string | null
-          Message_type: string | null
+          message_type: string | null
           phone: string
           send_status: string | null
           send_when: string | null
@@ -933,7 +939,7 @@ export type Database = {
           id?: number
           image?: string | null
           message?: string | null
-          Message_type?: string | null
+          message_type?: string | null
           phone: string
           send_status?: string | null
           send_when?: string | null
@@ -945,7 +951,7 @@ export type Database = {
           id?: number
           image?: string | null
           message?: string | null
-          Message_type?: string | null
+          message_type?: string | null
           phone?: string
           send_status?: string | null
           send_when?: string | null
