@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
@@ -174,23 +173,28 @@ const MeetOurMembers = () => {
                     <p className="text-lg text-gray-600">Loading members...</p>
                   </div>
                 ) : (
-                  <div className="overflow-hidden" ref={emblaRef}>
-                    <div className="flex">
+                  <Carousel
+                    opts={{
+                      align: "start",
+                      loop: true,
+                    }}
+                    className="w-full"
+                  >
+                    <CarouselContent className="-ml-4">
                       {displayMembers.map((member) => (
-                        <div key={member.id} className="flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.333%] pl-4">
+                        <CarouselItem key={member.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
                           <div className="h-full">
                             <BrokerCard broker={member} />
                           </div>
-                        </div>
+                        </CarouselItem>
                       ))}
+                    </CarouselContent>
+                    <div className="flex justify-center mt-8">
+                      <CarouselPrevious className="static translate-y-0 mr-2" />
+                      <CarouselNext className="static translate-y-0 ml-2" />
                     </div>
-                  </div>
+                  </Carousel>
                 )}
-                
-                <div className="flex justify-center mt-8">
-                  <CarouselPrevious className="static translate-y-0 mr-2" />
-                  <CarouselNext className="static translate-y-0 ml-2" />
-                </div>
               </div>
             </RevealAnimation>
 
