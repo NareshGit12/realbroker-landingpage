@@ -1,15 +1,8 @@
+
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
 import BrokerCard, { BrokerInfo } from '@/components/members/BrokerCard';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import { supabase } from '@/integrations/supabase/client';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -18,10 +11,11 @@ import Autoplay from 'embla-carousel-autoplay';
 const MeetOurMembers = () => {
   const [members, setMembers] = useState<BrokerInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [displayCount, setDisplayCount] = useState(10);
   
-  // Configure autoplay plugin with faster speed
+  // Configure autoplay plugin with smoother scrolling
   const autoplayOptions = {
-    delay: 3000, // 3 seconds between slides
+    delay: 2000, // 2 seconds between slides for smoother feel
     stopOnInteraction: false, // Continue autoplay after user interaction
     rootNode: (emblaRoot: HTMLElement) => emblaRoot.parentElement,
   };
@@ -32,7 +26,8 @@ const MeetOurMembers = () => {
       loop: true,
       align: "start",
       slidesToScroll: 1,
-      skipSnaps: false 
+      skipSnaps: false,
+      speed: 10 // Slower transition for smoother effect
     },
     [Autoplay(autoplayOptions)]
   );
@@ -43,9 +38,10 @@ const MeetOurMembers = () => {
         const { data, error } = await supabase
           .from('profiles')
           .select('id, full_name, company_name, city, bio, avatar_url, rating, areas, member_since')
+          .eq('role', 'user')
           .not('full_name', 'is', null)
           .order('rating', { ascending: false })
-          .limit(20);
+          .limit(displayCount);
           
         if (error) {
           console.error('Error fetching members:', error);
@@ -77,7 +73,21 @@ const MeetOurMembers = () => {
     }
     
     fetchMembers();
-  }, []);
+
+    // Load more members when scrolled to end
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 &&
+        !loading
+      ) {
+        setDisplayCount(prev => prev + 10);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+    
+  }, [displayCount, loading]);
 
   // Fallback to sample data if no members found
   const useFallbackData = members.length === 0 && !loading;
@@ -170,7 +180,7 @@ const MeetOurMembers = () => {
 
             <RevealAnimation delay={100}>
               <div className="relative py-8">
-                {loading ? (
+                {loading && members.length === 0 ? (
                   <div className="flex justify-center items-center h-64">
                     <p className="text-lg text-gray-600">Loading members...</p>
                   </div>
