@@ -20,6 +20,7 @@ const FooterNavigation: React.FC<FooterNavigationProps> = ({ navigateToSection }
         { name: "Features", action: () => navigateToSection("/", "features") },
         { name: "How It Works", action: () => navigateToSection("/original", "how-it-works") },
         { name: "Pricing", path: "/pricing" },
+        { name: "Meet Our Members", path: "/members" },
         { name: "Testimonials", action: () => navigateToSection("/original", "testimonials") },
         { name: "FAQ", path: "/faq" }
       ]

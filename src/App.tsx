@@ -21,6 +21,7 @@ import Faq from "./pages/Faq";
 import Support from "./pages/Support";
 import CharterAndConduct from "./pages/CharterAndConduct";
 import Charter from "./pages/Charter";
+import MeetOurMembers from "./pages/MeetOurMembers";
 
 // Track page views when route changes
 const PageViewTracker = () => {
@@ -58,6 +59,7 @@ const App = () => (
           <Route path="/support" element={<Support />} />
           <Route path="/charter-and-conduct" element={<CharterAndConduct />} />
           <Route path="/charter" element={<Charter />} />
+          <Route path="/members" element={<MeetOurMembers />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
