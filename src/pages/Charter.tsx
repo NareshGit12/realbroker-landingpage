@@ -2,45 +2,26 @@
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import DocumentHero from '@/components/charter/DocumentHero';
 import DocumentSection from '@/components/charter/DocumentSection';
 import { formatNumberedContent } from '@/components/charter/ContentFormatter';
 
 const Charter = () => {
-  const [charterText, setCharterText] = useState<string>('Loading...');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Custom charter content with the 4 bullet points
+  const charterContent = `1. What We Stand For
+Trust First- We work with brokers we can count on. No cutting corners, no backdoor deals.
 
-  useEffect(() => {
-    const fetchDocuments = async () => {
-      setIsLoading(true);
-      try {
-        // Fetch Code of Conduct - using the same content for now
-        const { data: conductData, error: conductError } = await supabase
-          .from('rb_documents')
-          .select('content')
-          .eq('doc_name', 'RB_code_of_conduct_long')
-          .single();
-        
-        if (conductError) throw conductError;
-        
-        // Format the text to ensure consistent formatting
-        const conductFormatted = conductData.content?.trim() || 'No content available';
-        
-        setCharterText(conductFormatted);
-        
-      } catch (error) {
-        console.error('Error fetching documents:', error);
-        toast.error('Failed to load content. Please try again later.');
-        setCharterText('Failed to load content. Please try again later.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+2. Work Together
+This is a network built for collaboration — share clean inventory, respect deals, and grow together.
 
-    fetchDocuments();
-  }, []);
+3. Keep It Professional
+Good photos, real listings, clear terms. Let's raise the bar for how our industry works.
+
+4. Use Smart Tools
+We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate faster, simpler, and more profitable.`;
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
@@ -56,7 +37,7 @@ const Charter = () => {
         <div className="max-w-4xl mx-auto">
           {/* Network Charter Section */}
           <DocumentSection
-            content={charterText}
+            content={charterContent}
             isLoading={isLoading}
             formatContent={formatNumberedContent}
             title="Real Broker Network Charter"
