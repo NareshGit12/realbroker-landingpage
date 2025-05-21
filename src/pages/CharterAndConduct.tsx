@@ -92,8 +92,8 @@ const CharterAndConduct = () => {
             isLoading={isLoading}
             formatContent={formatNumberedContent}
             title="Real Broker Network Charter"
-            subtitle="Built for Trust. Backed by Professionals."
-            description="By joining RealBroker, you agree to a few simple rules. These are here to protect your deals, your relationships, and your reputation in the market."
+            subtitle="Our Mission"
+            description="To create a network of high quality trusted brokers connect, to share leads, and close deals faster with full transparency and professionalism."
             className="document-section conduct-section"
           />
           
