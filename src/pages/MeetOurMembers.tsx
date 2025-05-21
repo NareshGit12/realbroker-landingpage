@@ -15,19 +15,20 @@ const MeetOurMembers = () => {
   
   // Configure autoplay plugin with smoother scrolling
   const autoplayOptions = {
-    delay: 2000, // 2 seconds between slides for smoother feel
+    delay: 5000, // 5 seconds between slides
     stopOnInteraction: false, // Continue autoplay after user interaction
     rootNode: (emblaRoot: HTMLElement) => emblaRoot.parentElement,
   };
 
-  // Initialize carousel with autoplay plugin
+  // Initialize carousel with autoplay plugin and smooth scrolling
   const [emblaRef] = useEmblaCarousel(
     { 
       loop: true,
       align: "start",
       slidesToScroll: 1,
       skipSnaps: false,
-      duration: 10 // Use duration instead of speed for transition time (in milliseconds)
+      duration: 1000, // Longer duration for smoother transition (1 second)
+      inViewThreshold: 0.5, // When 50% of the slide is in view, it's considered "selected"
     },
     [Autoplay(autoplayOptions)]
   );
@@ -35,7 +36,8 @@ const MeetOurMembers = () => {
   useEffect(() => {
     async function fetchMembers() {
       try {
-        const { data, error } = await supabase
+        // Query profiles for users with properties count
+        const { data: profilesData, error: profilesError } = await supabase
           .from('profiles')
           .select('id, full_name, company_name, city, bio, avatar_url, rating, areas, member_since')
           .eq('role', 'user')
@@ -43,14 +45,34 @@ const MeetOurMembers = () => {
           .order('rating', { ascending: false })
           .limit(displayCount);
           
-        if (error) {
-          console.error('Error fetching members:', error);
+        if (profilesError) {
+          console.error('Error fetching profiles:', profilesError);
           return;
         }
         
-        if (data) {
-          // Transform the data to match BrokerInfo structure
-          const formattedMembers: BrokerInfo[] = data.map(profile => ({
+        // Get property counts for each profile
+        if (profilesData && profilesData.length > 0) {
+          // Create a map to store property counts
+          const propertyCounts = new Map<string, number>();
+          
+          // Get property counts for all profiles in one query
+          const { data: propertiesData, error: propertiesError } = await supabase
+            .from('properties')
+            .select('user_id, id')
+            .in('user_id', profilesData.map(profile => profile.id));
+            
+          if (propertiesError) {
+            console.error('Error fetching properties:', propertiesError);
+          } else if (propertiesData) {
+            // Count properties for each user
+            propertiesData.forEach(property => {
+              const userId = property.user_id;
+              propertyCounts.set(userId, (propertyCounts.get(userId) || 0) + 1);
+            });
+          }
+          
+          // Transform the data to match BrokerInfo structure with property counts
+          const formattedMembers: BrokerInfo[] = profilesData.map(profile => ({
             id: profile.id,
             name: profile.full_name || 'Unknown Name',
             agency: profile.company_name || 'Independent Broker',
@@ -60,7 +82,7 @@ const MeetOurMembers = () => {
             rating: profile.rating || 4,
             expertiseAreas: profile.areas || ['Residential', 'Commercial'],
             memberSince: profile.member_since ? new Date(profile.member_since).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'Recent Member',
-            propertiesCount: 0
+            propertiesCount: propertyCounts.get(profile.id) || 0
           }));
           
           setMembers(formattedMembers);
