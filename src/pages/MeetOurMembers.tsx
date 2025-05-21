@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Navbar } from '@/components/layout/Navbar';
+import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
 import BrokerCard, { BrokerInfo } from '@/components/members/BrokerCard';
 import {
