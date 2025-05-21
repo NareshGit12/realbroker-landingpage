@@ -20,7 +20,7 @@ const DocumentHero: React.FC<DocumentHeroProps> = ({
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">{title}</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Anaya is Fabulous and will do wonderful</h1>
               <p className="text-xl text-gray-600">{subtitle}</p>
             </div>
             <div className="hidden md:block">
