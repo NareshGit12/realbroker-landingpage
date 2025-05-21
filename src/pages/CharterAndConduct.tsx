@@ -86,12 +86,12 @@ const CharterAndConduct = () => {
             className="document-section conduct-section mb-12"
           />
           
-          {/* Second Code of Conduct Section (copy) */}
+          {/* Second Code of Conduct Section with updated title to Network Charter */}
           <DocumentSection
             content={conductText}
             isLoading={isLoading}
             formatContent={formatNumberedContent}
-            title="RealBroker Code of Conduct (Copy)"
+            title="Real Broker Network Charter"
             subtitle="Built for Trust. Backed by Professionals."
             description="By joining RealBroker, you agree to a few simple rules. These are here to protect your deals, your relationships, and your reputation in the market."
             className="document-section conduct-section"
