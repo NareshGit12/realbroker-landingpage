@@ -75,12 +75,23 @@ const CharterAndConduct = () => {
 
       <div className="flex-grow container mx-auto px-4 py-0 mb-16">
         <div className="max-w-4xl mx-auto">
-          {/* Code of Conduct Section */}
+          {/* First Code of Conduct Section */}
           <DocumentSection
             content={conductText}
             isLoading={isLoading}
             formatContent={formatNumberedContent}
             title="RealBroker Code of Conduct"
+            subtitle="Built for Trust. Backed by Professionals."
+            description="By joining RealBroker, you agree to a few simple rules. These are here to protect your deals, your relationships, and your reputation in the market."
+            className="document-section conduct-section mb-12"
+          />
+          
+          {/* Second Code of Conduct Section (copy) */}
+          <DocumentSection
+            content={conductText}
+            isLoading={isLoading}
+            formatContent={formatNumberedContent}
+            title="RealBroker Code of Conduct (Copy)"
             subtitle="Built for Trust. Backed by Professionals."
             description="By joining RealBroker, you agree to a few simple rules. These are here to protect your deals, your relationships, and your reputation in the market."
             className="document-section conduct-section"
