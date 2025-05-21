@@ -50,18 +50,18 @@ const NavLinks: React.FC<NavLinksProps> = ({
       </button>
       <button 
         onClick={() => {
-          // Navigate to original page and jump to "how-it-works" section
-          navigate('/original?section=how-it-works');
+          // Navigate to members page
+          navigate('/members');
           if (onItemClick) onItemClick();
         }}
         className={cn(
           `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
-          isActive('/#how-it-works') 
+          isActive('/members') 
             ? "text-realtor-600 font-semibold" 
             : "text-gray-700 hover:text-realtor-600"
         )}
       >
-        How it Works
+        Meet our Members
       </button>
       <button 
         onClick={() => {
