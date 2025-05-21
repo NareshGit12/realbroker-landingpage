@@ -29,7 +29,7 @@ const FooterNavigation: React.FC<FooterNavigationProps> = ({ navigateToSection }
       items: [
         { name: "Support", path: "/support" },
         { name: "Certified RealBroker Program", path: "/certified-realbroker" },
-        { name: "Charter & Code of Conduct", path: "/charter-and-conduct" },
+        { name: "Member Code of Conduct", path: "/charter-and-conduct" },
         { name: "Charter", path: "/charter" }
       ]
     },

@@ -8,6 +8,9 @@ import DocumentHero from '@/components/charter/DocumentHero';
 import DocumentSection from '@/components/charter/DocumentSection';
 import FAQSection from '@/components/charter/FAQSection';
 import { formatNumberedContent } from '@/components/charter/ContentFormatter';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { ExternalLink } from 'lucide-react';
 
 const CharterAndConduct = () => {
   const [conductText, setConductText] = useState<string>('Loading...');
@@ -75,7 +78,7 @@ const CharterAndConduct = () => {
 
       <div className="flex-grow container mx-auto px-4 py-0 mb-16">
         <div className="max-w-4xl mx-auto">
-          {/* First Code of Conduct Section */}
+          {/* Code of Conduct Section */}
           <DocumentSection
             content={conductText}
             isLoading={isLoading}
@@ -86,16 +89,18 @@ const CharterAndConduct = () => {
             className="document-section conduct-section mb-12"
           />
           
-          {/* Second Code of Conduct Section with updated title to Network Charter */}
-          <DocumentSection
-            content={conductText}
-            isLoading={isLoading}
-            formatContent={formatNumberedContent}
-            title="Real Broker Network Charter"
-            subtitle="Our Mission"
-            description="To create a network of high quality trusted brokers connect, to share leads, and close deals faster with full transparency and professionalism."
-            className="document-section conduct-section"
-          />
+          {/* Network Charter Link */}
+          <div className="text-center my-12">
+            <h3 className="text-2xl font-bold mb-4">Looking for our Network Charter?</h3>
+            <p className="text-muted-foreground mb-6">
+              View our mission and core values that guide the RealBroker Network.
+            </p>
+            <Button asChild variant="outline" className="gap-2">
+              <Link to="/charter">
+                View Network Charter <ExternalLink className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
           
           {/* FAQs Section */}
           <FAQSection title="Frequently Asked Questions" faqs={faqs} />
