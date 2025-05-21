@@ -5,8 +5,8 @@ export const formatNumberedContent = (text: string, title: string, subtitle?: st
   // Clean up text to ensure consistent formatting
   const cleanText = text.trim().replace(/\r\n/g, '\n');
   
-  // Split the text by numbered points (1., 2., etc.) or numbered points with dash (1-, 2-, etc.)
-  const sections = cleanText.split(/(\d+[\.-])\s+/);
+  // Split the text by numbered points (1., 2., etc.)
+  const sections = cleanText.split(/(\d+\.)\s+/);
   
   if (sections.length <= 1) {
     // If no numbered points are detected, just display the text normally
@@ -20,6 +20,8 @@ export const formatNumberedContent = (text: string, title: string, subtitle?: st
       points.push({ number: sections[i], content: sections[i + 1].trim() });
     }
   }
+  
+  console.log('Formatted points:', points);
   
   return (
     <div className="space-y-8">
@@ -47,18 +49,12 @@ export const formatNumberedContent = (text: string, title: string, subtitle?: st
                   .split('\n')
                   .slice(1)
                   .filter(line => line.trim()) // Filter out empty lines
-                  .map((line, i) => {
-                    // Check if line starts with a bullet point marker
-                    const isBulletPoint = line.trim().startsWith('•');
-                    const bulletText = isBulletPoint ? line.trim().substring(1).trim() : line.trim();
-                    
-                    return (
-                      <div key={i} className="flex items-start">
-                        <span className="text-realtor-500 mr-2 mt-1">•</span>
-                        <p className="text-gray-600">{bulletText}</p>
-                      </div>
-                    );
-                  })}
+                  .map((line, i) => (
+                    <div key={i} className="flex items-start">
+                      <span className="text-realtor-500 mr-2 mt-1">•</span>
+                      <p className="text-gray-600">{line.trim()}</p>
+                    </div>
+                  ))}
               </div>
             </div>
           ))}
