@@ -11,7 +11,17 @@ import { formatNumberedContent } from '@/components/charter/ContentFormatter';
 
 const CharterAndConduct = () => {
   const [conductText, setConductText] = useState<string>('Loading...');
-  const [charterText, setCharterText] = useState<string>('Loading...');
+  const [charterText, setCharterText] = useState<string>(`1-What We Stand For
+Trust First- We work with brokers we can count on. No cutting corners, no backdoor deals.
+
+2-Work Together
+This is a network built for collaboration — share clean inventory, respect deals, and grow together.
+
+3-Keep It Professional
+Good photos, real listings, clear terms. Let's raise the bar for how our industry works.
+
+4-Use Smart Tools
+We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate faster, simpler, and more profitable.`);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -27,29 +37,16 @@ const CharterAndConduct = () => {
         
         if (conductError) throw conductError;
         
-        // Fetch Network Charter
-        const { data: charterData, error: charterError } = await supabase
-          .from('rb_documents')
-          .select('content')
-          .eq('doc_name', 'RB_network_charter_long')
-          .single();
-        
-        if (charterError) throw charterError;
-        
         // Format the text to ensure consistent formatting
         const conductFormatted = conductData.content?.trim() || 'No content available';
-        const charterFormatted = charterData.content?.trim() || 'No content available';
         
         setConductText(conductFormatted);
-        setCharterText(charterFormatted);
         
         console.log('Conduct text format:', conductFormatted);
-        console.log('Charter text format:', charterFormatted);
       } catch (error) {
         console.error('Error fetching documents:', error);
         toast.error('Failed to load content. Please try again later.');
         setConductText('Failed to load content. Please try again later.');
-        setCharterText('Failed to load content. Please try again later.');
       } finally {
         setIsLoading(false);
       }
@@ -89,7 +86,7 @@ const CharterAndConduct = () => {
 
       <div className="flex-grow container mx-auto px-4 py-0 mb-16">
         <div className="max-w-4xl mx-auto">
-          {/* Code of Conduct Section */}
+          {/* First Code of Conduct Section */}
           <DocumentSection
             content={conductText}
             isLoading={isLoading}
@@ -100,10 +97,10 @@ const CharterAndConduct = () => {
             className="document-section conduct-section mb-12"
           />
           
-          {/* Network Charter Section */}
+          {/* Second Code of Conduct Section with updated title to Network Charter */}
           <DocumentSection
             content={charterText}
-            isLoading={isLoading}
+            isLoading={false}
             formatContent={formatNumberedContent}
             title="Real Broker Network Charter"
             subtitle="Our Mission"
