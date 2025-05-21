@@ -19,9 +19,10 @@ const MeetOurMembers = () => {
   const [members, setMembers] = useState<BrokerInfo[]>([]);
   const [loading, setLoading] = useState(true);
   
-  // Configure autoplay plugin
+  // Configure autoplay plugin with faster speed
   const autoplayOptions = {
-    delay: 4000,
+    delay: 3000, // 3 seconds between slides
+    stopOnInteraction: false, // Continue autoplay after user interaction
     rootNode: (emblaRoot: HTMLElement) => emblaRoot.parentElement,
   };
 
@@ -30,6 +31,7 @@ const MeetOurMembers = () => {
     { 
       loop: true,
       align: "start",
+      slidesToScroll: 1,
       skipSnaps: false 
     },
     [Autoplay(autoplayOptions)]
@@ -167,39 +169,32 @@ const MeetOurMembers = () => {
             </RevealAnimation>
 
             <RevealAnimation delay={100}>
-              <div className="relative py-8 px-4">
+              <div className="relative py-8">
                 {loading ? (
                   <div className="flex justify-center items-center h-64">
                     <p className="text-lg text-gray-600">Loading members...</p>
                   </div>
                 ) : (
-                  <Carousel
-                    opts={{
-                      align: "start",
-                      loop: true,
-                    }}
-                    className="w-full"
-                  >
-                    <CarouselContent className="-ml-4">
+                  <div className="overflow-hidden" ref={emblaRef}>
+                    <div className="flex">
                       {displayMembers.map((member) => (
-                        <CarouselItem key={member.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                        <div 
+                          key={member.id} 
+                          className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_33.333%] lg:flex-[0_0_25%] xl:flex-[0_0_20%] pl-4 pr-4"
+                        >
                           <div className="h-full">
                             <BrokerCard broker={member} />
                           </div>
-                        </CarouselItem>
+                        </div>
                       ))}
-                    </CarouselContent>
-                    <div className="flex justify-center mt-8">
-                      <CarouselPrevious className="static translate-y-0 mr-2" />
-                      <CarouselNext className="static translate-y-0 ml-2" />
                     </div>
-                  </Carousel>
+                  </div>
                 )}
               </div>
             </RevealAnimation>
 
             <RevealAnimation delay={200}>
-              <div className="text-center mt-12">
+              <div className="text-center mt-8">
                 <p className="text-gray-700 mb-6">
                   Our network consists of handpicked, vetted real estate professionals who adhere to our strict code of conduct.
                 </p>
