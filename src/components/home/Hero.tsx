@@ -18,7 +18,7 @@ const Hero: React.FC = () => {
   }
 
   return (
-    <section className="relative min-h-[85vh] flex items-center pt-20 pb-10">
+    <section className="relative min-h-[85vh] flex items-center justify-center pt-20 pb-10">
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-subtle -z-10"></div>
       

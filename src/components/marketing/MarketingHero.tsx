@@ -47,7 +47,7 @@ const MarketingHero: React.FC = () => {
   const currentHeading = formatHeadingForDisplay(headings[currentHeadingIndex]);
 
   return (
-    <section className="relative min-h-[85vh] flex items-center pt-20 pb-10 bg-white overflow-hidden">
+    <section className="relative min-h-[85vh] flex items-center justify-center pt-20 pb-10 bg-white overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-white to-neutral-50 z-[-2]"></div>
       
@@ -94,14 +94,16 @@ const MarketingHero: React.FC = () => {
           </div>
           
           <RevealAnimation delay={400}>
-            <div className="w-full max-w-[1200px] px-2 sm:px-4 md:px-6 mt-2">
-              <div className="relative rounded-2xl overflow-hidden">
-                <img 
-                  src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/main-hero.png" 
-                  alt="RealBroker Dashboard" 
-                  className="w-full h-auto" 
-                  loading="lazy" 
-                />
+            <div className="w-full flex justify-center items-center mt-2">
+              <div className="max-w-[1200px] w-full mx-auto px-4">
+                <div className="relative rounded-2xl overflow-hidden mx-auto">
+                  <img 
+                    src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/screens/main-hero.png" 
+                    alt="RealBroker Dashboard" 
+                    className="w-full h-auto mx-auto"
+                    loading="lazy" 
+                  />
+                </div>
               </div>
             </div>
           </RevealAnimation>

@@ -71,16 +71,16 @@ const Index: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden">
+    <div className="min-h-screen w-full overflow-x-hidden flex flex-col items-center">
       <Navbar />
-      <main className="space-y-6 md:space-y-12 lg:space-y-16">
+      <main className="space-y-6 md:space-y-12 lg:space-y-16 w-full">
         <Hero />
         <Features />
         <CertifiedBrokerPromo />
-        <div id="how-it-works">
+        <div id="how-it-works" className="flex justify-center w-full">
           <HowItWorks />
         </div>
-        <div id="testimonials">
+        <div id="testimonials" className="flex justify-center w-full">
           <Testimonials />
         </div>
         <InviteForm />
