@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
@@ -35,63 +34,53 @@ const MeetOurMembers = () => {
 
   useEffect(() => {
     async function fetchMembers() {
-      try {
-        // Query profiles for users with properties count
-        const { data: profilesData, error: profilesError } = await supabase
-          .from('profiles')
-          .select('id, full_name, company_name, city, bio, avatar_url, rating, areas, member_since')
-          .eq('role', 'user')
-          .not('full_name', 'is', null)
-          .order('rating', { ascending: false })
-          .limit(displayCount);
-          
-        if (profilesError) {
-          console.error('Error fetching profiles:', profilesError);
-          return;
-        }
-        
-        // Get property counts for each profile
-        if (profilesData && profilesData.length > 0) {
-          // Create a map to store property counts
-          const propertyCounts = new Map<string, number>();
-          
-          // Get property counts for all profiles in one query
-          const { data: propertiesData, error: propertiesError } = await supabase
-            .from('properties')
-            .select('user_id, id')
-            .in('user_id', profilesData.map(profile => profile.id));
-            
-          if (propertiesError) {
-            console.error('Error fetching properties:', propertiesError);
-          } else if (propertiesData) {
-            // Count properties for each user
-            propertiesData.forEach(property => {
-              const userId = property.user_id;
-              propertyCounts.set(userId, (propertyCounts.get(userId) || 0) + 1);
-            });
-          }
-          
-          // Transform the data to match BrokerInfo structure with property counts
-          const formattedMembers: BrokerInfo[] = profilesData.map(profile => ({
-            id: profile.id,
-            name: profile.full_name || 'Unknown Name',
-            agency: profile.company_name || 'Independent Broker',
-            location: profile.city || 'Bangalore',
-            description: profile.bio || 'Professional real estate broker specializing in residential and commercial properties.',
-            imageSrc: profile.avatar_url || '/placeholder.svg',
-            rating: profile.rating || 4,
-            expertiseAreas: profile.areas || ['Residential', 'Commercial'],
-            memberSince: profile.member_since ? new Date(profile.member_since).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'Recent Member',
-            propertiesCount: propertyCounts.get(profile.id) || 0
-          }));
-          
-          setMembers(formattedMembers);
-        }
-      } catch (err) {
-        console.error('Unexpected error:', err);
-      } finally {
+      console.log('[MeetOurMembers] fetching via RPC get_member_directory with limit:', displayCount);
+      setLoading(true);
+
+      type MemberRow = {
+        id: string;
+        full_name: string | null;
+        company_name: string | null;
+        city: string | null;
+        bio: string | null;
+        avatar_url: string | null;
+        rating: number | null;
+        areas: string[] | null;
+        member_since: string | null;
+        properties_count: number | null;
+      };
+
+      const { data, error } = await supabase.rpc('get_member_directory', {
+        limit_count: displayCount,
+        offset_value: 0,
+        city_filter: null
+      });
+
+      if (error) {
+        console.error('Error fetching members via RPC:', error);
         setLoading(false);
+        return;
       }
+
+      const rows = (data as MemberRow[]) || [];
+
+      const formattedMembers: BrokerInfo[] = rows.map((profile) => ({
+        id: profile.id,
+        name: profile.full_name || 'Unknown Name',
+        agency: profile.company_name || 'Independent Broker',
+        location: profile.city || 'Bangalore',
+        description: profile.bio || 'Professional real estate broker specializing in residential and commercial properties.',
+        imageSrc: profile.avatar_url || '/placeholder.svg',
+        rating: Number(profile.rating ?? 4),
+        expertiseAreas: (profile.areas ?? ['Residential', 'Commercial']) as string[],
+        memberSince: profile.member_since
+          ? new Date(profile.member_since).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+          : 'Recent Member',
+        propertiesCount: Number(profile.properties_count ?? 0),
+      }));
+
+      setMembers(formattedMembers);
+      setLoading(false);
     }
     
     fetchMembers();

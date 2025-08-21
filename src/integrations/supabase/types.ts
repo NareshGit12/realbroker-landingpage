@@ -7,8 +7,348 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "12.2.3 (519615d)"
+  }
   public: {
     Tables: {
+      agreement_documents: {
+        Row: {
+          agreement_id: string
+          created_at: string | null
+          document_type: string
+          file_name: string
+          file_size: number | null
+          file_url: string
+          id: string
+          mime_type: string | null
+          uploaded_by: string | null
+        }
+        Insert: {
+          agreement_id: string
+          created_at?: string | null
+          document_type: string
+          file_name: string
+          file_size?: number | null
+          file_url: string
+          id?: string
+          mime_type?: string | null
+          uploaded_by?: string | null
+        }
+        Update: {
+          agreement_id?: string
+          created_at?: string | null
+          document_type?: string
+          file_name?: string
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          mime_type?: string | null
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agreement_documents_agreement_id_fkey"
+            columns: ["agreement_id"]
+            isOneToOne: false
+            referencedRelation: "broker_agreements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agreement_documents_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agreement_messages: {
+        Row: {
+          agreement_id: string
+          content: string
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message_type: string | null
+          recipient_id: string
+          sender_id: string
+          subject: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          agreement_id: string
+          content: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message_type?: string | null
+          recipient_id: string
+          sender_id: string
+          subject?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          agreement_id?: string
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message_type?: string | null
+          recipient_id?: string
+          sender_id?: string
+          subject?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agreement_messages_agreement_id_fkey"
+            columns: ["agreement_id"]
+            isOneToOne: false
+            referencedRelation: "broker_agreements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agreement_messages_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agreement_messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agreement_signatures: {
+        Row: {
+          agreement_id: string
+          created_at: string | null
+          id: string
+          ip_address: unknown | null
+          signature_data: Json | null
+          signed_at: string | null
+          signer_id: string
+          signer_role: string
+          status: Database["public"]["Enums"]["signature_status"] | null
+          updated_at: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          agreement_id: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          signature_data?: Json | null
+          signed_at?: string | null
+          signer_id: string
+          signer_role: string
+          status?: Database["public"]["Enums"]["signature_status"] | null
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          agreement_id?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          signature_data?: Json | null
+          signed_at?: string | null
+          signer_id?: string
+          signer_role?: string
+          status?: Database["public"]["Enums"]["signature_status"] | null
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agreement_signatures_agreement_id_fkey"
+            columns: ["agreement_id"]
+            isOneToOne: false
+            referencedRelation: "broker_agreements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agreement_signatures_signer_id_fkey"
+            columns: ["signer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agreement_templates: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          is_default: boolean | null
+          name: string
+          template_content: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_default?: boolean | null
+          name: string
+          template_content: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_default?: boolean | null
+          name?: string
+          template_content?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agreement_templates_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      broker_agreements: {
+        Row: {
+          agreement_date: string | null
+          agreement_template_id: string | null
+          buyer_commission_fixed_amount: number | null
+          buyer_commission_percentage: number | null
+          buyer_commission_type:
+            | Database["public"]["Enums"]["commission_type"]
+            | null
+          buyer_pays_commission: boolean | null
+          buyers_broker_total_fees: string | null
+          created_at: string | null
+          created_by: string | null
+          custom_terms: string | null
+          execution_date: string | null
+          expiry_date: string | null
+          id: string
+          listing_broker_id: string
+          property_id: string
+          seller_commission_fixed_amount: number | null
+          seller_commission_percentage: number | null
+          seller_commission_type:
+            | Database["public"]["Enums"]["commission_type"]
+            | null
+          seller_pays_commission: boolean | null
+          sellers_broker_total_fees: string | null
+          selling_broker_id: string
+          special_conditions: string | null
+          status: Database["public"]["Enums"]["agreement_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          agreement_date?: string | null
+          agreement_template_id?: string | null
+          buyer_commission_fixed_amount?: number | null
+          buyer_commission_percentage?: number | null
+          buyer_commission_type?:
+            | Database["public"]["Enums"]["commission_type"]
+            | null
+          buyer_pays_commission?: boolean | null
+          buyers_broker_total_fees?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          custom_terms?: string | null
+          execution_date?: string | null
+          expiry_date?: string | null
+          id?: string
+          listing_broker_id: string
+          property_id: string
+          seller_commission_fixed_amount?: number | null
+          seller_commission_percentage?: number | null
+          seller_commission_type?:
+            | Database["public"]["Enums"]["commission_type"]
+            | null
+          seller_pays_commission?: boolean | null
+          sellers_broker_total_fees?: string | null
+          selling_broker_id: string
+          special_conditions?: string | null
+          status?: Database["public"]["Enums"]["agreement_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          agreement_date?: string | null
+          agreement_template_id?: string | null
+          buyer_commission_fixed_amount?: number | null
+          buyer_commission_percentage?: number | null
+          buyer_commission_type?:
+            | Database["public"]["Enums"]["commission_type"]
+            | null
+          buyer_pays_commission?: boolean | null
+          buyers_broker_total_fees?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          custom_terms?: string | null
+          execution_date?: string | null
+          expiry_date?: string | null
+          id?: string
+          listing_broker_id?: string
+          property_id?: string
+          seller_commission_fixed_amount?: number | null
+          seller_commission_percentage?: number | null
+          seller_commission_type?:
+            | Database["public"]["Enums"]["commission_type"]
+            | null
+          seller_pays_commission?: boolean | null
+          sellers_broker_total_fees?: string | null
+          selling_broker_id?: string
+          special_conditions?: string | null
+          status?: Database["public"]["Enums"]["agreement_status"] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "broker_agreements_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "broker_agreements_listing_broker_id_fkey"
+            columns: ["listing_broker_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "broker_agreements_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "broker_agreements_selling_broker_id_fkey"
+            columns: ["selling_broker_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       broker_lead_management: {
         Row: {
           areas: string[] | null
@@ -338,18 +678,21 @@ export type Database = {
         Row: {
           area: string
           city_id: string
+          city_section: string | null
           created_at: string
           id: string
         }
         Insert: {
           area: string
           city_id: string
+          city_section?: string | null
           created_at?: string
           id?: string
         }
         Update: {
           area?: string
           city_id?: string
+          city_section?: string | null
           created_at?: string
           id?: string
         }
@@ -637,24 +980,54 @@ export type Database = {
           },
         ]
       }
+      prop_meta: {
+        Row: {
+          created_at: string
+          Description: string | null
+          id: number
+          Name: string | null
+          Type: string | null
+        }
+        Insert: {
+          created_at?: string
+          Description?: string | null
+          id?: number
+          Name?: string | null
+          Type?: string | null
+        }
+        Update: {
+          created_at?: string
+          Description?: string | null
+          id?: number
+          Name?: string | null
+          Type?: string | null
+        }
+        Relationships: []
+      }
       properties: {
         Row: {
           area: string | null
           area_id: string | null
           baths: number | null
           bedrooms: number | null
+          buyer_commission: number | null
           city: string
           city_id: string | null
           created_at: string
           currency: string
           description: string | null
           id: string
+          image_desc: string[] | null
           images: string[] | null
+          last_verified: string | null
+          marketing_tag: string | null
           price: number | null
           property_type: Database["public"]["Enums"]["property_type"]
+          publish: number | null
           sqft: number | null
           static_flyer_url: string | null
           static_html_url: string | null
+          status: string | null
           title: string
           updated_at: string
           user_id: string
@@ -666,18 +1039,24 @@ export type Database = {
           area_id?: string | null
           baths?: number | null
           bedrooms?: number | null
+          buyer_commission?: number | null
           city: string
           city_id?: string | null
           created_at?: string
           currency?: string
           description?: string | null
           id?: string
+          image_desc?: string[] | null
           images?: string[] | null
+          last_verified?: string | null
+          marketing_tag?: string | null
           price?: number | null
           property_type?: Database["public"]["Enums"]["property_type"]
+          publish?: number | null
           sqft?: number | null
           static_flyer_url?: string | null
           static_html_url?: string | null
+          status?: string | null
           title: string
           updated_at?: string
           user_id: string
@@ -689,18 +1068,24 @@ export type Database = {
           area_id?: string | null
           baths?: number | null
           bedrooms?: number | null
+          buyer_commission?: number | null
           city?: string
           city_id?: string | null
           created_at?: string
           currency?: string
           description?: string | null
           id?: string
+          image_desc?: string[] | null
           images?: string[] | null
+          last_verified?: string | null
+          marketing_tag?: string | null
           price?: number | null
           property_type?: Database["public"]["Enums"]["property_type"]
+          publish?: number | null
           sqft?: number | null
           static_flyer_url?: string | null
           static_html_url?: string | null
+          status?: string | null
           title?: string
           updated_at?: string
           user_id?: string
@@ -822,6 +1207,168 @@ export type Database = {
           id?: number
         }
         Relationships: []
+      }
+      requirements: {
+        Row: {
+          bathrooms: number | null
+          bedrooms: number | null
+          budget: number
+          city_id: string | null
+          created_at: string
+          deal_type: string
+          description: string | null
+          id: string
+          location_area: string
+          property_type: string
+          size: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bathrooms?: number | null
+          bedrooms?: number | null
+          budget: number
+          city_id?: string | null
+          created_at?: string
+          deal_type: string
+          description?: string | null
+          id?: string
+          location_area: string
+          property_type: string
+          size?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bathrooms?: number | null
+          bedrooms?: number | null
+          budget?: number
+          city_id?: string | null
+          created_at?: string
+          deal_type?: string
+          description?: string | null
+          id?: string
+          location_area?: string
+          property_type?: string
+          size?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "requirements_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      signature_audit_log: {
+        Row: {
+          action: string
+          created_at: string | null
+          details: Json | null
+          id: string
+          ip_address: unknown | null
+          performed_by: string | null
+          signature_request_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          performed_by?: string | null
+          signature_request_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          performed_by?: string | null
+          signature_request_id?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "signature_audit_log_signature_request_id_fkey"
+            columns: ["signature_request_id"]
+            isOneToOne: false
+            referencedRelation: "signature_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      signature_requests: {
+        Row: {
+          agreement_id: string
+          created_at: string | null
+          declined_at: string | null
+          expires_at: string | null
+          id: string
+          message: string | null
+          recipient_email: string
+          recipient_id: string
+          recipient_name: string
+          recipient_role: string
+          requester_id: string
+          sent_at: string | null
+          signed_at: string | null
+          status: string
+          updated_at: string | null
+          viewed_at: string | null
+        }
+        Insert: {
+          agreement_id: string
+          created_at?: string | null
+          declined_at?: string | null
+          expires_at?: string | null
+          id?: string
+          message?: string | null
+          recipient_email: string
+          recipient_id: string
+          recipient_name: string
+          recipient_role: string
+          requester_id: string
+          sent_at?: string | null
+          signed_at?: string | null
+          status?: string
+          updated_at?: string | null
+          viewed_at?: string | null
+        }
+        Update: {
+          agreement_id?: string
+          created_at?: string | null
+          declined_at?: string | null
+          expires_at?: string | null
+          id?: string
+          message?: string | null
+          recipient_email?: string
+          recipient_id?: string
+          recipient_name?: string
+          recipient_role?: string
+          requester_id?: string
+          sent_at?: string | null
+          signed_at?: string | null
+          status?: string
+          updated_at?: string | null
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "signature_requests_agreement_id_fkey"
+            columns: ["agreement_id"]
+            isOneToOne: false
+            referencedRelation: "broker_agreements"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       social_posts: {
         Row: {
@@ -992,8 +1539,27 @@ export type Database = {
         Returns: string
       }
       get_connection_degree: {
-        Args: { start_user_id: string; end_user_id: string }
+        Args: { end_user_id: string; start_user_id: string }
         Returns: number
+      }
+      get_member_directory: {
+        Args: {
+          city_filter?: string
+          limit_count?: number
+          offset_value?: number
+        }
+        Returns: {
+          areas: string[]
+          avatar_url: string
+          bio: string
+          city: string
+          company_name: string
+          full_name: string
+          id: string
+          member_since: string
+          properties_count: number
+          rating: number
+        }[]
       }
       get_network_posts: {
         Args: { user_uuid: string }
@@ -1008,29 +1574,29 @@ export type Database = {
       }
       get_network_properties_with_views: {
         Args:
-          | { user_uuid: string; limit_count: number }
-          | { user_uuid: string; limit_count: number; offset_value?: number }
+          | { limit_count: number; offset_value?: number; user_uuid: string }
+          | { limit_count: number; user_uuid: string }
         Returns: {
-          id: string
-          title: string
-          price: number
-          currency: string
-          images: string[]
-          bedrooms: number
           baths: number
+          bedrooms: number
+          currency: string
+          id: string
+          images: string[]
+          price: number
           sqft: number
+          title: string
           view_count: number
         }[]
       }
       get_user_connections_with_profiles: {
-        Args: { user_uuid: string; limit_count: number }
+        Args: { limit_count: number; user_uuid: string }
         Returns: {
-          id: string
-          user_id: string
-          full_name: string
           avatar_url: string
-          property_count: number
+          full_name: string
+          id: string
           last_active: string
+          property_count: number
+          user_id: string
         }[]
       }
       is_admin: {
@@ -1043,8 +1609,17 @@ export type Database = {
       }
     }
     Enums: {
+      agreement_status:
+        | "draft"
+        | "pending_signatures"
+        | "signed"
+        | "executed"
+        | "cancelled"
+        | "expired"
+      commission_type: "percentage" | "fixed_amount"
       property_type: "Rent" | "Sale"
       property_visibility: "Private" | "Network Only" | "All" | "Public"
+      signature_status: "pending" | "signed" | "declined"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1052,21 +1627,25 @@ export type Database = {
   }
 }
 
-type DefaultSchema = Database[Extract<keyof Database, "public">]
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
@@ -1084,14 +1663,16 @@ export type Tables<
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
@@ -1107,14 +1688,16 @@ export type TablesInsert<
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
@@ -1130,14 +1713,16 @@ export type TablesUpdate<
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
@@ -1145,14 +1730,16 @@ export type Enums<
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
@@ -1160,8 +1747,18 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      agreement_status: [
+        "draft",
+        "pending_signatures",
+        "signed",
+        "executed",
+        "cancelled",
+        "expired",
+      ],
+      commission_type: ["percentage", "fixed_amount"],
       property_type: ["Rent", "Sale"],
       property_visibility: ["Private", "Network Only", "All", "Public"],
+      signature_status: ["pending", "signed", "declined"],
     },
   },
 } as const
