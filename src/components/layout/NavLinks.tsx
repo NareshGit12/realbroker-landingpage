@@ -63,7 +63,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
         target="_blank"
         rel="noopener noreferrer"
         className={cn(
-          `${textSizeClass} font-medium transition-colors text-gray-700 hover:text-realtor-600`
+          `${textSizeClass} font-medium transition-colors bg-black text-white hover:bg-gray-800 px-3 py-1 rounded`
         )}
       >
         Propalyst.com
