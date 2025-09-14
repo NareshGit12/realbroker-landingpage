@@ -48,6 +48,30 @@ const NavLinks: React.FC<NavLinksProps> = ({
       >
         Meet our Members
       </button>
+      <button 
+        onClick={() => {
+          // Navigate to original page and jump to "testimonials" section
+          navigate('/original?section=testimonials');
+          if (onItemClick) onItemClick();
+        }}
+        className={cn(
+          `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
+          isActive('/#testimonials') 
+            ? "text-realtor-600 font-semibold" 
+            : "text-gray-700 hover:text-realtor-600"
+        )}
+      >
+        Testimonials
+      </button>
+      <button 
+        onClick={() => handleClick("invite")}
+        className={cn(
+          `${textSizeClass} font-medium transition-colors bg-red-600 text-white hover:bg-red-700 px-3 py-1 rounded border-none cursor-pointer`,
+          isMobile && "w-full max-w-xs"
+        )}
+      >
+        Request Invite
+      </button>
       <a 
         href="https://my.realbroker.app/login"
         target="_blank"
@@ -68,39 +92,6 @@ const NavLinks: React.FC<NavLinksProps> = ({
       >
         Propalyst.com
       </a>
-      <button 
-        onClick={() => {
-          // Navigate to original page and jump to "testimonials" section
-          navigate('/original?section=testimonials');
-          if (onItemClick) onItemClick();
-        }}
-        className={cn(
-          `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
-          isActive('/#testimonials') 
-            ? "text-realtor-600 font-semibold" 
-            : "text-gray-700 hover:text-realtor-600"
-        )}
-      >
-        Testimonials
-      </button>
-      <button 
-        onClick={() => handleClick("invite")}
-        className={cn(
-          "p-0 border-none bg-transparent",
-          isMobile && "w-full max-w-xs"
-        )}
-      >
-        <Button 
-          variant="default" 
-          size={isMobile ? "lg" : "sm"} 
-          className={cn(
-            "bg-realtor-600 hover:bg-realtor-700 shadow-md",
-            isMobile && "w-full"
-          )}
-        >
-          Request Invite
-        </Button>
-      </button>
     </>
   );
 };
