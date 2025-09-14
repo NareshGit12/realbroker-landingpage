@@ -17,10 +17,11 @@ const FooterNavigation: React.FC<FooterNavigationProps> = ({ navigateToSection }
     {
       title: "Explore",
       items: [
-        { name: "Features", action: () => navigateToSection("/", "features") },
         { name: "How It Works", action: () => navigateToSection("/original", "how-it-works") },
         { name: "Pricing", path: "/pricing" },
         { name: "Meet Our Members", path: "/members" },
+        { name: "Member Login", path: "https://my.realbroker.app/login" },
+        { name: "Propalyst.com", path: "https://propalyst.com" },
         { name: "Testimonials", action: () => navigateToSection("/original", "testimonials") },
         { name: "FAQ", path: "/faq" }
       ]
@@ -53,9 +54,20 @@ const FooterNavigation: React.FC<FooterNavigationProps> = ({ navigateToSection }
             {group.items.map((item) => (
               <li key={item.name}>
                 {'path' in item ? (
-                  <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
-                    {item.name}
-                  </Link>
+                  item.path.startsWith('http') ? (
+                    <a 
+                      href={item.path} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-muted-foreground hover:text-realtor-600 transition-colors"
+                    >
+                      {item.name}
+                    </a>
+                  ) : (
+                    <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                      {item.name}
+                    </Link>
+                  )
                 ) : (
                   <button 
                     onClick={item.action}

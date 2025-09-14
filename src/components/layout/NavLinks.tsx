@@ -35,21 +35,6 @@ const NavLinks: React.FC<NavLinksProps> = ({
     <>
       <button 
         onClick={() => {
-          // Always navigate to Home2 and jump to "features" section
-          navigate('/?section=features');
-          if (onItemClick) onItemClick();
-        }}
-        className={cn(
-          `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
-          isActive('/#features') 
-            ? "text-realtor-600 font-semibold" 
-            : "text-gray-700 hover:text-realtor-600"
-        )}
-      >
-        Features
-      </button>
-      <button 
-        onClick={() => {
           // Navigate to members page
           navigate('/members');
           if (onItemClick) onItemClick();
@@ -63,6 +48,26 @@ const NavLinks: React.FC<NavLinksProps> = ({
       >
         Meet our Members
       </button>
+      <a 
+        href="https://my.realbroker.app/login"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cn(
+          `${textSizeClass} font-medium transition-colors text-gray-700 hover:text-realtor-600`
+        )}
+      >
+        Member Login
+      </a>
+      <a 
+        href="https://propalyst.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cn(
+          `${textSizeClass} font-medium transition-colors text-gray-700 hover:text-realtor-600`
+        )}
+      >
+        Propalyst.com
+      </a>
       <button 
         onClick={() => {
           // Navigate to original page and jump to "testimonials" section
