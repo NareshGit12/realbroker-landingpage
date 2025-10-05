@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 
 const headings = [
-  'RealBroker, Built for the next generation\n of Real Estate Professionals',
+  'RealBroker, A smarter way for brokers to work together',
   'Manage listings, requirements & deals in one place',
   'Build your brand, not just your listings'
 ];
