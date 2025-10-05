@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 
 const headings = [
-  'Elevate Your \nBrokerage Success',
+  'Join Bangalore\'s \n Premium Broker Network',
   'Collaborate with other \nQuality professionals',
   'Expand your \nRealEstate Network today'
 ];
