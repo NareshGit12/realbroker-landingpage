@@ -6,8 +6,8 @@ import RevealAnimation from '@/components/ui/RevealAnimation';
 
 const headings = [
   'Join Bangalore\'s \n Premium Broker Network',
-  'Get tools to market\nYour Properties',
-  'Expand your \n Network today'
+  'Get a free website \nto showcase your business',
+  'Market your properties \n to premium buyers'
 ];
 
 const MarketingHero: React.FC = () => {
