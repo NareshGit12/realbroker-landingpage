@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 
 const headings = [
-  'Join Bangalore\'s \n Premium Broker Network',
-  'Get a free website \nto showcase your business',
-  'Market your properties \n to premium buyers'
+  'RealBroker, Built for the next generation\n of Real Estate Professionals',
+  'Manage listings, requirements & deals in one place',
+  'Build your brand, not just your listings'
 ];
 
 const MarketingHero: React.FC = () => {
@@ -76,8 +76,8 @@ const MarketingHero: React.FC = () => {
             
             <RevealAnimation delay={200}>
               <p className="text-lg md:text-xl text-gray-600 mb-6 mx-auto max-w-2xl">
-                Join Bangalore's exclusive network of elite real estate brokers. 
-                Share inventory, discover collaborations, and close high-value deals faster.
+                RealBroker is a professional network for verified real estate agents — 
+                built to make your workflow faster, smarter, and more connected..
               </p>
             </RevealAnimation>
             
