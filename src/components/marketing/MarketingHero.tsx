@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 
 const headings = [
-  'RealBroker, A smarter way for brokers to work together',
+  'A smarter way for brokers to work together',
   'Manage listings, requirements & deals in one place',
   'Build your brand, not just your listings'
 ];
@@ -76,8 +76,8 @@ const MarketingHero: React.FC = () => {
             
             <RevealAnimation delay={200}>
               <p className="text-lg md:text-xl text-gray-600 mb-6 mx-auto max-w-2xl">
-                RealBroker is a professional network for verified real estate agents — 
-                built to make your workflow faster, smarter, and more connected..
+                RealBroker is a network of Quality agents, with technology to 
+                make your workflow faster, smarter, and more connected..
               </p>
             </RevealAnimation>
             
