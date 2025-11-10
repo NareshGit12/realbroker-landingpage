@@ -9,7 +9,7 @@ import Autoplay from 'embla-carousel-autoplay';
 
 const MeetOurMembers = () => {
   const [members, setMembers] = useState<BrokerInfo[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [displayCount, setDisplayCount] = useState(10);
   
   // Configure autoplay plugin with smoother scrolling
