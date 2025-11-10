@@ -34,6 +34,7 @@ const MeetOurMembers = () => {
 
   useEffect(() => {
     async function fetchMembers() {
+      if (loading) return;
       console.log('[MeetOurMembers] fetching via RPC get_member_directory with limit:', displayCount);
       setLoading(true);
 
@@ -98,7 +99,7 @@ const MeetOurMembers = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
     
-  }, [displayCount, loading]);
+  }, [displayCount]);
 
   // Fallback to sample data if no members found
   const useFallbackData = members.length === 0 && !loading;
