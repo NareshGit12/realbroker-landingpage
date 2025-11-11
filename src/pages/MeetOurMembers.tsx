@@ -166,7 +166,7 @@ const MeetOurMembers = () => {
                 ) : (
                   <div className="flex flex-wrap justify-center gap-6">
                     {displayMembers.map((member) => (
-                      <div className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)]">
+                      <div className="w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)]">
                         <BrokerCard key={member.id} broker={member} />
                       </div>
                     ))}
