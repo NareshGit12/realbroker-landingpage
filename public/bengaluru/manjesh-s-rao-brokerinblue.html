@@ -174,11 +174,16 @@ Yours #BrokerInBlue
       position: relative;
     }
     
+    /* Mobile-first: centered layout */
     .avatar-container {
       position: absolute;
       bottom: -50px;
       left: 50%;
       transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
     }
     
     .avatar {
@@ -194,12 +199,95 @@ Yours #BrokerInBlue
       padding: 4rem 2rem 2rem;
       text-align: center;
     }
+
+    .card-left-section {
+      display: none;
+    }
+
+    .card-right-section {
+      width: 100%;
+    }
+
+    /* Desktop layout: profile on left, details on right */
+    @media (min-width: 768px) {
+      .card-header {
+        display: none;
+      }
+
+      .avatar-container {
+        position: static;
+        transform: none;
+      }
+
+      .card-content {
+        display: flex;
+        gap: 3rem;
+        padding: 3rem;
+        text-align: left;
+      }
+
+      .card-left-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      .avatar {
+        border: none;
+        width: 200px;
+        height: 200px;
+      }
+
+      .company-logo {
+        max-width: 200px;
+        max-height: 100px;
+        object-fit: contain;
+      }
+
+      .associations-badges {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .association-badge {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+      }
+
+      .card-right-section {
+        flex: 1;
+      }
+
+      .rating {
+        justify-content: flex-start;
+      }
+
+      .company-info {
+        align-items: flex-start;
+      }
+
+      .badges {
+        justify-content: flex-start;
+      }
+    }
     
     .broker-name {
       font-size: 2rem;
       font-weight: bold;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
       color: hsl(0 84% 22%);
+    }
+
+    .company-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: hsl(351 83% 58%);
+      margin-bottom: 0.5rem;
     }
     
     .rating {
@@ -284,45 +372,50 @@ Yours #BrokerInBlue
       border: 1px solid hsl(0 20% 90%);
     }
     
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
       margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid hsl(0 20% 90%);
     }
-    
-    .stat {
-      text-align: center;
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: hsl(0 20% 50%);
+      text-decoration: none;
+      transition: color 0.2s;
     }
-    
-    .stat-value {
-      font-size: 1.5rem;
-      font-weight: bold;
+
+    .contact-item:hover {
       color: hsl(351 83% 58%);
     }
-    
-    .stat-label {
-      font-size: 0.875rem;
+
+    .contact-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: hsl(351 83% 58%);
+      flex-shrink: 0;
+    }
+
+    .member-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid hsl(0 20% 90%);
       color: hsl(0 20% 50%);
-      margin-top: 0.25rem;
+      font-size: 0.875rem;
     }
-    
-    .cta-button {
-      display: inline-block;
-      background: linear-gradient(135deg, hsl(351 83% 58%) 0%, hsl(351 83% 48%) 100%);
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 0.75rem;
-      text-decoration: none;
-      font-weight: 600;
-      margin-top: 2rem;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    .cta-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+    @media (min-width: 768px) {
+      .contact-info, .member-info {
+        text-align: left;
+      }
     }
     
     /* Footer Styles */
@@ -412,12 +505,19 @@ Yours #BrokerInBlue
       margin-bottom: 2rem;
     }
 
-    @media (min-width: 768px) {
+    /* Mobile: 2x2 grid */
+    @media (min-width: 480px) {
       .properties-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
+    @media (min-width: 768px) {
+      .properties-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+ 
     @media (min-width: 1024px) {
       .properties-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -630,49 +730,64 @@ Yours #BrokerInBlue
       </div>
       
       <div class="card-content">
-        <h1 class="broker-name">Manjesh S Rao</h1>
-        
-        <div class="rating">
+        <!-- Left Section: Profile Picture & Company Logo (Desktop Only) -->
+        <div class="card-left-section">
+          <img 
+            src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/avatars/avatars/1743677158076.png" 
+            alt="Manjesh S Rao"
+            class="avatar"
+          />
           
-            <span class="star">★</span>
-          
-            <span class="star">★</span>
-          
-            <span class="star">★</span>
-          
-            <span class="star">★</span>
-          
-            <span class="star">★</span>
-          
-          <span class="rating-value">5.0</span>
-        </div>
-        
-        <div class="company-info">
-          
-            <div class="info-row">
-              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              <span>BrokerInBlue</span>
-            </div>
-          
-          
-          
-            <div class="info-row">
-              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>Bengaluru</span>
-            </div>
+          <div class="rating">
+            
+              <span class="star">★</span>
+            
+              <span class="star">★</span>
+            
+              <span class="star">★</span>
+            
+              <span class="star">★</span>
+            
+              <span class="star">★</span>
+            
+            <span class="rating-value">5.0</span>
+          </div>
+
           
         </div>
-        
-        <div class="divider"></div>
-        
-        
-          <div class="bio">
-            BrokerInBlue – Bengaluru’s Premier Luxury Real Estate Experts.
+
+        <!-- Right Section: Broker Details -->
+        <div class="card-right-section">
+          <h1 class="broker-name">Manjesh S Rao</h1>
+          
+          
+            <div class="company-name">BrokerInBlue</div>
+          
+
+          
+            <div style="color: hsl(0 20% 50%); margin-bottom: 1rem;">Bengaluru</div>
+          
+
+          <!-- Mobile rating (hidden on desktop) -->
+          <div class="rating" style="display: flex; margin-bottom: 1rem;">
+            
+              <span class="star">★</span>
+            
+              <span class="star">★</span>
+            
+              <span class="star">★</span>
+            
+              <span class="star">★</span>
+            
+              <span class="star">★</span>
+            
+            <span class="rating-value">5.0</span>
+          </div>
+
+          
+            <h2 style="font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; color: hsl(0 84% 22%);">About Me</h2>
+            <div class="bio">
+              BrokerInBlue – Bengaluru’s Premier Luxury Real Estate Experts.
 
 With over 105 years of combined experience, BrokerInBlue is a new-age real estate collective, redefining how luxury homes are discovered, sold and celebrated across Bengaluru.
 
@@ -680,45 +795,56 @@ Rooted in trust, driven by results and proudly led by a die-hard RCB fan and a p
 
 Yours #BrokerInBlue 
 
-          </div>
-        
-        
-        
-          <div class="expertise">
-            <h2 class="expertise-title">Areas of Expertise</h2>
-            <div class="badges">
-              
-                <span class="badge">Sadashivnagar</span>
-              
-                <span class="badge">RMV</span>
-              
-                <span class="badge">Hebbal &amp; all parts of #NorthBangalore</span>
-              
             </div>
-          </div>
-        
-        
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-value">
-              2025
+          
+          
+          
+            <div class="expertise">
+              <h2 class="expertise-title">Areas of Expertise</h2>
+              <div class="badges">
+                
+                  <span class="badge">Sadashivnagar</span>
+                
+                  <span class="badge">RMV</span>
+                
+                  <span class="badge">Hebbal &amp; all parts of #NorthBangalore</span>
+                
+              </div>
             </div>
-            <div class="stat-label">Member Since</div>
-          </div>
           
-          <div class="stat">
-            <div class="stat-value">50</div>
-            <div class="stat-label">Listed Properties</div>
+
+          <!-- Contact Information -->
+          <div class="contact-info">
+            
+
+            
+
+            
           </div>
-          
+
+          <!-- Member Info -->
+          <div class="member-info">
+            <div>Bengaluru</div>
+            <div>Member since Mar 2025</div>
+            
+          </div>
         </div>
-        
-        <a href="https://my.realbroker.app/msr" class="cta-button">
-          View Full Profile & Contact
-        </a>
       </div>
     </div>
   </div>
+
+  <style>
+    @media (min-width: 768px) {
+      .card-right-section .rating {
+        display: none !important;
+      }
+    }
+    @media (max-width: 767px) {
+      .card-left-section .rating {
+        display: none !important;
+      }
+    }
+  </style>
   
   <!-- Property Listings Section -->
   
