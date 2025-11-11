@@ -910,6 +910,15 @@ Yours #BrokerInBlue
           
 
           
+            <img 
+              src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/company/1758899394302.jpeg" 
+              alt="BrokerInBlue Logo" 
+              class="company-logo"
+              style="max-width: 200px; max-height: 80px; object-fit: contain; margin-top: 0.5rem; margin-bottom: 0.5rem;"
+            />
+          
+
+          
             <div style="color: hsl(0 20% 50%); margin-bottom: 1rem;">Bengaluru</div>
           
 
@@ -4787,7 +4796,7 @@ Yours #BrokerInBlue
     let currentPage = 1;
     const totalProperties = 86;
     
-    function showPage(page) {
+    function showPage(page, shouldScroll = false) {
       const allCards = document.querySelectorAll('[data-property-index]');
       const start = (page - 1) * propertiesPerPage;
       const end = start + propertiesPerPage;
@@ -4806,8 +4815,10 @@ Yours #BrokerInBlue
       document.getElementById('nextBtn').disabled = page === totalPages;
       document.getElementById('pageInfo').textContent = `Page ${page} of ${totalPages}`;
       
-      // Scroll to properties section
-      document.querySelector('.properties-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Scroll to properties section only when user changes page, not on initial load
+      if (shouldScroll) {
+        document.querySelector('.properties-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
     
     function changePage(direction) {
@@ -4815,7 +4826,7 @@ Yours #BrokerInBlue
       const newPage = currentPage + direction;
       if (newPage >= 1 && newPage <= totalPages) {
         currentPage = newPage;
-        showPage(currentPage);
+        showPage(currentPage, true);
       }
     }
     
@@ -4825,13 +4836,13 @@ Yours #BrokerInBlue
       if (newPerPage !== propertiesPerPage) {
         propertiesPerPage = newPerPage;
         currentPage = 1; // Reset to first page
-        showPage(1);
+        showPage(1, false);
       }
     });
     
-    // Initialize pagination if needed
+    // Initialize pagination if needed (without scrolling on initial load)
     if (totalProperties > 6) {
-      showPage(1);
+      showPage(1, false);
     }
   </script>
   
