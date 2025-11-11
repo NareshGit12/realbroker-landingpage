@@ -14,9 +14,9 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 function generateSlug(name, company) {
-  const nameSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const companySlug = company ? company.toLowerCase().replace(/[^a-z0-9]+/g, '-') : '';
-  return companySlug ? `${nameSlug}_${companySlug}` : nameSlug;
+  const nameSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const companySlug = company ? company.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : '';
+  return companySlug ? `${nameSlug}-${companySlug}` : nameSlug;
 }
 
 async function generateBrokerHTML(broker, template) {
@@ -37,16 +37,22 @@ async function generateBrokerHTML(broker, template) {
   // Render HTML
   const html = await ejs.render(template, { broker: brokerData });
 
-  // Generate filename
+  // Generate filename and directory structure
   const slug = generateSlug(broker.full_name, broker.company_name);
-  const filename = `${broker.vanity_url}_${slug}.html`;
-  const filePath = path.join(process.cwd(), 'public', filename);
+  const citySlug = broker.city ? broker.city.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : 'other';
+  const filename = `${slug}.html`;
+  
+  // Create city directory if it doesn't exist
+  const cityDir = path.join(process.cwd(), 'public', citySlug);
+  await fs.mkdir(cityDir, { recursive: true });
+  
+  const filePath = path.join(cityDir, filename);
 
   // Save HTML file
   await fs.writeFile(filePath, html, 'utf8');
 
   // Update broker profile with static URL
-  const staticUrl = `/${filename}`;
+  const staticUrl = `/${citySlug}/${filename}`;
   await supabase
     .from('profiles')
     .update({ static_html_url: staticUrl })
