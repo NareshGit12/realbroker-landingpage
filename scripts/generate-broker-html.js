@@ -129,13 +129,39 @@ async function main() {
       const queueItem = queueItems.find(item => item.entity_id === broker.id);
       
       try {
+        const startTime = Date.now();
+        
         // Update queue status to processing
         await supabase
           .from('html_generation_queue')
           .update({ status: 'processing', started_at: new Date().toISOString() })
           .eq('id', queueItem.id);
 
-        const filename = await generateBrokerHTML(broker, template);
+        const result = await generateBrokerHTML(broker, template);
+        const generationDuration = Date.now() - startTime;
+        
+        // Get file stats
+        const slug = generateSlug(broker.full_name, broker.company_name);
+        const citySlug = broker.city ? broker.city.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : 'other';
+        const staticUrl = `/${citySlug}/${slug}.html`;
+        const filePath = path.join(process.cwd(), 'public', citySlug, `${slug}.html`);
+        const stats = await fs.stat(filePath);
+        
+        // Update or insert metadata
+        await supabase
+          .from('html_generation_metadata')
+          .upsert({
+            entity_type: 'broker',
+            entity_id: broker.id,
+            html_path: staticUrl,
+            file_size_bytes: stats.size,
+            generation_duration_ms: generationDuration,
+            last_generated_at: new Date().toISOString(),
+            needs_regeneration: false,
+            updated_at: new Date().toISOString()
+          }, {
+            onConflict: 'entity_type,entity_id'
+          });
         
         // Mark as completed in queue
         await supabase
@@ -146,7 +172,7 @@ async function main() {
           })
           .eq('id', queueItem.id);
 
-        results.push({ broker: broker.full_name, success: true, filename });
+        results.push({ broker: broker.full_name, success: true, filename: result });
       } catch (error) {
         console.error(`Error generating HTML for ${broker.full_name}:`, error.message);
         
