@@ -397,7 +397,7 @@ const AdminHTMLGeneration = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => window.open(`https://show.realbroker.app${item.html_path}`, "_blank")}
+                    onClick={() => window.open(`https://www.realbroker.app${item.html_path}`, "_blank")}
                   >
                     <ExternalLink className="w-4 h-4" />
                   </Button>
