@@ -1,21 +1,10 @@
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import NewsletterSubscription from './footer/NewsletterSubscription';
 import FooterNavigation from './footer/FooterNavigation';
 import SocialLinks from './footer/SocialLinks';
 
 const Footer: React.FC = () => {
-  const navigate = useNavigate();
-
-  const navigateToSection = (path: string, section?: string) => {
-    if (section) {
-      navigate(`${path}?section=${section}`);
-    } else {
-      navigate(path);
-    }
-  };
-
   return (
     <footer className="bg-white pt-16 pb-8 relative">
       {/* Top Divider */}
@@ -31,7 +20,7 @@ const Footer: React.FC = () => {
           
           {/* Columns 2-4 */}
           <div className="col-span-1 sm:col-span-2 md:col-span-3">
-            <FooterNavigation navigateToSection={navigateToSection} />
+            <FooterNavigation />
           </div>
         </div>
         

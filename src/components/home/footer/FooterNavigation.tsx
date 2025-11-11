@@ -4,24 +4,17 @@ import { Link } from 'react-router-dom';
 
 type NavItem = {
   name: string;
-  path?: string;
-  action?: () => void;
+  path: string;
 };
 
-type FooterNavigationProps = {
-  navigateToSection: (path: string, section?: string) => void;
-};
-
-const FooterNavigation: React.FC<FooterNavigationProps> = ({ navigateToSection }) => {
+const FooterNavigation: React.FC = () => {
   const navigationGroups = [
     {
       title: "Explore",
       items: [
-        { name: "How It Works", action: () => navigateToSection("/", "how-it-works") },
         { name: "Meet Our Members", path: "/members" },
         { name: "Member Login", path: "https://my.realbroker.app/login" },
-        { name: "Propalyst.com", path: "https://propalyst.com" },
-        { name: "Testimonials", action: () => navigateToSection("/", "testimonials") }
+        { name: "Propalyst.com", path: "https://propalyst.com" }
       ]
     },
     {
@@ -49,28 +42,19 @@ const FooterNavigation: React.FC<FooterNavigationProps> = ({ navigateToSection }
           <ul className="space-y-3">
             {group.items.map((item) => (
               <li key={item.name}>
-                {'path' in item ? (
-                  item.path.startsWith('http') ? (
-                    <a 
-                      href={item.path} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="text-muted-foreground hover:text-realtor-600 transition-colors"
-                    >
-                      {item.name}
-                    </a>
-                  ) : (
-                    <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
-                      {item.name}
-                    </Link>
-                  )
-                ) : (
-                  <button 
-                    onClick={item.action}
-                    className="text-muted-foreground hover:text-realtor-600 transition-colors bg-transparent border-none cursor-pointer p-0"
+                {item.path?.startsWith('http') ? (
+                  <a 
+                    href={item.path} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-muted-foreground hover:text-realtor-600 transition-colors"
                   >
                     {item.name}
-                  </button>
+                  </a>
+                ) : (
+                  <Link to={item.path} className="text-muted-foreground hover:text-realtor-600 transition-colors">
+                    {item.name}
+                  </Link>
                 )}
               </li>
             ))}
