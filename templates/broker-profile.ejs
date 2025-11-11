@@ -133,9 +133,120 @@
       color: hsl(351 83% 58%);
     }
     
+    /* Hamburger Menu Button */
+    .hamburger-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: hsl(351 83% 58%);
+      transition: color 0.2s;
+    }
+    
+    .hamburger-btn:hover {
+      color: hsl(351 83% 48%);
+    }
+    
+    .hamburger-icon {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+    
+    /* Mobile Navigation Overlay */
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 75%;
+      max-width: 300px;
+      height: 100vh;
+      background: white;
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+      transition: right 0.3s ease;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+    }
+    
+    .mobile-nav.open {
+      right: 0;
+    }
+    
+    .mobile-nav-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 2rem;
+    }
+    
+    .mobile-nav-close {
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: hsl(0 0% 40%);
+      padding: 0;
+    }
+    
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .mobile-nav-link {
+      text-decoration: none;
+      color: hsl(0 0% 0%);
+      font-weight: 500;
+      font-size: 1.125rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid hsl(0 20% 90%);
+      transition: color 0.2s;
+    }
+    
+    .mobile-nav-link:hover {
+      color: hsl(351 83% 58%);
+    }
+    
+    /* Mobile Nav Overlay (backdrop) */
+    .mobile-nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 99;
+    }
+    
+    .mobile-nav-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+    
     @media (min-width: 768px) {
       .nav-links {
         display: flex;
+      }
+      
+      .hamburger-btn {
+        display: none;
+      }
+      
+      .mobile-nav,
+      .mobile-nav-overlay {
+        display: none;
       }
     }
     
@@ -713,8 +824,33 @@
         <a href="https://realbroker.app/members" class="nav-link">Other Members</a>
         <a href="https://propalyst.com" class="nav-link" target="_blank" rel="noopener noreferrer">Propalyst.com</a>
       </nav>
+      
+      <!-- Mobile Menu Button -->
+      <button class="hamburger-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <svg class="hamburger-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12h18M3 6h18M3 18h18" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
   </header>
+  
+  <!-- Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+  
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close Menu">
+        <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="https://realbroker.app/members" class="mobile-nav-link">Other Members</a>
+      <a href="https://propalyst.com" class="mobile-nav-link" target="_blank" rel="noopener noreferrer">Propalyst.com</a>
+    </div>
+  </nav>
   
   <!-- Main Content -->
   <div class="container">
@@ -930,6 +1066,33 @@
   </section>
   
   <script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileNavClose = document.getElementById('mobileNavClose');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+    
+    function openMobileMenu() {
+      mobileNav.classList.add('open');
+      mobileNavOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeMobileMenu() {
+      mobileNav.classList.remove('open');
+      mobileNavOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    
+    mobileMenuBtn.addEventListener('click', openMobileMenu);
+    mobileNavClose.addEventListener('click', closeMobileMenu);
+    mobileNavOverlay.addEventListener('click', closeMobileMenu);
+    
+    // Close mobile menu on link click
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+  
     // Responsive properties per page
     function getPropertiesPerPage() {
       return window.innerWidth < 768 ? 6 : 9;
