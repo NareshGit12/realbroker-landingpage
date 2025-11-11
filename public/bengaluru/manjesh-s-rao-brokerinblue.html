@@ -146,9 +146,120 @@ Yours #BrokerInBlue
       color: hsl(351 83% 58%);
     }
     
+    /* Hamburger Menu Button */
+    .hamburger-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: hsl(351 83% 58%);
+      transition: color 0.2s;
+    }
+    
+    .hamburger-btn:hover {
+      color: hsl(351 83% 48%);
+    }
+    
+    .hamburger-icon {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+    
+    /* Mobile Navigation Overlay */
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 75%;
+      max-width: 300px;
+      height: 100vh;
+      background: white;
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+      transition: right 0.3s ease;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+    }
+    
+    .mobile-nav.open {
+      right: 0;
+    }
+    
+    .mobile-nav-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 2rem;
+    }
+    
+    .mobile-nav-close {
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: hsl(0 0% 40%);
+      padding: 0;
+    }
+    
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .mobile-nav-link {
+      text-decoration: none;
+      color: hsl(0 0% 0%);
+      font-weight: 500;
+      font-size: 1.125rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid hsl(0 20% 90%);
+      transition: color 0.2s;
+    }
+    
+    .mobile-nav-link:hover {
+      color: hsl(351 83% 58%);
+    }
+    
+    /* Mobile Nav Overlay (backdrop) */
+    .mobile-nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 99;
+    }
+    
+    .mobile-nav-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+    
     @media (min-width: 768px) {
       .nav-links {
         display: flex;
+      }
+      
+      .hamburger-btn {
+        display: none;
+      }
+      
+      .mobile-nav,
+      .mobile-nav-overlay {
+        display: none;
       }
     }
     
@@ -232,12 +343,28 @@ Yours #BrokerInBlue
         align-items: center;
         gap: 1.5rem;
         flex-shrink: 0;
+        position: relative;
+        padding-top: 6rem;
+      }
+
+      .card-left-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 140px;
+        background: linear-gradient(135deg, hsl(351 83% 58%) 0%, hsl(351 83% 48%) 100%);
+        border-radius: 1rem 0 0 0;
       }
 
       .avatar {
-        border: none;
         width: 200px;
         height: 200px;
+        border: 5px solid white;
+        position: relative;
+        z-index: 10;
+        margin-top: -5rem;
       }
 
       .company-logo {
@@ -261,9 +388,6 @@ Yours #BrokerInBlue
 
       .card-right-section {
         flex: 1;
-        padding: 2rem;
-        background: linear-gradient(135deg, hsl(351 83% 98%) 0%, hsl(351 83% 96%) 100%);
-        border-radius: 0 12px 12px 0;
       }
 
       .rating {
@@ -713,8 +837,33 @@ Yours #BrokerInBlue
         <a href="https://realbroker.app/members" class="nav-link">Other Members</a>
         <a href="https://propalyst.com" class="nav-link" target="_blank" rel="noopener noreferrer">Propalyst.com</a>
       </nav>
+      
+      <!-- Mobile Menu Button -->
+      <button class="hamburger-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+        <svg class="hamburger-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12h18M3 6h18M3 18h18" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
   </header>
+  
+  <!-- Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+  
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close Menu">
+        <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="https://realbroker.app/members" class="mobile-nav-link">Other Members</a>
+      <a href="https://propalyst.com" class="mobile-nav-link" target="_blank" rel="noopener noreferrer">Propalyst.com</a>
+    </div>
+  </nav>
   
   <!-- Main Content -->
   <div class="container">
@@ -879,12 +1028,52 @@ Yours #BrokerInBlue
   <section class="properties-section">
     <div class="properties-header">
       <h2 class="properties-title">Listed Properties</h2>
-      <p class="properties-subtitle">Browse through 50 available properties</p>
+      <p class="properties-subtitle">Browse through 86 available properties</p>
     </div>
     
     <div class="properties-grid" id="propertiesGrid">
       
-        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-in-hosahalli.html" class="property-card" data-property-index="0" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/spacious-4bhk-villa-in-hennur-.html" class="property-card" data-property-index="0" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB114_1758014761356.jpeg" alt="Spacious 4BHK Villa in Hennur Chikkajala" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious 4BHK Villa in Hennur Chikkajala</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>4 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Hennur</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 3,70,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-in-hosahalli.html" class="property-card" data-property-index="1" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB63_1758014458663.jpeg" alt="Luxury 5BHK Villa in Hosahalli, Airport Road" class="property-image" />
           
@@ -931,7 +1120,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/prime-residential-plot-in-sanj.html" class="property-card" data-property-index="1" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/prime-residential-plot-in-sanj.html" class="property-card" data-property-index="2" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB157_1758015354742.jpeg" alt="Prime Residential Plot in Sanjaynagar" class="property-image" />
           
@@ -964,7 +1153,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/spacious-3bhk-villa-in-jakkur-.html" class="property-card" data-property-index="2" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/spacious-3bhk-villa-in-jakkur-.html" class="property-card" data-property-index="3" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB160_1758015394053.jpeg" alt="Spacious 3BHK Villa in Jakkur, GKVK Layout" class="property-image" />
           
@@ -1011,7 +1200,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxurious-3bhk-apartment-in-de.html" class="property-card" data-property-index="3" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxurious-3bhk-apartment-in-de.html" class="property-card" data-property-index="4" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB3_1758013944183.jpeg" alt="Luxurious 3BHK Apartment in Devanahalli, Bengaluru" class="property-image" />
           
@@ -1058,7 +1247,167 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/lakefront-plot-manyata-earth-s.html" class="property-card" data-property-index="4" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/prime-banaswadi-plot-1755-sqft.html" class="property-card" data-property-index="5" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB153_1758015282781.jpeg" alt="Prime Banaswadi Plot: 1755 sq.ft South Facing" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Prime Banaswadi Plot: 1755 sq.ft South Facing</h3>
+            
+            <div class="property-details">
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Banaswadi </span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,86,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/spacious-3bhk-villa-in-banaswa.html" class="property-card" data-property-index="6" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB152_1758015275493.jpeg" alt="Spacious 3BHK Villa in Banaswadi" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious 3BHK Villa in Banaswadi</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Banaswadi </span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,85,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-2bhk-apartment-in-sakar.html" class="property-card" data-property-index="7" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB55_1758014343236.jpeg" alt="Luxury 2BHK Apartment in Sakar Nagar, L&amp;T" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 2BHK Apartment in Sakar Nagar, L&amp;T</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>2 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>1,355 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Sahakar Nagar</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,18,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-3bhk-in-rmz-galleria-ye.html" class="property-card" data-property-index="8" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB173_1758015888748.jpeg" alt="Luxury 3BHK in RMZ Galleria, Yelahanka" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 3BHK in RMZ Galleria, Yelahanka</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Yelahanka </span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,35,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/lakefront-plot-manyata-earth-s.html" class="property-card" data-property-index="9" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB109_1758014715072.jpeg" alt="Lakefront Plot: Manyata Earth Song, Devanahalli" class="property-image" />
           
@@ -1098,7 +1447,87 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-yeshwanth.html" class="property-card" data-property-index="5" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/spacious-2bhk-in-tata-aquila-h.html" class="property-card" data-property-index="10" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB40_1758014261854.png" alt="Spacious 2BHK in Tata Aquila Heights, YASHWANTPUR" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious 2BHK in Tata Aquila Heights, YASHWANTPUR</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>2 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>1,478 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Yeshwantpur</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,28,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/sanjaynagar-villa-prime-1680-s.html" class="property-card" data-property-index="11" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB180_1758015966336.jpeg" alt="Sanjaynagar Villa: Prime 1680 sq.ft Plot with House" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Sanjaynagar Villa: Prime 1680 sq.ft Plot with House</h3>
+            
+            <div class="property-details">
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Sanjaynagar </span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 3,60,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-yeshwanth.html" class="property-card" data-property-index="12" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB116_1758014778310.jpeg" alt="Luxury 4BHK Villa in Yeshwanthpur" class="property-image" />
           
@@ -1145,7 +1574,174 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-in-jakkur-no.html" class="property-card" data-property-index="6" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/prime-ulsoor-plot-invest-in-yo.html" class="property-card" data-property-index="13" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB44_1758014289795.jpeg" alt="Prime Ulsoor Plot: Invest in your future" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Prime Ulsoor Plot: Invest in your future</h3>
+            
+            <div class="property-details">
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Promenade road, Ulsoor</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 35,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/spacious-6bhk-villa-in-ms-paly.html" class="property-card" data-property-index="14" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB169_1758015733717.jpeg" alt="Spacious 6BHK Villa in MS Palya Circle" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious 6BHK Villa in MS Palya Circle</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>6 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>MS Palya circle</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,00,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/spacious-3bhk-in-brigade-el-do.html" class="property-card" data-property-index="15" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB17_1758014089218.jpeg" alt="Spacious 3BHK in Brigade El Dorado, Bagalur" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious 3BHK in Brigade El Dorado, Bagalur</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>1,000 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Bagalur </span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,60,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-near-bengalu.html" class="property-card" data-property-index="16" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB119_1758014811974.octet-stream" alt="Luxury 5BHK Villa near Bengaluru Airport" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 5BHK Villa near Bengaluru Airport</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>5 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>3,349 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Off the Bengaluru International Airport Road Jala Hobli, North, Hosahalli</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 5,80,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-in-jakkur-no.html" class="property-card" data-property-index="17" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB156_1758015329256.jpeg" alt="Luxury 5BHK Villa in Jakkur, North-East Facing" class="property-image" />
           
@@ -1192,7 +1788,40 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/spacious-devanahalli-plot-west.html" class="property-card" data-property-index="7" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/premium-north-east-facing-plot.html" class="property-card" data-property-index="18" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB149_1758015268015.jpeg" alt="Premium North East Facing Plot in Purva Oakshire" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Premium North East Facing Plot in Purva Oakshire</h3>
+            
+            <div class="property-details">
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Rampura Hennur</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,43,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/spacious-devanahalli-plot-west.html" class="property-card" data-property-index="19" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB43_1758014285916.jpeg" alt="Spacious Devanahalli Plot: West Facing, A-Khata" class="property-image" />
           
@@ -1225,7 +1854,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxurious-4bhk-in-raheja-pebbl.html" class="property-card" data-property-index="8" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxurious-4bhk-in-raheja-pebbl.html" class="property-card" data-property-index="20" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB176_1758015922607.jpeg" alt="Luxurious 4BHK in Raheja Pebble Bay, Dollars Colony" class="property-image" />
           
@@ -1272,7 +1901,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-3bhk-villa-off-airport-.html" class="property-card" data-property-index="9" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-3bhk-villa-off-airport-.html" class="property-card" data-property-index="21" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB154_1758015296178.jpeg" alt="Assetz Earth &amp; Essence  3BHK Villa Off Airport Road" class="property-image" />
           
@@ -1319,7 +1948,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-on-airport-r.html" class="property-card" data-property-index="10" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-on-airport-r.html" class="property-card" data-property-index="22" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB13_1758014047299.jpeg" alt="Luxury 4BHK Villa on Airport Road -  Embassy Boulevard" class="property-image" />
           
@@ -1366,7 +1995,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-for-rent-in-.html" class="property-card" data-property-index="11" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-for-rent-in-.html" class="property-card" data-property-index="23" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB1_1758013907946.jpeg" alt="Luxury 5BHK Villa for Rent in Devanahalli" class="property-image" />
           
@@ -1406,16 +2035,16 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-3bhk-villa-near-manyath.html" class="property-card" data-property-index="12" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/spacious-3bhk-in-lt-raintree-h.html" class="property-card" data-property-index="24" target="_blank" rel="noopener noreferrer">
           
-            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB9_1758023292990.jpeg" alt="Luxury 3BHK Villa near Manyatha Tech Park" class="property-image" />
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB164_1758015547212.jpeg" alt="Spacious 3BHK in L&amp;T Raintree, Hebbal" class="property-image" />
           
           
           <div class="property-content">
             
               <span class="property-type-badge">Rent</span>
             
-            <h3 class="property-title">Luxury 3BHK Villa near Manyatha Tech Park</h3>
+            <h3 class="property-title">Spacious 3BHK in L&amp;T Raintree, Hebbal</h3>
             
             <div class="property-details">
               
@@ -1427,42 +2056,35 @@ Yours #BrokerInBlue
                 </div>
               
               
-                <div class="property-detail-item">
-                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                  </svg>
-                  <span>3,498 sqft</span>
-                </div>
-              
               
                 <div class="property-detail-item">
                   <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span>Manyatha Tech Park</span>
+                  <span>Hebbal</span>
                 </div>
               
             </div>
             
             
               <div class="property-price">
-                ₹ 1,30,000
+                ₹ 95,000
               </div>
             
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxurious-4bhk-in-rmz-latitude.html" class="property-card" data-property-index="13" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-15-bhk-apartment-in-bha.html" class="property-card" data-property-index="25" target="_blank" rel="noopener noreferrer">
           
-            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB59_1758014360133.jpeg" alt="Luxurious 4BHK in RMZ Latitude, Hebbal" class="property-image" />
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB34_1758014188630.jpeg" alt="Luxury 1.5 BHK Apartment in Bhartiya City" class="property-image" />
           
           
           <div class="property-content">
             
-              <span class="property-type-badge">Rent</span>
+              <span class="property-type-badge">Sale</span>
             
-            <h3 class="property-title">Luxurious 4BHK in RMZ Latitude, Hebbal</h3>
+            <h3 class="property-title">Luxury 1.5 BHK Apartment in Bhartiya City</h3>
             
             <div class="property-details">
               
@@ -1470,7 +2092,7 @@ Yours #BrokerInBlue
                   <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
-                  <span>4 BHK</span>
+                  <span>2 BHK</span>
                 </div>
               
               
@@ -1478,7 +2100,7 @@ Yours #BrokerInBlue
                   <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                   </svg>
-                  <span>2,800 sqft</span>
+                  <span>1,174 sqft</span>
                 </div>
               
               
@@ -1487,29 +2109,29 @@ Yours #BrokerInBlue
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span>Hebbal </span>
+                  <span>Thanisandra</span>
                 </div>
               
             </div>
             
             
               <div class="property-price">
-                ₹ 1,90,000
+                ₹ 2,20,00,000
               </div>
             
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/anandnagar-4bhk-house-rt-nagar.html" class="property-card" data-property-index="14" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-25bhk-apartment-in-lt-r.html" class="property-card" data-property-index="26" target="_blank" rel="noopener noreferrer">
           
-            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB92_1758014602193.jpeg" alt="Anandnagar, 4BHK House, RT Nagar, Legacy Investment" class="property-image" />
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB84_1758014520284.jpeg" alt="Luxury 2.5BHK Apartment in L&amp;T Raintree Boulevard" class="property-image" />
           
           
           <div class="property-content">
             
               <span class="property-type-badge">Sale</span>
             
-            <h3 class="property-title">Anandnagar, 4BHK House, RT Nagar, Legacy Investment</h3>
+            <h3 class="property-title">Luxury 2.5BHK Apartment in L&amp;T Raintree Boulevard</h3>
             
             <div class="property-details">
               
@@ -1517,7 +2139,7 @@ Yours #BrokerInBlue
                   <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
-                  <span>4 BHK</span>
+                  <span>3 BHK</span>
                 </div>
               
               
@@ -1527,107 +2149,20 @@ Yours #BrokerInBlue
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span>R T Nagar</span>
+                  <span>Hebbal</span>
                 </div>
               
             </div>
             
             
               <div class="property-price">
-                ₹ 7,75,00,000
+                ₹ 23,90,000
               </div>
             
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-penthouse-in-yeshw.html" class="property-card" data-property-index="15" target="_blank" rel="noopener noreferrer">
-          
-            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB168_1758015699222.jpeg" alt="Luxury 4BHK Penthouse in Yeshwantpur" class="property-image" />
-          
-          
-          <div class="property-content">
-            
-              <span class="property-type-badge">Sale</span>
-            
-            <h3 class="property-title">Luxury 4BHK Penthouse in Yeshwantpur</h3>
-            
-            <div class="property-details">
-              
-                <div class="property-detail-item">
-                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  <span>4 BHK</span>
-                </div>
-              
-              
-                <div class="property-detail-item">
-                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                  </svg>
-                  <span>3,690 sqft</span>
-                </div>
-              
-              
-                <div class="property-detail-item">
-                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span>Yeshwantpur, Govardhan theatre</span>
-                </div>
-              
-            </div>
-            
-            
-              <div class="property-price">
-                ₹ 7,00,00,000
-              </div>
-            
-          </div>
-        </a>
-      
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-jakkurs-t.html" class="property-card" data-property-index="16" target="_blank" rel="noopener noreferrer">
-          
-            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB141_1758015091464.jpeg" alt="Luxury 4BHK Villa in Jakkur&#39;s Telecom Layout" class="property-image" />
-          
-          
-          <div class="property-content">
-            
-              <span class="property-type-badge">Sale</span>
-            
-            <h3 class="property-title">Luxury 4BHK Villa in Jakkur&#39;s Telecom Layout</h3>
-            
-            <div class="property-details">
-              
-                <div class="property-detail-item">
-                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  <span>4 BHK</span>
-                </div>
-              
-              
-              
-                <div class="property-detail-item">
-                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span>Telecom layout,  Jakkur</span>
-                </div>
-              
-            </div>
-            
-            
-              <div class="property-price">
-                ₹ 4,50,00,000
-              </div>
-            
-          </div>
-        </a>
-      
-        <a href="https://show.realbroker.app/msr/luxury-35bhk-in-lt-raintree-he.html" class="property-card" data-property-index="17" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-35bhk-in-lt-raintree-he.html" class="property-card" data-property-index="27" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB162_1758015478014.jpeg" alt="Luxury 3.5BHK in L&amp;T Raintree, Hebbal" class="property-image" />
           
@@ -1667,7 +2202,221 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/nandi-hills-plot-5370-sq-ft-ga.html" class="property-card" data-property-index="18" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/prestige-jindal-city-luxurious.html" class="property-card" data-property-index="28" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB89_1758014562717.jpeg" alt="Prestige Jindal City: Luxurious 2BHK Apartment" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Prestige Jindal City: Luxurious 2BHK Apartment</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>2 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Tumkur main road</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,34,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-1bhk-in-bhartiya-city-l.html" class="property-card" data-property-index="29" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB165_1758015583293.jpeg" alt="Luxury 1BHK in Bhartiya City Leela Residences" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Rent</span>
+            
+            <h3 class="property-title">Luxury 1BHK in Bhartiya City Leela Residences</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>1 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Thanisandra</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 80,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-sanjay-na.html" class="property-card" data-property-index="30" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB121_1758014815618.jpeg" alt="Luxury 4BHK Villa in Sanjay Nagar, Near ISRO" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 4BHK Villa in Sanjay Nagar, Near ISRO</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>4 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Sadashiv Nagar</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 8,25,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/spacious-3bhk-apartment-in-sah.html" class="property-card" data-property-index="31" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB23_1758014104412.jpeg" alt="Spacious 3BHK Apartment in Sahakarnagar" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious 3BHK Apartment in Sahakarnagar</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>980 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Sahakar Nagar</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,65,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-3bhk-in-sobha-lake-gard.html" class="property-card" data-property-index="32" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB52_1758014320712.jpeg" alt="Luxury 3BHK in Sobha Lake Gardens, Seegehalli" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 3BHK in Sobha Lake Gardens, Seegehalli</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>1,106 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>K.R. Puram</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,75,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/nandi-hills-plot-5370-sq-ft-ga.html" class="property-card" data-property-index="33" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB37_1758014245813.jpeg" alt="Nandi Hills Plot: 5370 sq ft Garden View" class="property-image" />
           
@@ -1707,7 +2456,148 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-3bhk-villa-in-vidyanaga.html" class="property-card" data-property-index="19" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-6bhk-villa-in-rajaji-na.html" class="property-card" data-property-index="34" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB129_1758014899479.jpeg" alt="Luxury 6BHK Villa in Rajaji Nagar" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 6BHK Villa in Rajaji Nagar</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>6 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>7,200 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Rajajinagar</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,00,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/spacious-3bhk-in-kolte-patil-r.html" class="property-card" data-property-index="35" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB25_1758014160777.jpeg" alt="Spacious 3BHK in Kolte Patil Raaga, Hennur" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious 3BHK in Kolte Patil Raaga, Hennur</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>770 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Hennur</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,25,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/ajmera-lakeside-paradise-2bhk-.html" class="property-card" data-property-index="36" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB170_1758015779316.jpeg" alt="Ajmera Lakeside Paradise: 2BHK Apartment in Yelahanka" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Ajmera Lakeside Paradise: 2BHK Apartment in Yelahanka</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>2 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>799 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Yelahanka</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 85,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-3bhk-villa-in-vidyanaga.html" class="property-card" data-property-index="37" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB95_1758014630008.jpeg" alt="Luxury 3BHK Villa in Vidyanagar, Airport Road" class="property-image" />
           
@@ -1754,7 +2644,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/west-facing-plot-in-cauvery-en.html" class="property-card" data-property-index="20" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/west-facing-plot-in-cauvery-en.html" class="property-card" data-property-index="38" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB171_1758015820554.jpeg" alt="West-Facing Plot in Cauvery Enclave, Hosapalya" class="property-image" />
           
@@ -1794,7 +2684,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/prime-4000-sqft-plot-in-yelaha.html" class="property-card" data-property-index="21" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/prime-4000-sqft-plot-in-yelaha.html" class="property-card" data-property-index="39" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB20_1758014093279.jpeg" alt="Prime 4000 sq.ft Plot in Yelahanka New Town" class="property-image" />
           
@@ -1827,7 +2717,54 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/spacious-6bhk-villa-in-rajaji-.html" class="property-card" data-property-index="22" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-2bhk-apartment-in-yelah.html" class="property-card" data-property-index="40" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB110_1758014722118.jpeg" alt="Luxury 2BHK Apartment in Yelahanka, Lakeside View" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 2BHK Apartment in Yelahanka, Lakeside View</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>2 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>640 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Yelahanka</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 85,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/spacious-6bhk-villa-in-rajaji-.html" class="property-card" data-property-index="41" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB125_1758014862062.jpeg" alt="Spacious 6BHK Villa in Rajaji Nagar" class="property-image" />
           
@@ -1867,7 +2804,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/prime-commercial-plot-jayamaha.html" class="property-card" data-property-index="23" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/prime-commercial-plot-jayamaha.html" class="property-card" data-property-index="42" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB142_1758015123373.jpeg" alt="Prime Commercial Plot, Jayamahal - 2568 sq.ft" class="property-image" />
           
@@ -1900,7 +2837,127 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-apartment-in-bhart.html" class="property-card" data-property-index="24" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-apartment-in-shobha-cit.html" class="property-card" data-property-index="43" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB88_1758014531456.jpeg" alt="Luxury Apartment in Shobha City, Thanisandra" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury Apartment in Shobha City, Thanisandra</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span> Thanisandra,</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,54,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/premium-1200-sqft-plot-in-deva.html" class="property-card" data-property-index="44" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB148_1758015247844.jpeg" alt="Premium 1200 sqft Plot in Devanahalli" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Premium 1200 sqft Plot in Devanahalli</h3>
+            
+            <div class="property-details">
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Devanahalli </span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,02,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/spacious-2bhk-apartment-on-ana.html" class="property-card" data-property-index="45" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB167_1758015648997.jpeg" alt="Spacious 2BHK Apartment on Ananthapura Main Road" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious 2BHK Apartment on Ananthapura Main Road</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>2 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>890 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Yelahanka New Town</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 70,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-apartment-in-bhart.html" class="property-card" data-property-index="46" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB166_1758015616034.jpeg" alt="Luxury 4BHK Apartment in Bhartiya City" class="property-image" />
           
@@ -1940,7 +2997,54 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-apartment-in-rmz-l.html" class="property-card" data-property-index="25" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/spacious-2bhk-in-purva-palm-be.html" class="property-card" data-property-index="47" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB134_1758014988499.jpeg" alt="Spacious 2BHK in Purva Palm Beach, Kyalasanahalli" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious 2BHK in Purva Palm Beach, Kyalasanahalli</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>2 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>850 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Kothanur</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,39,50,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-apartment-in-rmz-l.html" class="property-card" data-property-index="48" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB123_1758014826832.jpeg" alt="Luxury 4BHK Apartment in RMZ Latitude, Hebbal" class="property-image" />
           
@@ -1987,7 +3091,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/spacious-sadahalli-villa-luxur.html" class="property-card" data-property-index="26" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/spacious-sadahalli-villa-luxur.html" class="property-card" data-property-index="49" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB58_1758014356785.jpeg" alt="Spacious Sadahalli Villa:  Luxury Garden Living" class="property-image" />
           
@@ -2020,7 +3124,54 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/surya-velencia-villa-rajanakun.html" class="property-card" data-property-index="27" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-3bhk-apartment-in-shobh.html" class="property-card" data-property-index="50" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB135_1758015011098.jpeg" alt="Luxury 3BHK Apartment in Shobha Victoria, Hennur" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 3BHK Apartment in Shobha Victoria, Hennur</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>1,278 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Hennur</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,78,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/surya-velencia-villa-rajanakun.html" class="property-card" data-property-index="51" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB51_1758014293669.jpeg" alt="Surya Velencia Villa: Rajanakunte 4BHK Luxury" class="property-image" />
           
@@ -2060,7 +3211,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-apartment-in-lt-ra.html" class="property-card" data-property-index="28" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-apartment-in-lt-ra.html" class="property-card" data-property-index="52" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB181_1758015978743.jpeg" alt="Luxury 4BHK Apartment in L&amp;T Raintree Boulevard" class="property-image" />
           
@@ -2100,7 +3251,54 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-in-jakkurs-t.html" class="property-card" data-property-index="29" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/spacious-2bhk-apartment-in-kod.html" class="property-card" data-property-index="53" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB147_1758015210233.jpeg" alt="Spacious 2BHK Apartment in Kodigehalli, Sahakarnagar" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious 2BHK Apartment in Kodigehalli, Sahakarnagar</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>2 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>940 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Kodigehalli sahakarnagar </span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 85,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-in-jakkurs-t.html" class="property-card" data-property-index="54" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB140_1758015063311.jpeg" alt="Luxury 5BHK Villa in Jakkur&#39;s Telecom Layout" class="property-image" />
           
@@ -2140,7 +3338,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-in-rmz-latitude-he.html" class="property-card" data-property-index="30" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-in-rmz-latitude-he.html" class="property-card" data-property-index="55" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB11_1758014017447.jpeg" alt="Luxury 4BHK in RMZ Latitude, Hebbal" class="property-image" />
           
@@ -2187,7 +3385,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-3bhk-in-shapoorji-pallo.html" class="property-card" data-property-index="31" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-3bhk-in-shapoorji-pallo.html" class="property-card" data-property-index="56" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB82_1758014509538.jpeg" alt="Luxury 3BHK in Shapoorji Pallonji Parkwest" class="property-image" />
           
@@ -2227,7 +3425,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-assetz-so.html" class="property-card" data-property-index="32" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-assetz-so.html" class="property-card" data-property-index="57" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB132_1758014957216.jpeg" alt="Luxury 4BHK Villa in Assetz Soul &amp; Soil, Hennur Road" class="property-image" />
           
@@ -2274,7 +3472,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-35bhk-villa-in-hennur-e.html" class="property-card" data-property-index="33" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-35bhk-villa-in-hennur-e.html" class="property-card" data-property-index="58" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB159_1758015364229.jpeg" alt="Luxury 3.5BHK Villa in Hennur,  East Facing" class="property-image" />
           
@@ -2321,7 +3519,47 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-apartment-in-bhartiya-c.html" class="property-card" data-property-index="34" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-3bhk-apartment-in-sahak.html" class="property-card" data-property-index="59" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB106_1758014684870.jpeg" alt="Luxury 3BHK Apartment in Sahakar Nagar" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 3BHK Apartment in Sahakar Nagar</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Sahakar Nagar</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,37,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-apartment-in-bhartiya-c.html" class="property-card" data-property-index="60" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB36_1758014211406.jpeg" alt="Luxury Apartment in Bhartiya City" class="property-image" />
           
@@ -2361,7 +3599,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-sai-garde.html" class="property-card" data-property-index="35" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-sai-garde.html" class="property-card" data-property-index="61" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB136_1758015042237.jpeg" alt="Luxury 4BHK Villa in Sai Gardens, Whitefield" class="property-image" />
           
@@ -2408,7 +3646,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-jakkur-kr.html" class="property-card" data-property-index="36" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-jakkur-kr.html" class="property-card" data-property-index="62" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB143_1758015128146.jpeg" alt="Luxury 4BHK Villa in Jakkur, Krishna Northwoods" class="property-image" />
           
@@ -2455,7 +3693,47 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-near-airport.html" class="property-card" data-property-index="37" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/spacious-2bhk-apartment-in-kod.html" class="property-card" data-property-index="63" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB66_1758014490018.jpeg" alt="Spacious 2BHK Apartment in Kodigehalli" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious 2BHK Apartment in Kodigehalli</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>2 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Kodigehalli sahakarnagar </span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 85,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-near-airport.html" class="property-card" data-property-index="64" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB61_1758014390977.jpeg" alt="Luxury 5BHK Villa near Airport Road, Hasahalli" class="property-image" />
           
@@ -2502,7 +3780,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-in-hosahalli.html" class="property-card" data-property-index="38" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-5bhk-villa-in-hosahalli.html" class="property-card" data-property-index="65" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB62_1758014424970.jpeg" alt="Luxury 5BHK Villa in Hosahalli, Airport Road" class="property-image" />
           
@@ -2549,7 +3827,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/prestige-monte-carlo-luxurious.html" class="property-card" data-property-index="39" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/prestige-monte-carlo-luxurious.html" class="property-card" data-property-index="66" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB161_1758015439465.jpeg" alt="Prestige Monte Carlo: Luxurious 4BHK Apartment in Yelahanka" class="property-image" />
           
@@ -2596,16 +3874,63 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/spacious-4bhk-villa-in-hennur-.html" class="property-card" data-property-index="40" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-3bhk-apartment-in-jakku.html" class="property-card" data-property-index="67" target="_blank" rel="noopener noreferrer">
           
-            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB114_1758014761356.jpeg" alt="Spacious 4BHK Villa in Hennur Chikkajala" class="property-image" />
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB130_1758014928967.jpeg" alt="Luxury 3BHK Apartment in Jakkur, Airport Road" class="property-image" />
           
           
           <div class="property-content">
             
               <span class="property-type-badge">Sale</span>
             
-            <h3 class="property-title">Spacious 4BHK Villa in Hennur Chikkajala</h3>
+            <h3 class="property-title">Luxury 3BHK Apartment in Jakkur, Airport Road</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>1,100 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Jakkur</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,15,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/spacious-jalahalli-plot-near-a.html" class="property-card" data-property-index="68" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB146_1758015171431.jpeg" alt="Spacious Jalahalli Plot near Ayappa Temple" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Spacious Jalahalli Plot near Ayappa Temple</h3>
             
             <div class="property-details">
               
@@ -2623,20 +3948,20 @@ Yours #BrokerInBlue
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span>Hennur</span>
+                  <span>Jalahalli Ayappa Nagar</span>
                 </div>
               
             </div>
             
             
               <div class="property-price">
-                ₹ 3,70,00,000
+                ₹ 2,50,00,000
               </div>
             
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/spacious-4bhk-in-rt-nagar-with.html" class="property-card" data-property-index="41" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/spacious-4bhk-in-rt-nagar-with.html" class="property-card" data-property-index="69" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB172_1758015854946.jpeg" alt="Spacious 4BHK in RT Nagar with Pool View" class="property-image" />
           
@@ -2683,7 +4008,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-penthouse-in-north.html" class="property-card" data-property-index="42" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-penthouse-in-north.html" class="property-card" data-property-index="70" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB99_1758014658627.jpeg" alt="Luxury 4BHK Penthouse in North Bangalore" class="property-image" />
           
@@ -2730,7 +4055,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-malleshwa.html" class="property-card" data-property-index="43" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-malleshwa.html" class="property-card" data-property-index="71" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB163_1758015510609.jpeg" alt="Luxury 4BHK Villa in Malleshwaram" class="property-image" />
           
@@ -2777,7 +4102,362 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/boutique-indp-house-for-rent-r.html" class="property-card" data-property-index="44" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/luxury-3bhk-villa-near-manyath.html" class="property-card" data-property-index="72" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB9_1758023292990.jpeg" alt="Luxury 3BHK Villa near Manyatha Tech Park" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Rent</span>
+            
+            <h3 class="property-title">Luxury 3BHK Villa near Manyatha Tech Park</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>3,498 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Manyatha Tech Park</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,30,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-3bhk-apartment-in-purva.html" class="property-card" data-property-index="73" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB90_1758014591212.jpeg" alt="Luxury 3BHK Apartment in Purva Atmosphere, Thanisandra" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 3BHK Apartment in Purva Atmosphere, Thanisandra</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Thanisandra</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 2,51,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxurious-4bhk-in-rmz-latitude.html" class="property-card" data-property-index="74" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB59_1758014360133.jpeg" alt="Luxurious 4BHK in RMZ Latitude, Hebbal" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Rent</span>
+            
+            <h3 class="property-title">Luxurious 4BHK in RMZ Latitude, Hebbal</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>4 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>2,800 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Hebbal </span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,90,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-2bhk-apartment-in-yelah.html" class="property-card" data-property-index="75" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB112_1758014738731.jpeg" alt="Luxury 2BHK Apartment in Yelahanka New Town" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 2BHK Apartment in Yelahanka New Town</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>2 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>700 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Yelahanka new town </span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,10,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/lake-view-3bhk-in-yelahankas-s.html" class="property-card" data-property-index="76" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB24_1758014126540.jpeg" alt="Lake-View 3BHK in Yelahanka&#39;s Shriram Solitaire" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Lake-View 3BHK in Yelahanka&#39;s Shriram Solitaire</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>3 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>1,300 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Yelahanka</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 1,65,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/anandnagar-4bhk-house-rt-nagar.html" class="property-card" data-property-index="77" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB92_1758014602193.jpeg" alt="Anandnagar, 4BHK House, RT Nagar, Legacy Investment" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Anandnagar, 4BHK House, RT Nagar, Legacy Investment</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>4 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>R T Nagar</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 7,75,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-penthouse-in-yeshw.html" class="property-card" data-property-index="78" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB168_1758015699222.jpeg" alt="Luxury 4BHK Penthouse in Yeshwantpur" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 4BHK Penthouse in Yeshwantpur</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>4 BHK</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>3,690 sqft</span>
+                </div>
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Yeshwantpur, Govardhan theatre</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 7,00,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/luxury-4bhk-villa-in-jakkurs-t.html" class="property-card" data-property-index="79" target="_blank" rel="noopener noreferrer">
+          
+            <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public-assets/gdrive-images/RbBiB141_1758015091464.jpeg" alt="Luxury 4BHK Villa in Jakkur&#39;s Telecom Layout" class="property-image" />
+          
+          
+          <div class="property-content">
+            
+              <span class="property-type-badge">Sale</span>
+            
+            <h3 class="property-title">Luxury 4BHK Villa in Jakkur&#39;s Telecom Layout</h3>
+            
+            <div class="property-details">
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span>4 BHK</span>
+                </div>
+              
+              
+              
+                <div class="property-detail-item">
+                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Telecom layout,  Jakkur</span>
+                </div>
+              
+            </div>
+            
+            
+              <div class="property-price">
+                ₹ 4,50,00,000
+              </div>
+            
+          </div>
+        </a>
+      
+        <a href="https://show.realbroker.app/msr/boutique-indp-house-for-rent-r.html" class="property-card" data-property-index="80" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/property_images/c4d50cd9-8a2d-44f5-9984-a61ba05ae0c7-1743643206327-sclvo2isnl.jpeg" alt="Boutique Indp House FOR RENT @ RMV" class="property-image" />
           
@@ -2824,7 +4504,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/tastefully-semi-furnished-4-be.html" class="property-card" data-property-index="45" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/tastefully-semi-furnished-4-be.html" class="property-card" data-property-index="81" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/property_images/c4d50cd9-8a2d-44f5-9984-a61ba05ae0c7-1742968099094-gfbzsvwq3pm.jpg" alt="Tastefully semi furnished 4 bedroom on a higher floor  Near Manyatha" class="property-image" />
           
@@ -2871,7 +4551,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/bharatiya-city-nikoo-homes-4-b.html" class="property-card" data-property-index="46" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/bharatiya-city-nikoo-homes-4-b.html" class="property-card" data-property-index="82" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/property_images/c4d50cd9-8a2d-44f5-9984-a61ba05ae0c7-1742838416606-i1mramhowfm.jpg" alt="Bharatiya City Nikoo Homes 4 Bedrooms" class="property-image" />
           
@@ -2918,7 +4598,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/bharatiya-city-leela-homes-3br.html" class="property-card" data-property-index="47" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/bharatiya-city-leela-homes-3br.html" class="property-card" data-property-index="83" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/property_images/c4d50cd9-8a2d-44f5-9984-a61ba05ae0c7-1742838042017-uu97jt2v2mg.webp" alt="Bharatiya City Leela Homes 3BR" class="property-image" />
           
@@ -2965,7 +4645,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/sadashivnagar-apartment-broker.html" class="property-card" data-property-index="48" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/sadashivnagar-apartment-broker.html" class="property-card" data-property-index="84" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/property_images/c4d50cd9-8a2d-44f5-9984-a61ba05ae0c7-1742837626878-o9rzcf43h9.webp" alt="SadashivNagar Apartment " class="property-image" />
           
@@ -3012,7 +4692,7 @@ Yours #BrokerInBlue
           </div>
         </a>
       
-        <a href="https://show.realbroker.app/msr/bharatiya-city-leela-residence.html" class="property-card" data-property-index="49" target="_blank" rel="noopener noreferrer">
+        <a href="https://show.realbroker.app/msr/bharatiya-city-leela-residence.html" class="property-card" data-property-index="85" target="_blank" rel="noopener noreferrer">
           
             <img src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/property_images/c4d50cd9-8a2d-44f5-9984-a61ba05ae0c7-1742837381808-veq8p86ys2h.webp" alt="Bharatiya City Leela Residences Thanisandra - BrokerInBlue" class="property-image" />
           
@@ -3081,6 +4761,33 @@ Yours #BrokerInBlue
   </section>
   
   <script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileNavClose = document.getElementById('mobileNavClose');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+    
+    function openMobileMenu() {
+      mobileNav.classList.add('open');
+      mobileNavOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeMobileMenu() {
+      mobileNav.classList.remove('open');
+      mobileNavOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    
+    mobileMenuBtn.addEventListener('click', openMobileMenu);
+    mobileNavClose.addEventListener('click', closeMobileMenu);
+    mobileNavOverlay.addEventListener('click', closeMobileMenu);
+    
+    // Close mobile menu on link click
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+  
     // Responsive properties per page
     function getPropertiesPerPage() {
       return window.innerWidth < 768 ? 6 : 9;
@@ -3088,7 +4795,7 @@ Yours #BrokerInBlue
 
     let propertiesPerPage = getPropertiesPerPage();
     let currentPage = 1;
-    const totalProperties = 50;
+    const totalProperties = 86;
     
     function showPage(page) {
       const allCards = document.querySelectorAll('[data-property-index]');
@@ -3098,7 +4805,7 @@ Yours #BrokerInBlue
       
       allCards.forEach((card, index) => {
         if (index >= start && index < end) {
-          card.style.display = 'block';
+          card.style.display = '';
         } else {
           card.style.display = 'none';
         }
