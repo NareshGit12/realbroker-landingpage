@@ -34,7 +34,7 @@ jobs:
 
       - name: Generate HTML files
         env:
-          SUPABASE_URL: https://ayxhtlzyhpsjykxxnqqh.supabase.co
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/generate-broker-html.js
 
