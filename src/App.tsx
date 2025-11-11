@@ -23,6 +23,8 @@ import CharterAndConduct from "./pages/CharterAndConduct";
 import Charter from "./pages/Charter";
 import MeetOurMembers from "./pages/MeetOurMembers";
 import AdminHTMLGeneration from "./pages/AdminHTMLGeneration";
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 // Track page views when route changes
 const PageViewTracker = () => {
@@ -61,7 +63,15 @@ const App = () => (
           <Route path="/charter-and-conduct" element={<CharterAndConduct />} />
           <Route path="/charter" element={<Charter />} />
           <Route path="/members" element={<MeetOurMembers />} />
-          <Route path="/admin/html-generation" element={<AdminHTMLGeneration />} />
+          <Route path="/login" element={<Login />} />
+          <Route 
+            path="/admin/html-generation" 
+            element={
+              <ProtectedRoute requireAdmin>
+                <AdminHTMLGeneration />
+              </ProtectedRoute>
+            } 
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

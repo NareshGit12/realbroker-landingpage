@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, RefreshCw, ExternalLink } from "lucide-react";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/home/Footer";
+import { Loader2, RefreshCw, ExternalLink, LogOut, CheckCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface QueueItem {
   id: string;
@@ -30,12 +30,22 @@ interface MetadataItem {
   needs_regeneration: boolean;
 }
 
+interface Broker {
+  id: string;
+  full_name: string | null;
+  email: string | null;
+  vanity_url: string | null;
+  static_html_url: string | null;
+}
+
 const AdminHTMLGeneration = () => {
+  const navigate = useNavigate();
   const [queueItems, setQueueItems] = useState<QueueItem[]>([]);
   const [metadata, setMetadata] = useState<MetadataItem[]>([]);
+  const [brokers, setBrokers] = useState<Broker[]>([]);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
-  const [selectedBrokerId, setSelectedBrokerId] = useState<string>("");
+  const [selectedBrokerIds, setSelectedBrokerIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetchData();
@@ -65,6 +75,15 @@ const AdminHTMLGeneration = () => {
 
       if (metadataError) throw metadataError;
       setMetadata(metadataData || []);
+
+      // Fetch all brokers
+      const { data: brokersData, error: brokersError } = await supabase
+        .from("profiles")
+        .select("id, full_name, email, vanity_url, static_html_url")
+        .order("full_name", { ascending: true });
+
+      if (brokersError) throw brokersError;
+      setBrokers(brokersData || []);
     } catch (error: any) {
       toast.error("Error fetching data: " + error.message);
     } finally {
@@ -90,28 +109,79 @@ const AdminHTMLGeneration = () => {
     }
   };
 
-  const generateSingleBroker = async () => {
-    if (!selectedBrokerId) {
-      toast.error("Please enter a broker ID");
+  const generateSelectedBrokers = async () => {
+    if (selectedBrokerIds.size === 0) {
+      toast.error("Please select at least one broker");
       return;
     }
 
     setProcessing(true);
     try {
-      const { data, error } = await supabase.functions.invoke("generate-broker-html", {
-        body: { broker_id: selectedBrokerId },
-      });
+      let successCount = 0;
+      const brokerIds = Array.from(selectedBrokerIds);
+      
+      for (const brokerId of brokerIds) {
+        const { error } = await supabase.functions.invoke("generate-broker-html", {
+          body: { broker_id: brokerId },
+        });
 
-      if (error) throw error;
+        if (!error) successCount++;
+      }
 
-      toast.success("Broker HTML generated successfully");
+      toast.success(`Generated HTML for ${successCount} broker(s)`);
       await fetchData();
-      setSelectedBrokerId("");
+      setSelectedBrokerIds(new Set());
     } catch (error: any) {
       toast.error("Error generating HTML: " + error.message);
     } finally {
       setProcessing(false);
     }
+  };
+
+  const generateAllBrokers = async () => {
+    setProcessing(true);
+    try {
+      const allBrokerIds = brokers.map(b => b.id);
+      let successCount = 0;
+      
+      for (const brokerId of allBrokerIds) {
+        const { error } = await supabase.functions.invoke("generate-broker-html", {
+          body: { broker_id: brokerId },
+        });
+
+        if (!error) successCount++;
+      }
+
+      toast.success(`Generated HTML for ${successCount} broker(s)`);
+      await fetchData();
+    } catch (error: any) {
+      toast.error("Error generating HTML: " + error.message);
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const toggleBrokerSelection = (brokerId: string) => {
+    const newSelection = new Set(selectedBrokerIds);
+    if (newSelection.has(brokerId)) {
+      newSelection.delete(brokerId);
+    } else {
+      newSelection.add(brokerId);
+    }
+    setSelectedBrokerIds(newSelection);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedBrokerIds.size === brokers.length) {
+      setSelectedBrokerIds(new Set());
+    } else {
+      setSelectedBrokerIds(new Set(brokers.map(b => b.id)));
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/login");
   };
 
   const getStatusColor = (status: string) => {
@@ -137,51 +207,112 @@ const AdminHTMLGeneration = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      
-      <div className="container mx-auto px-4 py-8 mt-20">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Broker HTML Generation</h1>
-          <p className="text-muted-foreground">Manage static HTML generation for broker profiles</p>
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold mb-2">Broker HTML Generation</h1>
+            <p className="text-muted-foreground">Manage static HTML generation for broker profiles</p>
+          </div>
+          <Button onClick={handleLogout} variant="outline">
+            <LogOut className="w-4 h-4 mr-2" />
+            Logout
+          </Button>
         </div>
 
-        {/* Controls */}
+        {/* Brokers List */}
         <Card className="p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Generation Controls</h2>
-          
-          <div className="space-y-4">
-            <div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-semibold">
+              All Brokers ({brokers.length})
+            </h2>
+            <div className="flex gap-2">
               <Button
-                onClick={processQueue}
-                disabled={processing}
-                className="w-full sm:w-auto"
+                onClick={toggleSelectAll}
+                variant="outline"
+                size="sm"
+              >
+                {selectedBrokerIds.size === brokers.length ? "Deselect All" : "Select All"}
+              </Button>
+              <Button
+                onClick={generateSelectedBrokers}
+                disabled={processing || selectedBrokerIds.size === 0}
+                size="sm"
               >
                 {processing ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Processing...
+                    Generating...
                   </>
                 ) : (
                   <>
-                    <RefreshCw className="w-4 h-4 mr-2" />
-                    Process Queue (Next 10)
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Generate Selected ({selectedBrokerIds.size})
                   </>
                 )}
               </Button>
-            </div>
-
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Enter Broker ID (UUID)"
-                value={selectedBrokerId}
-                onChange={(e) => setSelectedBrokerId(e.target.value)}
-                className="flex-1 px-4 py-2 border rounded-md"
-              />
-              <Button onClick={generateSingleBroker} disabled={processing}>
-                Generate
+              <Button
+                onClick={generateAllBrokers}
+                disabled={processing}
+                size="sm"
+                variant="secondary"
+              >
+                Generate All
               </Button>
             </div>
+          </div>
+          
+          <div className="max-h-96 overflow-y-auto space-y-2">
+            {brokers.map((broker) => (
+              <div
+                key={broker.id}
+                className="flex items-center gap-3 p-3 border rounded-lg hover:bg-accent cursor-pointer"
+                onClick={() => toggleBrokerSelection(broker.id)}
+              >
+                <Checkbox
+                  checked={selectedBrokerIds.has(broker.id)}
+                  onCheckedChange={() => toggleBrokerSelection(broker.id)}
+                />
+                <div className="flex-1">
+                  <div className="font-medium">
+                    {broker.full_name || "No name"}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {broker.email || "No email"}
+                  </div>
+                </div>
+                {broker.static_html_url && (
+                  <Badge variant="outline" className="bg-green-50">
+                    <CheckCircle className="w-3 h-3 mr-1" />
+                    Generated
+                  </Badge>
+                )}
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Generation Controls */}
+        <Card className="p-6 mb-8">
+          <h2 className="text-2xl font-semibold mb-4">Queue Controls</h2>
+          
+          <div className="space-y-4">
+            <Button
+              onClick={processQueue}
+              disabled={processing}
+              className="w-full sm:w-auto"
+            >
+              {processing ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Process Queue (Next 10)
+                </>
+              )}
+            </Button>
 
             <Button onClick={fetchData} variant="outline">
               <RefreshCw className="w-4 h-4 mr-2" />
@@ -276,8 +407,6 @@ const AdminHTMLGeneration = () => {
           </div>
         </Card>
       </div>
-
-      <Footer />
     </div>
   );
 };
