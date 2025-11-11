@@ -17,19 +17,16 @@ const FooterNavigation: React.FC<FooterNavigationProps> = ({ navigateToSection }
     {
       title: "Explore",
       items: [
-        { name: "How It Works", action: () => navigateToSection("/original", "how-it-works") },
-        { name: "Pricing", path: "/pricing" },
+        { name: "How It Works", action: () => navigateToSection("/", "how-it-works") },
         { name: "Meet Our Members", path: "/members" },
         { name: "Member Login", path: "https://my.realbroker.app/login" },
         { name: "Propalyst.com", path: "https://propalyst.com" },
-        { name: "Testimonials", action: () => navigateToSection("/original", "testimonials") },
-        { name: "FAQ", path: "/faq" }
+        { name: "Testimonials", action: () => navigateToSection("/", "testimonials") }
       ]
     },
     {
       title: "Resources",
       items: [
-        { name: "Support", path: "/support" },
         { name: "Certified RealBroker Program", path: "/certified-realbroker" },
         { name: "Member Code of Conduct", path: "/charter-and-conduct" },
         { name: "Charter", path: "/charter" }
@@ -38,7 +35,6 @@ const FooterNavigation: React.FC<FooterNavigationProps> = ({ navigateToSection }
     {
       title: "Company",
       items: [
-        { name: "About Us", path: "/about-us" },
         { name: "Privacy Policy", path: "/privacy" },
         { name: "Terms of Service", path: "/terms-of-use" }
       ]
