@@ -51,18 +51,13 @@ const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
         
         {/* Agency and location */}
         <p className="text-realtor-500 font-medium text-center text-sm">{broker.agency}</p>
-        <p className="text-xs text-black mb-1">{broker.location}</p>
+        <p className="text-xs text-black mb-3">{broker.location}</p>
         
-        {/* Description - with smaller font for more lines */}
-        <p className="text-[10px] text-center leading-tight line-clamp-5 mb-2 text-black overflow-hidden">
-          {broker.description}
-        </p>
-        
-        {/* Areas of expertise - moved closer to bio */}
+        {/* Areas of expertise */}
         <div className="w-full mt-1">
           <p className="text-xs text-center font-medium mb-1 text-black">Areas of Expertise:</p>
           <div className="flex flex-wrap justify-center gap-1 mb-2">
-            {broker.expertiseAreas.map((area) => (
+            {broker.expertiseAreas.slice(0, 5).map((area) => (
               <span 
                 key={area} 
                 className="bg-red-50 text-realtor-500 text-[10px] px-2 py-0.5"
@@ -71,15 +66,19 @@ const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
                 {area}
               </span>
             ))}
+            {broker.expertiseAreas.length > 5 && (
+              <span 
+                className="bg-red-50 text-realtor-500 text-[10px] px-2 py-0.5"
+                style={{ borderRadius: '0' }}
+              >
+                +{broker.expertiseAreas.length - 5} more
+              </span>
+            )}
           </div>
         </div>
         
-        {/* Properties and member since */}
+        {/* Member since */}
         <div className="flex flex-col items-center border-t border-gray-100 pt-1 w-full mt-auto">
-          <div className="flex items-center gap-1">
-            <span className="text-xs text-black">{broker.propertiesCount} Properties listed on</span>
-            <span className="text-realtor-500 font-bold">RB</span>
-          </div>
           <p className="text-xs text-black">Member since {broker.memberSince}</p>
         </div>
       </div>
