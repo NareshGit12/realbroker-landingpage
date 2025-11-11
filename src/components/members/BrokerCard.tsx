@@ -79,7 +79,7 @@ const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
         
         {/* Member since */}
         <div className="flex flex-col items-center border-t border-gray-100 pt-1 w-full mt-auto">
-          <p className="text-xs text-black">Member since {broker.memberSince}</p>
+          <p className="text-xs text-black text-center">Member since {broker.memberSince}</p>
         </div>
       </div>
     </Card>
