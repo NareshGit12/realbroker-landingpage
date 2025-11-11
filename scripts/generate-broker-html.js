@@ -70,12 +70,32 @@ async function generateBrokerHTML(broker, template) {
 
 async function main() {
   try {
-    console.log('Starting HTML generation...');
+    console.log('Starting HTML generation from queue...');
 
-    // Fetch all brokers that need HTML generation
+    // Fetch pending queue items for brokers
+    const { data: queueItems, error: queueError } = await supabase
+      .from('html_generation_queue')
+      .select('id, entity_id')
+      .eq('entity_type', 'broker')
+      .eq('status', 'pending')
+      .order('priority', { ascending: false })
+      .order('created_at', { ascending: true });
+
+    if (queueError) throw queueError;
+
+    if (!queueItems || queueItems.length === 0) {
+      console.log('No pending brokers in queue.');
+      return;
+    }
+
+    console.log(`Found ${queueItems.length} brokers in queue to process`);
+
+    // Fetch broker profiles for queued items
+    const brokerIds = queueItems.map(item => item.entity_id);
     const { data: brokers, error } = await supabase
       .from('profiles')
       .select('id, full_name, company_name, city, bio, avatar_url, rating, areas, member_since, vanity_url')
+      .in('id', brokerIds)
       .eq('role', 'user')
       .not('full_name', 'is', null)
       .not('vanity_url', 'is', null);
@@ -96,11 +116,40 @@ async function main() {
     // Generate HTML for each broker
     const results = [];
     for (const broker of brokers) {
+      const queueItem = queueItems.find(item => item.entity_id === broker.id);
+      
       try {
+        // Update queue status to processing
+        await supabase
+          .from('html_generation_queue')
+          .update({ status: 'processing', started_at: new Date().toISOString() })
+          .eq('id', queueItem.id);
+
         const filename = await generateBrokerHTML(broker, template);
+        
+        // Mark as completed in queue
+        await supabase
+          .from('html_generation_queue')
+          .update({ 
+            status: 'completed', 
+            completed_at: new Date().toISOString() 
+          })
+          .eq('id', queueItem.id);
+
         results.push({ broker: broker.full_name, success: true, filename });
       } catch (error) {
         console.error(`Error generating HTML for ${broker.full_name}:`, error.message);
+        
+        // Mark as failed in queue
+        await supabase
+          .from('html_generation_queue')
+          .update({ 
+            status: 'failed', 
+            error_message: error.message,
+            completed_at: new Date().toISOString()
+          })
+          .eq('id', queueItem.id);
+
         results.push({ broker: broker.full_name, success: false, error: error.message });
       }
     }
