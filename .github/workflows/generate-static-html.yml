@@ -19,9 +19,9 @@ jobs:
         run: |
           curl -X POST \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5eGh0bHp5aHBzanlreHhucXFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzOTEwMzksImV4cCI6MjA1Nzk2NzAzOX0.HB-PnThw1SJQXWzFZSeDFI2zO-GKhPTufGr3RtB4uRg" \
             -d '{"process_queue": true}' \
-            ${{ secrets.SUPABASE_URL }}/functions/v1/generate-broker-html
+            https://ayxhtlzyhpsjykxxnqqh.supabase.co/functions/v1/generate-broker-html
 
       - name: Notify on completion
         if: always()
