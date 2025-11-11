@@ -1,7 +1,12 @@
-const { createClient } = require('@supabase/supabase-js');
-const ejs = require('ejs');
-const fs = require('fs').promises;
-const path = require('path');
+import { createClient } from '@supabase/supabase-js';
+import ejs from 'ejs';
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
@@ -85,7 +90,7 @@ async function main() {
     console.log(`Found ${brokers.length} brokers to process`);
 
     // Read EJS template
-    const templatePath = path.join(process.cwd(), 'templates', 'broker-profile.ejs');
+    const templatePath = path.join(path.dirname(__dirname), 'templates', 'broker-profile.ejs');
     const template = await fs.readFile(templatePath, 'utf8');
 
     // Generate HTML for each broker
