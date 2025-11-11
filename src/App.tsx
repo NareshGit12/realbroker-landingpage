@@ -17,6 +17,7 @@ import CharterAndConduct from "./pages/CharterAndConduct";
 import Charter from "./pages/Charter";
 import MeetOurMembers from "./pages/MeetOurMembers";
 import AdminHTMLGeneration from "./pages/AdminHTMLGeneration";
+import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
@@ -51,6 +52,14 @@ const App = () => (
           <Route path="/charter" element={<Charter />} />
           <Route path="/members" element={<MeetOurMembers />} />
           <Route path="/login" element={<Login />} />
+          <Route 
+            path="/admin" 
+            element={
+              <ProtectedRoute requireAdmin>
+                <Admin />
+              </ProtectedRoute>
+            } 
+          />
           <Route 
             path="/admin/html-generation" 
             element={
