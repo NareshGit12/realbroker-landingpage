@@ -15,13 +15,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Call Supabase Edge Function
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
         run: |
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5eGh0bHp5aHBzanlreHhucXFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzOTEwMzksImV4cCI6MjA1Nzk2NzAzOX0.HB-PnThw1SJQXWzFZSeDFI2zO-GKhPTufGr3RtB4uRg" \
-            -d '{"process_queue": true}' \
-            https://ayxhtlzyhpsjykxxnqqh.supabase.co/functions/v1/generate-broker-html
+          npm install -g @supabase/supabase-js ejs
+
+      - name: Create public/brokers directory
+        run: mkdir -p public/brokers
+
+      - name: Generate HTML files
+        env:
+          SUPABASE_URL: https://ayxhtlzyhpsjykxxnqqh.supabase.co
+          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5eGh0bHp5aHBzanlreHhucXFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzOTEwMzksImV4cCI6MjA1Nzk2NzAzOX0.HB-PnThw1SJQXWzFZSeDFI2zO-GKhPTufGr3RtB4uRg
+        run: node scripts/generate-broker-html.js
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add public/brokers/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: regenerate broker HTML files [skip ci]" && git push)
 
       - name: Notify on completion
         if: always()
