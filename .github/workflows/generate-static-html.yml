@@ -35,7 +35,7 @@ jobs:
       - name: Generate HTML files
         env:
           SUPABASE_URL: https://ayxhtlzyhpsjykxxnqqh.supabase.co
-          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5eGh0bHp5aHBzanlreHhucXFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzOTEwMzksImV4cCI6MjA1Nzk2NzAzOX0.HB-PnThw1SJQXWzFZSeDFI2zO-GKhPTufGr3RtB4uRg
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/generate-broker-html.js
 
       - name: Commit and push changes
