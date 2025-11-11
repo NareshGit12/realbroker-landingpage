@@ -40,13 +40,13 @@ async function generateBrokerHTML(broker, template) {
   // Generate filename
   const slug = generateSlug(broker.full_name, broker.company_name);
   const filename = `${broker.vanity_url}_${slug}.html`;
-  const filePath = path.join(process.cwd(), 'public', 'brokers', filename);
+  const filePath = path.join(process.cwd(), 'public', filename);
 
   // Save HTML file
   await fs.writeFile(filePath, html, 'utf8');
 
   // Update broker profile with static URL
-  const staticUrl = `/brokers/${filename}`;
+  const staticUrl = `/${filename}`;
   await supabase
     .from('profiles')
     .update({ static_html_url: staticUrl })
