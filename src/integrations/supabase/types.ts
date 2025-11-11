@@ -2427,6 +2427,8 @@ export type Database = {
           member_since: string
           properties_count: number
           rating: number
+          static_html_url: string
+          vanity_url: string
         }[]
       }
       get_network_posts: {

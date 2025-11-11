@@ -161,14 +161,102 @@ async function generateBrokerHTML(supabaseClient: any, brokerId: string) {
   };
 
   // Read template
-  const templatePath = './templates/broker-profile.ejs';
+  const templatePath = 'broker-profile.ejs';
   let template: string;
   
   try {
-    template = await Deno.readTextFile(templatePath);
+    // Template content embedded directly for simplicity in edge functions
+    template = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= broker.full_name %> - <%= broker.company_name || 'Real Estate Broker' %> | RealBroker</title>
+  <meta name="description" content="<%= broker.bio ? broker.bio.substring(0, 155) : \`Connect with \${broker.full_name}, a professional real estate broker at \${broker.company_name || 'RealBroker'}. Specializing in \${broker.city || 'real estate'} properties.\` %>">
+  
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content="https://realbroker.app/<%= broker.vanity_url %>_<%= (broker.company_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-') %>.html">
+  <meta property="og:title" content="<%= broker.full_name %> - <%= broker.company_name || 'Real Estate Broker' %>">
+  <meta property="og:description" content="<%= broker.bio ? broker.bio.substring(0, 155) : \`Professional real estate broker specializing in \${broker.city || 'real estate'} properties.\` %>">
+  <meta property="og:image" content="<%= broker.avatar_url || 'https://realbroker.app/og-image.png' %>">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 2rem 1rem; color: #1a202c; }
+    .container { max-width: 800px; margin: 0 auto; }
+    .broker-card { background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); transition: transform 0.3s ease; }
+    .broker-card:hover { transform: translateY(-5px); }
+    .card-header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); height: 120px; position: relative; }
+    .avatar-container { position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); }
+    .avatar { width: 120px; height: 120px; border-radius: 50%; border: 5px solid white; object-fit: cover; background: #e2e8f0; }
+    .card-content { padding: 4rem 2rem 2rem; text-align: center; }
+    .broker-name { font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem; }
+    .rating { display: flex; justify-content: center; align-items: center; gap: 0.25rem; margin-bottom: 0.5rem; }
+    .star { color: #fbbf24; font-size: 1.25rem; }
+    .rating-value { font-weight: 600; color: #4b5563; margin-left: 0.5rem; }
+    .company-info { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; color: #6b7280; }
+    .divider { width: 100%; height: 1px; background: #e5e7eb; margin: 1.5rem 0; }
+    .bio { color: #4b5563; line-height: 1.6; margin-bottom: 1.5rem; text-align: left; }
+    .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-start; margin-bottom: 1.5rem; }
+    .badge { background: #fef3c7; color: #92400e; padding: 0.375rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; }
+    .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 1.5rem; }
+    .stat-value { font-size: 1.5rem; font-weight: bold; color: #dc2626; }
+    .stat-label { font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; }
+    .cta-button { display: inline-block; background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 1rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600; margin-top: 2rem; }
+    .footer { text-align: center; color: white; margin-top: 2rem; font-size: 0.875rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="broker-card">
+      <div class="card-header">
+        <div class="avatar-container">
+          <img src="<%= broker.avatar_url || 'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(broker.full_name) %>" alt="<%= broker.full_name %>" class="avatar" />
+        </div>
+      </div>
+      <div class="card-content">
+        <h1 class="broker-name"><%= broker.full_name %></h1>
+        <div class="rating">
+          <% for (let i = 0; i < 5; i++) { %>
+            <span class="star"><%= i < Math.floor(broker.rating || 5) ? '★' : '☆' %></span>
+          <% } %>
+          <span class="rating-value"><%= (broker.rating || 5).toFixed(1) %></span>
+        </div>
+        <div class="company-info">
+          <% if (broker.company_name) { %><div><%= broker.company_name %></div><% } %>
+          <% if (broker.city) { %><div><%= broker.city %></div><% } %>
+        </div>
+        <div class="divider"></div>
+        <% if (broker.bio) { %><div class="bio"><%= broker.bio %></div><% } %>
+        <% if (broker.areas && broker.areas.length > 0) { %>
+          <div class="badges">
+            <% broker.areas.forEach(function(area) { %>
+              <span class="badge"><%= area %></span>
+            <% }); %>
+          </div>
+        <% } %>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-value"><%= broker.properties_count || 0 %></div>
+            <div class="stat-label">Active Properties</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value"><%= broker.member_since ? new Date(broker.member_since).getFullYear() : new Date().getFullYear() %></div>
+            <div class="stat-label">Member Since</div>
+          </div>
+        </div>
+        <a href="https://my.realbroker.app/<%= broker.vanity_url %>" class="cta-button">View Full Profile & Contact</a>
+      </div>
+    </div>
+    <div class="footer">
+      <p>Powered by <a href="https://realbroker.app" style="color: white;">RealBroker</a> - India's Premier Broker Network</p>
+    </div>
+  </div>
+</body>
+</html>`;
   } catch (error) {
-    console.error('Error reading template:', error);
-    throw new Error('Template file not found');
+    console.error('Error loading template:', error);
+    throw new Error('Template not available');
   }
 
   // Render HTML using EJS
