@@ -40,7 +40,7 @@ const Login = () => {
       }
 
       toast.success("Logged in successfully");
-      navigate("/admin/html-generation");
+      navigate("/admin");
     } catch (error: any) {
       toast.error(error.message || "Failed to login");
     } finally {
