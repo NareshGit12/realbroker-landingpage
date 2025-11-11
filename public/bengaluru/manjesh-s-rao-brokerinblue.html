@@ -261,6 +261,9 @@ Yours #BrokerInBlue
 
       .card-right-section {
         flex: 1;
+        padding: 2rem;
+        background: linear-gradient(135deg, hsl(351 83% 98%) 0%, hsl(351 83% 96%) 100%);
+        border-radius: 0 12px 12px 0;
       }
 
       .rating {
@@ -501,26 +504,23 @@ Yours #BrokerInBlue
     .properties-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 1.5rem;
       margin-bottom: 2rem;
     }
 
-    /* Mobile: 2x2 grid */
+    /* Mobile: 2x2 grid from 480px */
     @media (min-width: 480px) {
       .properties-grid {
         grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 768px) {
-      .properties-grid {
-        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
       }
     }
  
+    /* Desktop: 3x3 grid from 1024px */
     @media (min-width: 1024px) {
       .properties-grid {
         grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
       }
     }
 
@@ -754,6 +754,12 @@ Yours #BrokerInBlue
           </div>
 
           
+            <img 
+              src="https://ayxhtlzyhpsjykxxnqqh.supabase.co/storage/v1/object/public/public/company/1758899394302.jpeg" 
+              alt="BrokerInBlue" 
+              class="company-logo"
+            />
+          
         </div>
 
         <!-- Right Section: Broker Details -->
@@ -816,16 +822,38 @@ Yours #BrokerInBlue
           <!-- Contact Information -->
           <div class="contact-info">
             
-
+              <a href="tel:+919900142491" class="contact-item">
+                <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span>+919900142491</span>
+              </a>
             
 
+            
+              <a href="mailto:hello@brokerinblue.com" class="contact-item">
+                <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span>hello@brokerinblue.com</span>
+              </a>
+            
+
+            
+              <a href="https://www.brokerinblue.com" class="contact-item" target="_blank" rel="noopener noreferrer">
+                <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+                <span>https://www.brokerinblue.com</span>
+              </a>
             
           </div>
 
           <!-- Member Info -->
           <div class="member-info">
-            <div>Bengaluru</div>
-            <div>Member since Mar 2025</div>
+            <div style="font-size: 1.125rem; font-weight: 600; color: hsl(0 84% 22%); margin-bottom: 0.25rem;">
+              Member since Mar 2025
+            </div>
             
           </div>
         </div>
@@ -3053,15 +3081,20 @@ Yours #BrokerInBlue
   </section>
   
   <script>
-    const propertiesPerPage = 9;
+    // Responsive properties per page
+    function getPropertiesPerPage() {
+      return window.innerWidth < 768 ? 6 : 9;
+    }
+
+    let propertiesPerPage = getPropertiesPerPage();
     let currentPage = 1;
     const totalProperties = 50;
-    const totalPages = Math.ceil(totalProperties / propertiesPerPage);
     
     function showPage(page) {
       const allCards = document.querySelectorAll('[data-property-index]');
       const start = (page - 1) * propertiesPerPage;
       const end = start + propertiesPerPage;
+      const totalPages = Math.ceil(totalProperties / propertiesPerPage);
       
       allCards.forEach((card, index) => {
         if (index >= start && index < end) {
@@ -3081,6 +3114,7 @@ Yours #BrokerInBlue
     }
     
     function changePage(direction) {
+      const totalPages = Math.ceil(totalProperties / propertiesPerPage);
       const newPage = currentPage + direction;
       if (newPage >= 1 && newPage <= totalPages) {
         currentPage = newPage;
@@ -3088,8 +3122,18 @@ Yours #BrokerInBlue
       }
     }
     
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      const newPerPage = getPropertiesPerPage();
+      if (newPerPage !== propertiesPerPage) {
+        propertiesPerPage = newPerPage;
+        currentPage = 1; // Reset to first page
+        showPage(1);
+      }
+    });
+    
     // Initialize pagination if needed
-    if (totalProperties > propertiesPerPage) {
+    if (totalProperties > 6) {
       showPage(1);
     }
   </script>
