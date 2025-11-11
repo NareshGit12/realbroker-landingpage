@@ -48,22 +48,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
       >
         Meet our Members
       </button>
-      <button 
-        onClick={() => {
-          // Navigate to original page and jump to "testimonials" section
-          navigate('/original?section=testimonials');
-          if (onItemClick) onItemClick();
-        }}
-        className={cn(
-          `${textSizeClass} font-medium transition-colors bg-transparent border-none cursor-pointer p-0`,
-          isActive('/#testimonials') 
-            ? "text-realtor-600 font-semibold" 
-            : "text-gray-700 hover:text-realtor-600"
-        )}
-      >
-        Testimonials
-      </button>
-      <button 
+      <button
         onClick={() => handleClick("invite")}
         className={cn(
           `${textSizeClass} font-medium transition-colors bg-red-600 text-white hover:bg-red-700 px-3 py-1 rounded border-none cursor-pointer`,
