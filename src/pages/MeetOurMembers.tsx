@@ -145,7 +145,7 @@ const MeetOurMembers = () => {
           <div className="container mx-auto px-4 max-w-6xl">
             <RevealAnimation>
               <div className="text-center mb-12">
-                <span className="inline-block py-1 px-3 mb-4 text-xs font-medium uppercase tracking-wider bg-realtor-100 text-realtor-800 rounded-full">
+                <span className="inline-block py-1 px-3 mb-4 mt-8 text-xs font-medium uppercase tracking-wider bg-realtor-100 text-realtor-800 rounded-full">
                   Our Network
                 </span>
                 <h1 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900">
