@@ -15,51 +15,43 @@ const ProtectedRoute = ({ children, requireAdmin = false }: ProtectedRouteProps)
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data: { user: authUser } } = await supabase.auth.getUser();
-        
-        if (!authUser) {
-          setLoading(false);
-          return;
-        }
-
-        setUser(authUser);
-
-        if (requireAdmin) {
-          const { data: profile } = await supabase
-            .from("profiles")
-            .select("role")
-            .eq("id", authUser.id)
-            .single();
-
-          setIsAdmin(profile?.role === "admin");
-        }
-      } catch (error) {
-        console.error("Auth check error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "SIGNED_OUT") {
-        setUser(null);
-        setIsAdmin(false);
-      } else if (session?.user) {
-        setUser(session.user);
-        
-        if (requireAdmin) {
-          const { data: profile } = await supabase
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      
+      if (requireAdmin && session?.user) {
+        setTimeout(() => {
+          supabase
             .from("profiles")
             .select("role")
             .eq("id", session.user.id)
-            .single();
+            .single()
+            .then(({ data: profile }) => {
+              setIsAdmin(profile?.role === "admin");
+            });
+        }, 0);
+      } else {
+        setIsAdmin(false);
+      }
+    });
 
-          setIsAdmin(profile?.role === "admin");
-        }
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      
+      if (requireAdmin && session?.user) {
+        supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
+          .single()
+          .then(({ data: profile }) => {
+            setIsAdmin(profile?.role === "admin");
+            setLoading(false);
+          });
+      } else {
+        setIsAdmin(false);
+        setLoading(false);
       }
     });
 
