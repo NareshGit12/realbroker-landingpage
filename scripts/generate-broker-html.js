@@ -97,6 +97,8 @@ async function main() {
 
     // Fetch broker profiles for queued items
     const brokerIds = queueItems.map(item => item.entity_id);
+    console.log('Looking for broker IDs:', brokerIds);
+    
     const { data: brokers, error } = await supabase
       .from('profiles')
       .select('id, full_name, company_name, city, bio, avatar_url, rating, areas, member_since, vanity_url')
@@ -105,7 +107,13 @@ async function main() {
       .not('full_name', 'is', null)
       .not('vanity_url', 'is', null);
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error fetching brokers:', error);
+      throw error;
+    }
+
+    console.log(`Found ${brokers?.length || 0} brokers matching queue items`);
+    console.log('Broker data:', JSON.stringify(brokers, null, 2));
 
     if (!brokers || brokers.length === 0) {
       console.log('No brokers found to generate HTML for.');
