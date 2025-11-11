@@ -888,6 +888,15 @@
             <div class="company-name"><%= broker.company_name %></div>
           <% } %>
 
+          <% if (broker.company_logo_url) { %>
+            <img 
+              src="<%= broker.company_logo_url %>" 
+              alt="<%= broker.company_name || 'Company' %> Logo" 
+              class="company-logo"
+              style="max-width: 200px; max-height: 80px; object-fit: contain; margin-top: 0.5rem; margin-bottom: 0.5rem;"
+            />
+          <% } %>
+
           <% if (broker.city) { %>
             <div style="color: hsl(0 20% 50%); margin-bottom: 1rem;"><%= broker.city %></div>
           <% } %>
@@ -1092,7 +1101,7 @@
     let currentPage = 1;
     const totalProperties = <%= broker.properties.length %>;
     
-    function showPage(page) {
+    function showPage(page, shouldScroll = false) {
       const allCards = document.querySelectorAll('[data-property-index]');
       const start = (page - 1) * propertiesPerPage;
       const end = start + propertiesPerPage;
@@ -1111,8 +1120,10 @@
       document.getElementById('nextBtn').disabled = page === totalPages;
       document.getElementById('pageInfo').textContent = `Page ${page} of ${totalPages}`;
       
-      // Scroll to properties section
-      document.querySelector('.properties-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Scroll to properties section only when user changes page, not on initial load
+      if (shouldScroll) {
+        document.querySelector('.properties-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
     
     function changePage(direction) {
@@ -1120,7 +1131,7 @@
       const newPage = currentPage + direction;
       if (newPage >= 1 && newPage <= totalPages) {
         currentPage = newPage;
-        showPage(currentPage);
+        showPage(currentPage, true);
       }
     }
     
@@ -1130,13 +1141,13 @@
       if (newPerPage !== propertiesPerPage) {
         propertiesPerPage = newPerPage;
         currentPage = 1; // Reset to first page
-        showPage(1);
+        showPage(1, false);
       }
     });
     
-    // Initialize pagination if needed
+    // Initialize pagination if needed (without scrolling on initial load)
     if (totalProperties > 6) {
-      showPage(1);
+      showPage(1, false);
     }
   </script>
   <% } %>
