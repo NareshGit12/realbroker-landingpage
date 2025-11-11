@@ -4,70 +4,33 @@ import Footer from '@/components/home/Footer';
 import BrokerCard, { BrokerInfo } from '@/components/members/BrokerCard';
 import RevealAnimation from '@/components/ui/RevealAnimation';
 import { supabase } from '@/integrations/supabase/client';
-import useEmblaCarousel from 'embla-carousel-react';
-import Autoplay from 'embla-carousel-autoplay';
 
 const MeetOurMembers = () => {
   const [members, setMembers] = useState<BrokerInfo[]>([]);
   const [loading, setLoading] = useState(false);
-  const [displayCount, setDisplayCount] = useState(10);
-  
-  // Configure autoplay plugin with smoother scrolling
-  const autoplayOptions = {
-    delay: 5000, // 5 seconds between slides
-    stopOnInteraction: false, // Continue autoplay after user interaction
-    rootNode: (emblaRoot: HTMLElement) => emblaRoot.parentElement,
-  };
-
-  // Initialize carousel with autoplay plugin and smooth scrolling
-  const [emblaRef] = useEmblaCarousel(
-    { 
-      loop: true,
-      align: "start",
-      slidesToScroll: 1,
-      skipSnaps: false,
-      duration: 1000, // Longer duration for smoother transition (1 second)
-      inViewThreshold: 0.5, // When 50% of the slide is in view, it's considered "selected"
-    },
-    [Autoplay(autoplayOptions)]
-  );
+  const [displayCount, setDisplayCount] = useState(50);
 
   useEffect(() => {
     async function fetchMembers() {
       if (loading) return;
-      console.log('[MeetOurMembers] fetching via RPC get_member_directory with limit:', displayCount);
+      console.log('[MeetOurMembers] fetching profiles with role=user, limit:', displayCount);
       setLoading(true);
 
-      type MemberRow = {
-        id: string;
-        full_name: string | null;
-        company_name: string | null;
-        city: string | null;
-        bio: string | null;
-        avatar_url: string | null;
-        rating: number | null;
-        areas: string[] | null;
-        member_since: string | null;
-        properties_count: number | null;
-        vanity_url: string | null;
-        static_html_url: string | null;
-      };
-
-      const { data, error } = await supabase.rpc('get_member_directory', {
-        limit_count: displayCount,
-        offset_value: 0,
-        city_filter: null
-      });
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('role', 'user')
+        .limit(displayCount);
 
       if (error) {
-        console.error('Error fetching members via RPC:', error);
+        console.error('Error fetching members:', error);
         setLoading(false);
         return;
       }
 
-      const rows = (data as MemberRow[]) || [];
+      const rows = data || [];
 
-      const formattedMembers: BrokerInfo[] = rows.map((profile) => ({
+      const formattedMembers: BrokerInfo[] = rows.map((profile: any) => ({
         id: profile.id,
         name: profile.full_name || 'Unknown Name',
         agency: profile.company_name || 'Independent Broker',
@@ -79,7 +42,7 @@ const MeetOurMembers = () => {
         memberSince: profile.member_since
           ? new Date(profile.member_since).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
           : 'Recent Member',
-        propertiesCount: Number(profile.properties_count ?? 0),
+        propertiesCount: 0,
         vanityUrl: profile.vanity_url || undefined,
         staticHtmlUrl: profile.static_html_url || undefined,
       }));
@@ -195,25 +158,16 @@ const MeetOurMembers = () => {
             </RevealAnimation>
 
             <RevealAnimation delay={100}>
-              <div className="relative py-8">
+              <div className="py-8">
                 {loading && members.length === 0 ? (
                   <div className="flex justify-center items-center h-64">
                     <p className="text-lg text-gray-600">Loading members...</p>
                   </div>
                 ) : (
-                  <div className="overflow-hidden" ref={emblaRef}>
-                    <div className="flex">
-                      {displayMembers.map((member) => (
-                        <div 
-                          key={member.id} 
-                          className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_33.333%] lg:flex-[0_0_25%] xl:flex-[0_0_20%] pl-4 pr-4"
-                        >
-                          <div className="h-full">
-                            <BrokerCard broker={member} />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                    {displayMembers.map((member) => (
+                      <BrokerCard key={member.id} broker={member} />
+                    ))}
                   </div>
                 )}
               </div>
