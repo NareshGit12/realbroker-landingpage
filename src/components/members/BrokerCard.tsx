@@ -21,7 +21,7 @@ export interface BrokerInfo {
 
 const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
   const cardContent = (
-    <Card className="border border-realtor-100 shadow-md overflow-hidden w-full bg-white h-full flex flex-col transition-transform hover:scale-105" style={{ borderRadius: '0' }}>
+    <Card className="border border-realtor-100 shadow-md overflow-hidden w-full bg-white h-full flex flex-col" style={{ borderRadius: '0' }}>
       {/* Red header */}
       <div className="bg-realtor-500 h-8"></div>
       
@@ -92,7 +92,7 @@ const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
         href={broker.staticHtmlUrl} 
         target="_blank" 
         rel="noopener noreferrer"
-        className="block h-full"
+        className="block h-full w-full"
       >
         {cardContent}
       </a>
@@ -106,7 +106,7 @@ const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
         href={`https://my.realbroker.app/${broker.vanityUrl}`} 
         target="_blank" 
         rel="noopener noreferrer"
-        className="block h-full"
+        className="block h-full w-full"
       >
         {cardContent}
       </a>
