@@ -369,6 +369,107 @@
       color: hsl(351 83% 58%);
     }
     
+    /* Property Listings Section */
+    .properties-section {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid hsl(0 20% 90%);
+    }
+
+    .properties-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: hsl(0 84% 22%);
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .properties-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .properties-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .property-card {
+      background: white;
+      border: 1px solid hsl(0 20% 90%);
+      border-radius: 0.75rem;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .property-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      border-color: hsl(351 83% 58%);
+    }
+
+    .property-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: hsl(0 10% 96%);
+    }
+
+    .property-content {
+      padding: 1rem;
+    }
+
+    .property-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: hsl(0 84% 22%);
+      margin-bottom: 0.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .property-details {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      color: hsl(0 20% 50%);
+    }
+
+    .property-price {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: hsl(351 83% 58%);
+      margin-top: 0.5rem;
+    }
+
+    .property-type-badge {
+      display: inline-block;
+      background: hsl(351 83% 58% / 0.1);
+      color: hsl(351 83% 58%);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .no-properties {
+      text-align: center;
+      color: hsl(0 20% 50%);
+      padding: 2rem;
+      font-style: italic;
+    }
+    
     .footer-bottom {
       padding-top: 2rem;
       border-top: 1px solid hsl(0 20% 90%);
@@ -492,11 +593,7 @@
           </div>
         <% } %>
         
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-value"><%= broker.properties_count || 0 %></div>
-            <div class="stat-label">Active Properties</div>
-          </div>
+        <div class="broker-stats">
           <div class="stat">
             <div class="stat-value">
               <%= broker.member_since ? new Date(broker.member_since).getFullYear() : new Date().getFullYear() %>
@@ -504,6 +601,51 @@
             <div class="stat-label">Member Since</div>
           </div>
         </div>
+        
+        <% if (broker.properties && broker.properties.length > 0) { %>
+          <div class="properties-section">
+            <h2 class="properties-title">Listed Properties (<%= broker.properties.length %>)</h2>
+            <div class="properties-grid">
+              <% broker.properties.forEach(function(property) { %>
+                <a href="<%= property.static_html_url || '#' %>" class="property-card" target="_blank" rel="noopener noreferrer">
+                  <% if (property.images && property.images.length > 0) { %>
+                    <img src="<%= property.images[0] %>" alt="<%= property.title %>" class="property-image" />
+                  <% } else { %>
+                    <div class="property-image"></div>
+                  <% } %>
+                  
+                  <div class="property-content">
+                    <% if (property.property_type) { %>
+                      <span class="property-type-badge"><%= property.property_type %></span>
+                    <% } %>
+                    <h3 class="property-title"><%= property.title %></h3>
+                    
+                    <div class="property-details">
+                      <% if (property.bedrooms) { %>
+                        <span>🛏️ <%= property.bedrooms %> BHK</span>
+                      <% } %>
+                      <% if (property.sqft) { %>
+                        <span>📐 <%= property.sqft %> sqft</span>
+                      <% } %>
+                    </div>
+                    
+                    <% if (property.area) { %>
+                      <div style="font-size: 0.875rem; color: hsl(0 20% 50%); margin-bottom: 0.5rem;">
+                        📍 <%= property.area %>
+                      </div>
+                    <% } %>
+                    
+                    <% if (property.price) { %>
+                      <div class="property-price">
+                        ₹ <%= new Intl.NumberFormat('en-IN').format(property.price) %>
+                      </div>
+                    <% } %>
+                  </div>
+                </a>
+              <% }); %>
+            </div>
+          </div>
+        <% } %>
         
         <a href="https://my.realbroker.app/<%= broker.vanity_url %>" class="cta-button">
           View Full Profile & Contact

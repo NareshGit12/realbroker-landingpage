@@ -27,16 +27,18 @@ function generateSlug(name, company) {
 async function generateBrokerHTML(broker, template) {
   console.log(`Generating HTML for ${broker.full_name}...`);
 
-  // Get properties count
-  const { count: propertiesCount } = await supabase
+  // Get properties with full data
+  const { data: properties } = await supabase
     .from('properties')
-    .select('*', { count: 'exact', head: true })
+    .select('id, title, price, description, images, property_type, bedrooms, sqft, area, static_html_url')
     .eq('user_id', broker.id)
-    .gt('publish', 0);
+    .gt('publish', 0)
+    .order('created_at', { ascending: false });
 
   const brokerData = {
     ...broker,
-    properties_count: propertiesCount || 0
+    properties: properties || [],
+    properties_count: properties?.length || 0
   };
 
   // Render HTML

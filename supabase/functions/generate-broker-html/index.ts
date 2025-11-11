@@ -18,6 +18,7 @@ interface BrokerData {
   areas: string[] | null;
   member_since: string;
   vanity_url: string;
+  properties: any[];
   properties_count: number;
 }
 
@@ -148,16 +149,18 @@ async function generateBrokerHTML(supabaseClient: any, brokerId: string) {
   if (brokerError) throw brokerError;
   if (!broker) throw new Error('Broker not found');
 
-  // Get properties count
-  const { count: propertiesCount } = await supabaseClient
+  // Get properties with full data
+  const { data: properties } = await supabaseClient
     .from('properties')
-    .select('*', { count: 'exact', head: true })
+    .select('id, title, price, description, images, property_type, bedrooms, sqft, area, static_html_url')
     .eq('user_id', brokerId)
-    .gt('publish', 0);
+    .gt('publish', 0)
+    .order('created_at', { ascending: false });
 
   const brokerData: BrokerData = {
     ...broker,
-    properties_count: propertiesCount || 0
+    properties: properties || [],
+    properties_count: properties?.length || 0
   };
 
   // Read template
