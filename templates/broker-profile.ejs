@@ -161,11 +161,16 @@
       position: relative;
     }
     
+    /* Mobile-first: centered layout */
     .avatar-container {
       position: absolute;
       bottom: -50px;
       left: 50%;
       transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
     }
     
     .avatar {
@@ -181,12 +186,95 @@
       padding: 4rem 2rem 2rem;
       text-align: center;
     }
+
+    .card-left-section {
+      display: none;
+    }
+
+    .card-right-section {
+      width: 100%;
+    }
+
+    /* Desktop layout: profile on left, details on right */
+    @media (min-width: 768px) {
+      .card-header {
+        display: none;
+      }
+
+      .avatar-container {
+        position: static;
+        transform: none;
+      }
+
+      .card-content {
+        display: flex;
+        gap: 3rem;
+        padding: 3rem;
+        text-align: left;
+      }
+
+      .card-left-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      .avatar {
+        border: none;
+        width: 200px;
+        height: 200px;
+      }
+
+      .company-logo {
+        max-width: 200px;
+        max-height: 100px;
+        object-fit: contain;
+      }
+
+      .associations-badges {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .association-badge {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+      }
+
+      .card-right-section {
+        flex: 1;
+      }
+
+      .rating {
+        justify-content: flex-start;
+      }
+
+      .company-info {
+        align-items: flex-start;
+      }
+
+      .badges {
+        justify-content: flex-start;
+      }
+    }
     
     .broker-name {
       font-size: 2rem;
       font-weight: bold;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
       color: hsl(0 84% 22%);
+    }
+
+    .company-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: hsl(351 83% 58%);
+      margin-bottom: 0.5rem;
     }
     
     .rating {
@@ -271,45 +359,50 @@
       border: 1px solid hsl(0 20% 90%);
     }
     
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
       margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid hsl(0 20% 90%);
     }
-    
-    .stat {
-      text-align: center;
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: hsl(0 20% 50%);
+      text-decoration: none;
+      transition: color 0.2s;
     }
-    
-    .stat-value {
-      font-size: 1.5rem;
-      font-weight: bold;
+
+    .contact-item:hover {
       color: hsl(351 83% 58%);
     }
-    
-    .stat-label {
-      font-size: 0.875rem;
+
+    .contact-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: hsl(351 83% 58%);
+      flex-shrink: 0;
+    }
+
+    .member-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid hsl(0 20% 90%);
       color: hsl(0 20% 50%);
-      margin-top: 0.25rem;
+      font-size: 0.875rem;
     }
-    
-    .cta-button {
-      display: inline-block;
-      background: linear-gradient(135deg, hsl(351 83% 58%) 0%, hsl(351 83% 48%) 100%);
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 0.75rem;
-      text-decoration: none;
-      font-weight: 600;
-      margin-top: 2rem;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    .cta-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+    @media (min-width: 768px) {
+      .contact-info, .member-info {
+        text-align: left;
+      }
     }
     
     /* Footer Styles */
@@ -399,12 +492,19 @@
       margin-bottom: 2rem;
     }
 
-    @media (min-width: 768px) {
+    /* Mobile: 2x2 grid */
+    @media (min-width: 480px) {
       .properties-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
+    @media (min-width: 768px) {
+      .properties-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+ 
     @media (min-width: 1024px) {
       .properties-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -617,76 +717,123 @@
       </div>
       
       <div class="card-content">
-        <h1 class="broker-name"><%= broker.full_name %></h1>
-        
-        <div class="rating">
-          <% for (let i = 0; i < 5; i++) { %>
-            <span class="star"><%= i < Math.floor(broker.rating || 5) ? '★' : '☆' %></span>
+        <!-- Left Section: Profile Picture & Company Logo (Desktop Only) -->
+        <div class="card-left-section">
+          <img 
+            src="<%= broker.avatar_url || 'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(broker.full_name) %>" 
+            alt="<%= broker.full_name %>"
+            class="avatar"
+          />
+          
+          <div class="rating">
+            <% for (let i = 0; i < 5; i++) { %>
+              <span class="star"><%= i < Math.floor(broker.rating || 5) ? '★' : '☆' %></span>
+            <% } %>
+            <span class="rating-value"><%= (broker.rating || 5).toFixed(1) %></span>
+          </div>
+
+          <% if (broker.company_logo_url) { %>
+            <img 
+              src="<%= broker.company_logo_url %>" 
+              alt="<%= broker.company_name %>" 
+              class="company-logo"
+            />
           <% } %>
-          <span class="rating-value"><%= (broker.rating || 5).toFixed(1) %></span>
         </div>
-        
-        <div class="company-info">
+
+        <!-- Right Section: Broker Details -->
+        <div class="card-right-section">
+          <h1 class="broker-name"><%= broker.full_name %></h1>
+          
           <% if (broker.company_name) { %>
-            <div class="info-row">
-              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              <span><%= broker.company_name %></span>
+            <div class="company-name"><%= broker.company_name %></div>
+          <% } %>
+
+          <% if (broker.city) { %>
+            <div style="color: hsl(0 20% 50%); margin-bottom: 1rem;"><%= broker.city %></div>
+          <% } %>
+
+          <!-- Mobile rating (hidden on desktop) -->
+          <div class="rating" style="display: flex; margin-bottom: 1rem;">
+            <% for (let i = 0; i < 5; i++) { %>
+              <span class="star"><%= i < Math.floor(broker.rating || 5) ? '★' : '☆' %></span>
+            <% } %>
+            <span class="rating-value"><%= (broker.rating || 5).toFixed(1) %></span>
+          </div>
+
+          <% if (broker.bio) { %>
+            <h2 style="font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; color: hsl(0 84% 22%);">About Me</h2>
+            <div class="bio">
+              <%= broker.bio %>
             </div>
           <% } %>
           
-          <% if (broker.city) { %>
-            <div class="info-row">
-              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span><%= broker.city %></span>
+          <% if (broker.areas && broker.areas.length > 0) { %>
+            <div class="expertise">
+              <h2 class="expertise-title">Areas of Expertise</h2>
+              <div class="badges">
+                <% broker.areas.forEach(function(area) { %>
+                  <span class="badge"><%= area %></span>
+                <% }); %>
+              </div>
             </div>
           <% } %>
+
+          <!-- Contact Information -->
+          <div class="contact-info">
+            <% if (broker.phone_no) { %>
+              <a href="tel:<%= broker.phone_no %>" class="contact-item">
+                <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span><%= broker.phone_no %></span>
+              </a>
+            <% } %>
+
+            <% if (broker.email) { %>
+              <a href="mailto:<%= broker.email %>" class="contact-item">
+                <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span><%= broker.email %></span>
+              </a>
+            <% } %>
+
+            <% if (broker.website) { %>
+              <a href="<%= broker.website.startsWith('http') ? broker.website : 'https://' + broker.website %>" class="contact-item" target="_blank" rel="noopener noreferrer">
+                <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+                <span><%= broker.website %></span>
+              </a>
+            <% } %>
+          </div>
+
+          <!-- Member Info -->
+          <div class="member-info">
+            <div><%= broker.city || '' %></div>
+            <div>Member since <%= broker.member_since ? new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(new Date(broker.member_since)) : new Date().getFullYear() %></div>
+            <% if (broker.inviter_name) { %>
+              <div>Invited by <%= broker.inviter_name %></div>
+            <% } %>
+          </div>
         </div>
-        
-        <div class="divider"></div>
-        
-        <% if (broker.bio) { %>
-          <div class="bio">
-            <%= broker.bio %>
-          </div>
-        <% } %>
-        
-        <% if (broker.areas && broker.areas.length > 0) { %>
-          <div class="expertise">
-            <h2 class="expertise-title">Areas of Expertise</h2>
-            <div class="badges">
-              <% broker.areas.forEach(function(area) { %>
-                <span class="badge"><%= area %></span>
-              <% }); %>
-            </div>
-          </div>
-        <% } %>
-        
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-value">
-              <%= broker.member_since ? new Date(broker.member_since).getFullYear() : new Date().getFullYear() %>
-            </div>
-            <div class="stat-label">Member Since</div>
-          </div>
-          <% if (broker.properties && broker.properties.length > 0) { %>
-          <div class="stat">
-            <div class="stat-value"><%= broker.properties.length %></div>
-            <div class="stat-label">Listed Properties</div>
-          </div>
-          <% } %>
-        </div>
-        
-        <a href="https://my.realbroker.app/<%= broker.vanity_url %>" class="cta-button">
-          View Full Profile & Contact
-        </a>
       </div>
     </div>
   </div>
+
+  <style>
+    @media (min-width: 768px) {
+      .card-right-section .rating {
+        display: none !important;
+      }
+    }
+    @media (max-width: 767px) {
+      .card-left-section .rating {
+        display: none !important;
+      }
+    }
+  </style>
   
   <!-- Property Listings Section -->
   <% if (broker.properties && broker.properties.length > 0) { %>
@@ -697,7 +844,7 @@
     </div>
     
     <div class="properties-grid" id="propertiesGrid">
-      <% broker.properties.forEach(function(property, index) { %>
+      <% (broker.properties || []).forEach(function(property, index) { %>
         <a href="<%= property.static_html_url || '#' %>" class="property-card" data-property-index="<%= index %>" target="_blank" rel="noopener noreferrer">
           <% if (property.images && property.images.length > 0) { %>
             <img src="<%= property.images[0] %>" alt="<%= property.title %>" class="property-image" />

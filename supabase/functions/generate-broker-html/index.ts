@@ -156,13 +156,17 @@ async function generateBrokerHTML(supabaseClient: any, brokerId: string) {
       id,
       full_name,
       company_name,
+      company_logo_url,
       city,
       bio,
       avatar_url,
       rating,
       areas,
       member_since,
-      vanity_url
+      vanity_url,
+      phone_no,
+      email,
+      website
     `)
     .eq('id', brokerId)
     .single();
