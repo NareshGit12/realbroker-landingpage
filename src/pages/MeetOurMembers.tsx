@@ -142,7 +142,7 @@ const MeetOurMembers = () => {
       <Navbar />
       <main>
         <section className="py-16 bg-gradient-to-b from-white to-gray-50">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 max-w-6xl">
             <RevealAnimation>
               <div className="text-center mb-12">
                 <span className="inline-block py-1 px-3 mb-4 text-xs font-medium uppercase tracking-wider bg-realtor-100 text-realtor-800 rounded-full">
@@ -164,7 +164,7 @@ const MeetOurMembers = () => {
                     <p className="text-lg text-gray-600">Loading members...</p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
                     {displayMembers.map((member) => (
                       <BrokerCard key={member.id} broker={member} />
                     ))}
