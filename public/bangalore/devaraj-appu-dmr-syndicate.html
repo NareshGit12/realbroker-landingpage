@@ -234,7 +234,7 @@
     }
     
     .bio {
-      color: hsl(0 20% 50%);
+      color: hsl(0 0% 0%);
       line-height: 1.6;
       margin-bottom: 1.5rem;
       text-align: left;
@@ -333,7 +333,13 @@
     
     @media (min-width: 768px) {
       .footer-content {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .footer-content {
+        grid-template-columns: repeat(4, 1fr);
       }
     }
     
@@ -415,10 +421,9 @@
       </a>
       
       <nav class="nav-links">
-        <a href="https://realbroker.app/#features" class="nav-link">Features</a>
-        <a href="https://realbroker.app/meet-our-members" class="nav-link">Members</a>
-        <a href="https://realbroker.app/#how-it-works" class="nav-link">How It Works</a>
-        <a href="https://realbroker.app/#testimonials" class="nav-link">Testimonials</a>
+        <a href="https://realbroker.app/members" class="nav-link">Meet our Members</a>
+        <a href="https://my.realbroker.app/login" class="nav-link" target="_blank" rel="noopener noreferrer">Member Login</a>
+        <a href="https://propalyst.com" class="nav-link" target="_blank" rel="noopener noreferrer">Propalyst.com</a>
       </nav>
     </div>
   </header>
@@ -521,21 +526,28 @@
         </div>
         
         <div class="footer-section">
-          <h3>Company</h3>
+          <h3>Explore</h3>
           <div class="footer-links">
-            <a href="https://realbroker.app/about-us" class="footer-link">About Us</a>
-            <a href="https://realbroker.app/meet-our-members" class="footer-link">Our Members</a>
-            <a href="https://realbroker.app/charter-and-conduct" class="footer-link">Charter</a>
-            <a href="https://realbroker.app/faq" class="footer-link">FAQ</a>
+            <a href="https://realbroker.app/members" class="footer-link">Meet Our Members</a>
+            <a href="https://my.realbroker.app/login" class="footer-link" target="_blank" rel="noopener noreferrer">Member Login</a>
+            <a href="https://propalyst.com" class="footer-link" target="_blank" rel="noopener noreferrer">Propalyst.com</a>
           </div>
         </div>
         
         <div class="footer-section">
-          <h3>Legal</h3>
+          <h3>Resources</h3>
           <div class="footer-links">
-            <a href="https://realbroker.app/terms-of-use" class="footer-link">Terms of Use</a>
-            <a href="https://realbroker.app/privacy-policy" class="footer-link">Privacy Policy</a>
-            <a href="https://realbroker.app/support" class="footer-link">Support</a>
+            <a href="https://realbroker.app/certified-realbroker" class="footer-link">Certified RealBroker Program</a>
+            <a href="https://realbroker.app/charter-and-conduct" class="footer-link">Member Code of Conduct</a>
+            <a href="https://realbroker.app/charter" class="footer-link">Charter</a>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Company</h3>
+          <div class="footer-links">
+            <a href="https://realbroker.app/privacy" class="footer-link">Privacy Policy</a>
+            <a href="https://realbroker.app/terms-of-use" class="footer-link">Terms of Service</a>
           </div>
         </div>
       </div>
