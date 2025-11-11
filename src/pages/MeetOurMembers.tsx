@@ -164,7 +164,7 @@ const MeetOurMembers = () => {
                     <p className="text-lg text-gray-600">Loading members...</p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 place-items-center">
                     {displayMembers.map((member) => (
                       <BrokerCard key={member.id} broker={member} />
                     ))}
