@@ -75,13 +75,18 @@ async function main() {
     // Fetch pending queue items for brokers
     const { data: queueItems, error: queueError } = await supabase
       .from('html_generation_queue')
-      .select('id, entity_id')
+      .select('id, entity_id, entity_type, status')
       .eq('entity_type', 'broker')
       .eq('status', 'pending')
       .order('priority', { ascending: false })
       .order('created_at', { ascending: true });
 
-    if (queueError) throw queueError;
+    if (queueError) {
+      console.error('Error fetching queue:', queueError);
+      throw queueError;
+    }
+
+    console.log('Queue query result:', JSON.stringify(queueItems, null, 2));
 
     if (!queueItems || queueItems.length === 0) {
       console.log('No pending brokers in queue.');
