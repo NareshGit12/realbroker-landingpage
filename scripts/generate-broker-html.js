@@ -101,11 +101,8 @@ async function main() {
     
     const { data: brokers, error } = await supabase
       .from('profiles')
-      .select('id, full_name, company_name, city, bio, avatar_url, rating, areas, member_since, vanity_url')
-      .in('id', brokerIds)
-      .eq('role', 'user')
-      .not('full_name', 'is', null)
-      .not('vanity_url', 'is', null);
+      .select('id, full_name, company_name, city, bio, avatar_url, rating, areas, member_since, vanity_url, role')
+      .in('id', brokerIds);
 
     if (error) {
       console.error('Error fetching brokers:', error);
