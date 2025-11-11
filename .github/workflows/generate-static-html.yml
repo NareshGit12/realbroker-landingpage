@@ -22,7 +22,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install -g @supabase/supabase-js ejs
+          npm install
 
       - name: Ensure public directory exists
         run: mkdir -p public
