@@ -32,7 +32,6 @@ async function generateBrokerHTML(broker, template) {
     .from('properties')
     .select('id, title, price, description, images, property_type, bedrooms, sqft, area, static_html_url')
     .eq('user_id', broker.id)
-    .gt('publish', 0)
     .order('created_at', { ascending: false })
     .range(0, 9999); // Fetch up to 10,000 properties
 
