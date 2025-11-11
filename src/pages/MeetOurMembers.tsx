@@ -30,42 +30,22 @@ const MeetOurMembers = () => {
 
       const rows = data || [];
 
-      // Helper function to generate static HTML URL
-      const generateStaticHtmlUrl = (fullName: string, companyName: string, city: string): string | undefined => {
-        if (!fullName || !companyName) return undefined;
-        
-        const citySlug = city.toLowerCase().replace(/\s+/g, '-');
-        const nameSlug = fullName.toLowerCase().replace(/\s+/g, '-');
-        const companySlug = companyName.toLowerCase().replace(/\s+/g, '-');
-        const filename = `${nameSlug}-${companySlug}.html`;
-        
-        return `/${citySlug}/${filename}`;
-      };
-
-      const formattedMembers: BrokerInfo[] = rows.map((profile: any) => {
-        const staticUrl = profile.static_html_url || generateStaticHtmlUrl(
-          profile.full_name,
-          profile.company_name,
-          profile.city || 'bangalore'
-        );
-        
-        return {
-          id: profile.id,
-          name: profile.full_name || 'Unknown Name',
-          agency: profile.company_name || 'Independent Broker',
-          location: profile.city || 'Bangalore',
-          description: profile.bio || 'Professional real estate broker specializing in residential and commercial properties.',
-          imageSrc: profile.avatar_url || '/placeholder.svg',
-          rating: Number(profile.rating ?? 4),
-          expertiseAreas: (profile.areas ?? ['Residential', 'Commercial']) as string[],
-          memberSince: profile.member_since
-            ? new Date(profile.member_since).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-            : 'Recent Member',
-          propertiesCount: 0,
-          vanityUrl: profile.vanity_url || undefined,
-          staticHtmlUrl: staticUrl,
-        };
-      });
+      const formattedMembers: BrokerInfo[] = rows.map((profile: any) => ({
+        id: profile.id,
+        name: profile.full_name || 'Unknown Name',
+        agency: profile.company_name || 'Independent Broker',
+        location: profile.city || 'Bangalore',
+        description: profile.bio || 'Professional real estate broker specializing in residential and commercial properties.',
+        imageSrc: profile.avatar_url || '/placeholder.svg',
+        rating: Number(profile.rating ?? 4),
+        expertiseAreas: (profile.areas ?? ['Residential', 'Commercial']) as string[],
+        memberSince: profile.member_since
+          ? new Date(profile.member_since).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+          : 'Recent Member',
+        propertiesCount: 0,
+        vanityUrl: profile.vanity_url || undefined,
+        staticHtmlUrl: profile.static_html_url || undefined,
+      }));
 
       setMembers(formattedMembers);
       setLoading(false);
@@ -103,8 +83,7 @@ const MeetOurMembers = () => {
       rating: 5,
       expertiseAreas: ['Whitefield', 'East Bangalore', 'Bellandur'],
       memberSince: 'May 2025',
-      propertiesCount: 0,
-      staticHtmlUrl: '/bangalore/shinoj-nambiar-gospaze-realty.html'
+      propertiesCount: 0
     },
     {
       id: '2',
