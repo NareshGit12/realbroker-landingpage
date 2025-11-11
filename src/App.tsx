@@ -22,6 +22,7 @@ import Support from "./pages/Support";
 import CharterAndConduct from "./pages/CharterAndConduct";
 import Charter from "./pages/Charter";
 import MeetOurMembers from "./pages/MeetOurMembers";
+import AdminHTMLGeneration from "./pages/AdminHTMLGeneration";
 
 // Track page views when route changes
 const PageViewTracker = () => {
@@ -60,6 +61,7 @@ const App = () => (
           <Route path="/charter-and-conduct" element={<CharterAndConduct />} />
           <Route path="/charter" element={<Charter />} />
           <Route path="/members" element={<MeetOurMembers />} />
+          <Route path="/admin/html-generation" element={<AdminHTMLGeneration />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -15,11 +15,13 @@ export interface BrokerInfo {
   expertiseAreas: string[];
   memberSince: string;
   propertiesCount: number;
+  vanityUrl?: string;
+  staticHtmlUrl?: string;
 }
 
 const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
-  return (
-    <Card className="border border-realtor-100 shadow-md overflow-hidden w-full bg-white h-full flex flex-col" style={{ borderRadius: '0' }}>
+  const cardContent = (
+    <Card className="border border-realtor-100 shadow-md overflow-hidden w-full bg-white h-full flex flex-col transition-transform hover:scale-105" style={{ borderRadius: '0' }}>
       {/* Red header */}
       <div className="bg-realtor-500 h-8"></div>
       
@@ -83,6 +85,36 @@ const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
       </div>
     </Card>
   );
+
+  // If static HTML URL exists, wrap in link
+  if (broker.staticHtmlUrl) {
+    return (
+      <a 
+        href={broker.staticHtmlUrl} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="block h-full"
+      >
+        {cardContent}
+      </a>
+    );
+  }
+
+  // Otherwise, link to dynamic profile
+  if (broker.vanityUrl) {
+    return (
+      <a 
+        href={`https://my.realbroker.app/${broker.vanityUrl}`} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="block h-full"
+      >
+        {cardContent}
+      </a>
+    );
+  }
+
+  return cardContent;
 };
 
 export default BrokerCard;

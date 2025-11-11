@@ -49,6 +49,8 @@ const MeetOurMembers = () => {
         areas: string[] | null;
         member_since: string | null;
         properties_count: number | null;
+        vanity_url: string | null;
+        static_html_url: string | null;
       };
 
       const { data, error } = await supabase.rpc('get_member_directory', {
@@ -78,6 +80,8 @@ const MeetOurMembers = () => {
           ? new Date(profile.member_since).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
           : 'Recent Member',
         propertiesCount: Number(profile.properties_count ?? 0),
+        vanityUrl: profile.vanity_url || undefined,
+        staticHtmlUrl: profile.static_html_url || undefined,
       }));
 
       setMembers(formattedMembers);

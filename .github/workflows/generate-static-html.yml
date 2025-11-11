@@ -1,0 +1,30 @@
+name: Generate Static HTML Pages
+
+on:
+  schedule:
+    # Run every Sunday at 2 AM UTC
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+    # Allow manual triggering
+
+jobs:
+  generate-broker-html:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Call Supabase Edge Function
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -d '{"process_queue": true}' \
+            ${{ secrets.SUPABASE_URL }}/functions/v1/generate-broker-html
+
+      - name: Notify on completion
+        if: always()
+        run: |
+          echo "Static HTML generation completed"
+          # Add notification logic here if needed (email, Slack, etc.)
