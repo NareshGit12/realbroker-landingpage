@@ -409,14 +409,16 @@
     }
     
     .star {
-      color: #fbbf24;
-      font-size: 1.25rem;
+      color: #fde047;
+      font-size: 1.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     
     .rating-value {
-      font-weight: 600;
-      color: hsl(0 20% 50%);
+      font-weight: 700;
+      color: white;
       margin-left: 0.5rem;
+      font-size: 1.125rem;
     }
     
     .company-info {
@@ -876,14 +878,6 @@
             <% } %>
             <span class="rating-value"><%= (broker.rating || 5).toFixed(1) %></span>
           </div>
-
-          <% if (broker.company_logo_url) { %>
-            <img 
-              src="<%= broker.company_logo_url %>" 
-              alt="<%= broker.company_name %>" 
-              class="company-logo"
-            />
-          <% } %>
         </div>
 
         <!-- Right Section: Broker Details -->
