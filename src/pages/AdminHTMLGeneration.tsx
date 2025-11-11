@@ -122,17 +122,17 @@ const AdminHTMLGeneration = () => {
       
       for (const brokerId of brokerIds) {
         const { error } = await supabase.functions.invoke("generate-broker-html", {
-          body: { broker_id: brokerId },
+          body: { broker_id: brokerId, add_to_queue: true },
         });
 
         if (!error) successCount++;
       }
 
-      toast.success(`Generated HTML for ${successCount} broker(s)`);
+      toast.success(`Added ${successCount} broker(s) to generation queue`);
       await fetchData();
       setSelectedBrokerIds(new Set());
     } catch (error: any) {
-      toast.error("Error generating HTML: " + error.message);
+      toast.error("Error adding to queue: " + error.message);
     } finally {
       setProcessing(false);
     }
@@ -146,16 +146,16 @@ const AdminHTMLGeneration = () => {
       
       for (const brokerId of allBrokerIds) {
         const { error } = await supabase.functions.invoke("generate-broker-html", {
-          body: { broker_id: brokerId },
+          body: { broker_id: brokerId, add_to_queue: true },
         });
 
         if (!error) successCount++;
       }
 
-      toast.success(`Generated HTML for ${successCount} broker(s)`);
+      toast.success(`Added ${successCount} broker(s) to generation queue`);
       await fetchData();
     } catch (error: any) {
-      toast.error("Error generating HTML: " + error.message);
+      toast.error("Error adding to queue: " + error.message);
     } finally {
       setProcessing(false);
     }

@@ -40,10 +40,31 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { broker_id, process_queue } = await req.json();
+    const { broker_id, process_queue, add_to_queue } = await req.json();
 
     if (broker_id) {
-      // Generate HTML for specific broker
+      // Add broker to queue instead of generating directly
+      if (add_to_queue) {
+        const { error: queueError } = await supabaseClient
+          .from('html_generation_queue')
+          .insert({
+            entity_type: 'broker',
+            entity_id: broker_id,
+            priority: 5,
+            status: 'pending'
+          });
+
+        if (queueError && queueError.code !== '23505') { // Ignore duplicate key errors
+          throw queueError;
+        }
+
+        return new Response(
+          JSON.stringify({ success: true, message: 'Broker added to queue successfully' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Direct generation (legacy support)
       await generateBrokerHTML(supabaseClient, broker_id);
       
       return new Response(
