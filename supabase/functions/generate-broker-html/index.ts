@@ -149,14 +149,14 @@ serve(async (req) => {
 async function generateBrokerHTML(supabaseClient: any, brokerId: string) {
   const startTime = Date.now();
 
-  // Fetch broker data with properties count
+  // Fetch broker data with company logo
   const { data: broker, error: brokerError } = await supabaseClient
     .from('profiles')
     .select(`
       id,
       full_name,
       company_name,
-      company_logo_url,
+      company_id,
       city,
       bio,
       avatar_url,
@@ -164,9 +164,12 @@ async function generateBrokerHTML(supabaseClient: any, brokerId: string) {
       areas,
       member_since,
       vanity_url,
-      phone_no,
+      phone,
       email,
-      website
+      website,
+      company:company_id (
+        Logo
+      )
     `)
     .eq('id', brokerId)
     .single();
@@ -174,16 +177,19 @@ async function generateBrokerHTML(supabaseClient: any, brokerId: string) {
   if (brokerError) throw brokerError;
   if (!broker) throw new Error('Broker not found');
 
-  // Get properties with full data
+  // Get properties with full data (fetch ALL properties)
   const { data: properties } = await supabaseClient
     .from('properties')
     .select('id, title, price, description, images, property_type, bedrooms, sqft, area, static_html_url')
     .eq('user_id', brokerId)
     .gt('publish', 0)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .range(0, 9999); // Fetch up to 10,000 properties
 
   const brokerData: BrokerData = {
     ...broker,
+    company_logo_url: broker.company?.Logo || null,
+    phone_no: broker.phone,
     properties: properties || [],
     properties_count: properties?.length || 0
   };

@@ -27,16 +27,19 @@ function generateSlug(name, company) {
 async function generateBrokerHTML(broker, template) {
   console.log(`Generating HTML for ${broker.full_name}...`);
 
-  // Get properties with full data
+  // Get properties with full data (fetch ALL properties)
   const { data: properties } = await supabase
     .from('properties')
     .select('id, title, price, description, images, property_type, bedrooms, sqft, area, static_html_url')
     .eq('user_id', broker.id)
     .gt('publish', 0)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .range(0, 9999); // Fetch up to 10,000 properties
 
   const brokerData = {
     ...broker,
+    company_logo_url: broker.company?.Logo || null,
+    phone_no: broker.phone,
     properties: properties || [],
     properties_count: properties?.length || 0
   };
@@ -103,7 +106,26 @@ async function main() {
     
     const { data: brokers, error } = await supabase
       .from('profiles')
-      .select('id, full_name, company_name, city, bio, avatar_url, rating, areas, member_since, vanity_url, role')
+      .select(`
+        id, 
+        full_name, 
+        company_name, 
+        company_id,
+        city, 
+        bio, 
+        avatar_url, 
+        rating, 
+        areas, 
+        member_since, 
+        vanity_url, 
+        role,
+        phone,
+        email,
+        website,
+        company:company_id (
+          Logo
+        )
+      `)
       .in('id', brokerIds);
 
     if (error) {

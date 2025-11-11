@@ -248,6 +248,9 @@
 
       .card-right-section {
         flex: 1;
+        padding: 2rem;
+        background: linear-gradient(135deg, hsl(351 83% 98%) 0%, hsl(351 83% 96%) 100%);
+        border-radius: 0 12px 12px 0;
       }
 
       .rating {
@@ -488,26 +491,23 @@
     .properties-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 1.5rem;
       margin-bottom: 2rem;
     }
 
-    /* Mobile: 2x2 grid */
+    /* Mobile: 2x2 grid from 480px */
     @media (min-width: 480px) {
       .properties-grid {
         grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 768px) {
-      .properties-grid {
-        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
       }
     }
  
+    /* Desktop: 3x3 grid from 1024px */
     @media (min-width: 1024px) {
       .properties-grid {
         grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
       }
     }
 
@@ -811,8 +811,9 @@
 
           <!-- Member Info -->
           <div class="member-info">
-            <div><%= broker.city || '' %></div>
-            <div>Member since <%= broker.member_since ? new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(new Date(broker.member_since)) : new Date().getFullYear() %></div>
+            <div style="font-size: 1.125rem; font-weight: 600; color: hsl(0 84% 22%); margin-bottom: 0.25rem;">
+              Member since <%= broker.member_since ? new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(new Date(broker.member_since)) : new Date().getFullYear() %>
+            </div>
             <% if (broker.inviter_name) { %>
               <div>Invited by <%= broker.inviter_name %></div>
             <% } %>
@@ -896,7 +897,7 @@
       <% }); %>
     </div>
     
-    <% if (broker.properties.length > 9) { %>
+    <% if (broker.properties.length > 6) { %>
     <div class="pagination" id="pagination">
       <button class="pagination-button" id="prevBtn" onclick="changePage(-1)">
         <svg style="width: 1rem; height: 1rem; display: inline-block; vertical-align: middle;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -916,15 +917,20 @@
   </section>
   
   <script>
-    const propertiesPerPage = 9;
+    // Responsive properties per page
+    function getPropertiesPerPage() {
+      return window.innerWidth < 768 ? 6 : 9;
+    }
+
+    let propertiesPerPage = getPropertiesPerPage();
     let currentPage = 1;
     const totalProperties = <%= broker.properties.length %>;
-    const totalPages = Math.ceil(totalProperties / propertiesPerPage);
     
     function showPage(page) {
       const allCards = document.querySelectorAll('[data-property-index]');
       const start = (page - 1) * propertiesPerPage;
       const end = start + propertiesPerPage;
+      const totalPages = Math.ceil(totalProperties / propertiesPerPage);
       
       allCards.forEach((card, index) => {
         if (index >= start && index < end) {
@@ -944,6 +950,7 @@
     }
     
     function changePage(direction) {
+      const totalPages = Math.ceil(totalProperties / propertiesPerPage);
       const newPage = currentPage + direction;
       if (newPage >= 1 && newPage <= totalPages) {
         currentPage = newPage;
@@ -951,8 +958,18 @@
       }
     }
     
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      const newPerPage = getPropertiesPerPage();
+      if (newPerPage !== propertiesPerPage) {
+        propertiesPerPage = newPerPage;
+        currentPage = 1; // Reset to first page
+        showPage(1);
+      }
+    });
+    
     // Initialize pagination if needed
-    if (totalProperties > propertiesPerPage) {
+    if (totalProperties > 6) {
       showPage(1);
     }
   </script>
