@@ -65,7 +65,7 @@ const NewsletterSubscription: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mb-16 relative z-10">
+    <div className="max-w-3xl mx-auto mb-16 px-4 md:px-6 relative z-10">
       <div className="glass-card p-8 md:p-10 text-center">
         <h3 className="text-2xl md:text-3xl font-bold mb-3">Stay Updated</h3>
         <p className="text-muted-foreground mb-6">
