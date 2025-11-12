@@ -23,7 +23,7 @@ const BrokerCard: React.FC<{ broker: BrokerInfo }> = ({ broker }) => {
   const cardContent = (
     <Card className="border border-realtor-100 shadow-md overflow-hidden w-full bg-white h-full flex flex-col" style={{ borderRadius: '0' }}>
       {/* Red header */}
-      <div className="bg-realtor-500 h-8"></div>
+      <div className="bg-realtor-500 h-12"></div>
       
       <div className="flex flex-col items-center px-4 pt-0 pb-3 relative h-full">
         {/* Avatar - positioned to overlap the red header */}
