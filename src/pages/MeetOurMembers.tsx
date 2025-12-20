@@ -19,7 +19,7 @@ const MeetOurMembers = () => {
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('role', 'user')
+        .ilike('role', '%user%')
         .limit(displayCount);
 
       if (error) {
