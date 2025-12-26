@@ -1643,6 +1643,7 @@ export type Database = {
           agent_phone: string | null
           client_feedback: string | null
           created_at: string | null
+          created_by: string | null
           date_entered_status: string | null
           id: string
           lead_id: number
@@ -1661,6 +1662,7 @@ export type Database = {
           agent_phone?: string | null
           client_feedback?: string | null
           created_at?: string | null
+          created_by?: string | null
           date_entered_status?: string | null
           id?: string
           lead_id: number
@@ -1679,6 +1681,7 @@ export type Database = {
           agent_phone?: string | null
           client_feedback?: string | null
           created_at?: string | null
+          created_by?: string | null
           date_entered_status?: string | null
           id?: string
           lead_id?: number
@@ -1692,6 +1695,13 @@ export type Database = {
           viewing_date?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "matching_supply_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "matching_supply_lead_id_fkey"
             columns: ["lead_id"]
