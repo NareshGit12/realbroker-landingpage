@@ -56,13 +56,13 @@ serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" } 
       }
     );
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error in send-notification-email function:", error);
     
     return new Response(
       JSON.stringify({ 
         error: "Failed to send email notification", 
-        details: error.message 
+        details: error instanceof Error ? error.message : String(error) 
       }),
       { 
         status: 500, 
