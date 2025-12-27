@@ -27,7 +27,7 @@
           color: var(--text-main);
           background-color: #f0f2f5;
           margin: 0;
-          padding: 40px 0;
+          padding: 20px 0; /* Reduced for mobile */
           font-size: 17px;
       }
 
@@ -35,16 +35,22 @@
           max-width: 950px;
           margin: 0 auto;
           background: white;
-          padding: 60px 80px;
+          padding: 40px 20px; /* Base padding for mobile */
           box-shadow: 0 20px 40px rgba(0,0,0,0.06);
           position: relative;
+      }
+
+      /* Desktop Padding */
+      @media (min-width: 768px) {
+          body { padding: 40px 0; }
+          .container { padding: 60px 80px; }
       }
 
       .container::before {
           content: "";
           position: absolute;
           top: 0; left: 0; right: 0;
-          height: 10px;
+          height: 8px;
           background: var(--rb-red);
       }
 
@@ -52,15 +58,17 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 50px;
+          margin-bottom: 40px;
+          flex-wrap: wrap; /* Wraps on very small screens */
+          gap: 15px;
       }
 
-      /* Updated logo container for the new source */
-      .logo { height: 75px; width: auto; }
+      .logo { height: 60px; width: auto; }
+      @media (min-width: 768px) { .logo { height: 75px; } }
 
       .brand-meta {
           text-align: right;
-          font-size: 13px;
+          font-size: 11px;
           text-transform: uppercase;
           letter-spacing: 1.5px;
           font-weight: 800;
@@ -69,120 +77,126 @@
 
       h1 {
           font-family: 'Playfair Display', serif;
-          font-size: 52px;
+          font-size: 36px;
           margin: 0;
           line-height: 1.1;
       }
+      @media (min-width: 768px) { h1 { font-size: 52px; } }
 
       .sub-header {
-          font-size: 24px;
+          font-size: 18px;
           color: var(--rb-red);
           font-weight: 400;
           margin-top: 10px;
+          line-height: 1.4;
       }
+      @media (min-width: 768px) { .sub-header { font-size: 24px; } }
 
       h2 {
-          font-size: 24px;
-          text-transform: none;
-          letter-spacing: -0.3px;
+          font-size: 22px;
           color: var(--rb-red);
-          margin-top: 40px;
+          margin-top: 35px;
           margin-bottom: 12px;
           font-weight: 800;
           border-bottom: 2px solid #edf2f7;
           padding-bottom: 8px;
       }
+      @media (min-width: 768px) { h2 { font-size: 24px; margin-top: 40px; } }
 
-      .tight-section h2 {
-          margin-top: 20px;
-          margin-bottom: 8px;
-      }
+      .tight-section h2 { margin-top: 20px; }
 
       p, ul { margin-top: 0; margin-bottom: 18px; }
+      li { margin-bottom: 8px; }
 
+      /* Problem Grid - Stacks on Mobile */
       .problem-container {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 25px;
-          margin: 35px 0;
+          grid-template-columns: 1fr;
+          gap: 20px;
+          margin: 30px 0;
+      }
+      @media (min-width: 768px) {
+          .problem-container { grid-template-columns: repeat(3, 1fr); gap: 25px; margin: 35px 0; }
       }
 
       .content-box {
           background: var(--light-grey);
-          padding: 30px 25px;
+          padding: 25px;
           border-radius: 8px;
           border: 1px solid #e2e8f0;
       }
 
-      .content-box h3 { font-size: 20px; margin-top: 0; margin-bottom: 12px; }
+      .content-box h3 { font-size: 19px; margin-top: 0; margin-bottom: 10px; }
 
       .results-statement {
           text-align: center;
-          font-size: 26px;
+          font-size: 20px;
           font-weight: 800;
-          margin: 40px 0;
-          line-height: 1.3;
+          margin: 30px 0;
+          line-height: 1.4;
           color: var(--text-main);
       }
+      @media (min-width: 768px) { .results-statement { font-size: 26px; margin: 40px 0; } }
 
       .strategy-box {
           background: var(--dark-grey);
           color: white;
-          padding: 25px 40px;
+          padding: 20px;
           border-radius: 8px;
-          margin: 40px 0;
+          margin: 30px 0;
           text-align: center;
-          border-left: 8px solid var(--rb-red);
+          border-left: 6px solid var(--rb-red);
+      }
+      @media (min-width: 768px) {
+          .strategy-box { padding: 25px 40px; border-left: 8px solid var(--rb-red); margin: 40px 0; }
       }
 
       .strategy-box b { color: var(--rb-red); font-weight: 800; }
-      .strategy-desc { font-size: 16px; opacity: 0.9; font-weight: 400; margin-top: 5px; }
+      .strategy-desc { font-size: 15px; opacity: 0.9; margin-top: 8px; line-height: 1.4; }
 
+      /* Team Grid - Stacks on Mobile */
       .team-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 30px;
-          margin: 40px 0;
+          grid-template-columns: 1fr;
+          gap: 20px;
+          margin: 30px 0;
+      }
+      @media (min-width: 768px) {
+          .team-grid { grid-template-columns: 1fr 1fr; gap: 30px; margin: 40px 0; }
       }
 
       .member-card {
           border: 2px solid #edf2f7;
-          padding: 30px;
+          padding: 25px;
           border-radius: 12px;
       }
 
-      .member-card strong { font-size: 22px; display: block; margin-bottom: 8px; }
+      .member-card strong { font-size: 20px; display: block; margin-bottom: 5px; }
 
-      .linkedin-icon { color: #0077b5; font-size: 24px; margin-top: 15px; display: inline-block; }
+      .linkedin-icon { color: #0077b5; font-size: 22px; margin-top: 12px; display: inline-block; }
 
-      footer { margin-top: 80px; text-align: center; }
+      footer { margin-top: 50px; text-align: center; padding-bottom: 20px; }
 
       .contact-info {
           display: inline-block;
           border: 1px solid #e2e8f0;
           background: white;
           color: var(--text-main);
-          padding: 12px 30px;
+          padding: 12px 25px;
           border-radius: 50px;
           text-decoration: none;
           font-weight: 600;
-          font-size: 16px;
-          margin: 20px 0;
+          font-size: 15px;
+          margin: 15px 0;
       }
 
+      /* PDF DYNAMIC FOOTER (Hidden on mobile web view) */
+      .pdf-footer { display: none; }
+
       @media print {
-          body {
-              background: white;
-              padding: 0;
-              counter-reset: page_num;
-          }
+          body { background: white; padding: 0; counter-reset: page_num; }
           .container { box-shadow: none; width: 100%; max-width: 100%; padding: 40px 60px 100px 60px; }
-
-          .page-break {
-              page-break-before: always;
-              padding-top: 60px;
-          }
-
+          .page-break { page-break-before: always; padding-top: 60px; }
           .pdf-footer {
               display: block;
               position: fixed;
@@ -192,14 +206,7 @@
               height: 60px;
               background: white;
           }
-
-          .footer-line {
-              width: 100%;
-              height: 1px;
-              background: #e2e8f0;
-              margin-bottom: 10px;
-          }
-
+          .footer-line { width: 100%; height: 1px; background: #e2e8f0; margin-bottom: 10px; }
           .footer-content {
               display: flex;
               justify-content: space-between;
@@ -207,12 +214,7 @@
               font-weight: 500;
               color: #718096;
           }
-
-          .page-number::after {
-              counter-increment: page_num;
-              content: "Page-" counter(page_num);
-          }
-
+          .page-number::after { counter-increment: page_num; content: "Page-" counter(page_num); }
           .strategy-box { background-color: #333333 !important; -webkit-print-color-adjust: exact; }
       }
     </style>
@@ -242,21 +244,21 @@
             <h3>Fragmented Supply</h3>
             <p>
               Property inventory lives in thousands of WhatsApp groups, personal spreadsheets, and broker phones. There
-              is no trusted, searchable, up-to-date source of real supply.
+              is no trusted source of real supply.
             </p>
           </div>
           <div class="content-box">
             <h3>Broken Trust</h3>
             <p>
-              Brokers often don’t trust each other. Buyers don’t trust brokers. This leads to duplicated listings, poor
-              customer experiences, and high friction in transactions.
+              Brokers often don’t trust each other. Buyers don’t trust brokers. This leads to duplicated listings and
+              high friction in transactions.
             </p>
           </div>
           <div class="content-box">
             <h3>Poor Buyer Experience</h3>
             <p>
-              Consumer portals optimize for ads and lead generation, not outcomes. Buyers are overwhelmed with
-              irrelevant listings and forced to talk to multiple agents to piece together the truth.
+              Consumer portals optimize for ads, not outcomes. Buyers are overwhelmed with irrelevant listings and piece
+              together the truth manually.
             </p>
           </div>
         </div>
@@ -264,7 +266,7 @@
         <div class="results-statement">The result: inefficiency, opacity, and frustration for everyone involved.</div>
 
         <div class="strategy-box">
-          <div style="font-size: 20px; font-weight: 700;">
+          <div style="font-size: 19px; font-weight: 700;">
             Our Approach: <b>Start with the Broker, Not the Portal.</b>
           </div>
           <div class="strategy-desc">
@@ -279,7 +281,7 @@
         <h2>What is RealBroker (RB)?</h2>
         <p>
           RealBroker.app is an invite-only, broker-to-broker network designed to enable trusted collaboration and
-          structured inventory sharing among high-quality real estate professionals.
+          structured inventory sharing among high-quality professionals.
         </p>
         <p><b>RB helps brokers:</b></p>
         <ul>
@@ -299,20 +301,17 @@
         </p>
         <ul>
           <li>Propalyst surfaces real, broker-verified inventory</li>
-          <li>Buyers engage through a conversational, human-assisted search experience</li>
-          <li>Matching is driven by local broker intelligence, not just filters</li>
+          <li>Buyers engage through a human-assisted search experience</li>
+          <li>Matching is driven by local broker intelligence</li>
         </ul>
-        <p><b>Propalyst also plays the role of a buyer’s advisor / buyer-side broker:</b></p>
+        <p><b>Propalyst also plays the role of a buyer’s advisor:</b></p>
         <ul>
           <li>We help buyers clarify requirements, shortlist options, and coordinate viewings</li>
           <li>
             We are the online concierge & search partner while Viewings & Transactions will be fulfilled through our
             partner brokers from the RealBroker network
           </li>
-          <li>
-            Revenue is generated by participating in the buyer-side brokerage fee, sharing a portion of the commission
-            earned on successful transactions
-          </li>
+          <li>Revenue is generated by participating in the buyer-side brokerage fee</li>
         </ul>
       </section>
 
@@ -322,11 +321,11 @@
         <ul>
           <li>RB provides clean, trusted, live supply</li>
           <li>RB ensures accountability and data quality</li>
-          <li>Propalyst converts that supply into a high-trust buyer experience</li>
+          <li>Propalyst converts that supply into a high-trust experience</li>
         </ul>
         <p>
-          <strong>This creates a powerful flywheel:</strong> Better brokers → better inventory → better buyers → more
-          trust → stronger network
+          <strong>This creates a flywheel:</strong> Better brokers → better inventory → better buyers → more trust →
+          stronger network
         </p>
       </section>
 
@@ -334,19 +333,19 @@
 
       <section>
         <h2>Early Traction & Momentum</h2>
-        <div class="member-card" style="border-width: 1px; background: white; margin-bottom: 40px;">
+        <div class="member-card" style="border-width: 1px; background: white; margin-bottom: 30px;">
           <ul style="margin-bottom: 0;">
             <li>Onboarded 40–50 high-quality brokers across key Bangalore micro-markets</li>
-            <li>Network includes some of the city’s most respected independent brokers and boutique firms</li>
+            <li>Network includes respected independent brokers and boutique firms</li>
             <li><b>Over 400+ active properties</b> already shared through the RB network</li>
-            <li>Seeing organic inbound demand via referrals and early Propalyst users</li>
+            <li>Seeing organic inbound demand via referrals</li>
           </ul>
         </div>
 
         <h2>Why This Matters</h2>
         <p>
-          Real estate is a relationship-driven, local, trust-based business — and technology has largely ignored that
-          reality. RealBroker + Propalyst are designed to:
+          Real estate is relationship-driven — and technology has largely ignored that reality. RealBroker + Propalyst
+          are designed to:
         </p>
         <ul>
           <li>Elevate the role of the professional broker</li>
@@ -359,8 +358,8 @@
           <div class="member-card">
             <div>
               <strong>Naresh Shetty</strong>
-              <div style="font-size: 15px; color: #4a5568;">
-                Over two decades of experience in consumer internet /marketplace business
+              <div style="font-size: 14px; color: #4a5568;">
+                Over two decades of experience in consumer internet / marketplaces
               </div>
             </div>
             <a href="https://www.linkedin.com/in/nareshshetty" target="_blank" class="linkedin-icon"
@@ -370,7 +369,7 @@
           <div class="member-card">
             <div>
               <strong>Manjesh Rao</strong>
-              <div style="font-size: 15px; color: #4a5568;">Two decades in Real Estate Brokerage Services</div>
+              <div style="font-size: 14px; color: #4a5568;">Two decades in Real Estate Brokerage Services</div>
             </div>
             <a href="https://www.linkedin.com/in/manjesh-s-rao-12503328/" target="_blank" class="linkedin-icon"
               ><i class="fab fa-linkedin"></i
@@ -383,7 +382,7 @@
         <p>
           <a
             href="http://propalyst.com/about"
-            style="color: #4a5568; font-size: 15px; font-weight: 700; text-decoration: none;"
+            style="color: #4a5568; font-size: 14px; font-weight: 700; text-decoration: none;"
             target="_blank"
             >Read More at http://propalyst.com/about</a
           >
