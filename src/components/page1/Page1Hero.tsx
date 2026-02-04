@@ -31,7 +31,8 @@ const Page1Hero: React.FC = () => {
           
           <RevealAnimation delay={100}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-foreground font-playfair leading-tight">
-              Close More{' '}
+              Close More
+              <br />
               <span className="text-realtor-600">"Side-by-Side"</span> Deals
               <br />
               with Bangalore's Best Brokers
