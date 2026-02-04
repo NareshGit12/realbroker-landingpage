@@ -1,6 +1,6 @@
-import React from 'react';
-import { Check, Handshake, User, Users } from 'lucide-react';
-import RevealAnimation from '@/components/ui/RevealAnimation';
+import React from "react";
+import { Check, Handshake, User, Users } from "lucide-react";
+import RevealAnimation from "@/components/ui/RevealAnimation";
 
 const PartnershipSection: React.FC = () => {
   return (
@@ -24,9 +24,7 @@ const PartnershipSection: React.FC = () => {
                 <div className="w-16 h-16 bg-realtor-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <User className="w-8 h-8 text-realtor-600" />
                 </div>
-                <h3 className="text-lg font-bold text-foreground mb-3">
-                  You Represent Your Owner
-                </h3>
+                <h3 className="text-lg font-bold text-foreground mb-3">You Represent Your Owner</h3>
                 <p className="text-muted-foreground">
                   You keep your 100% relationship with your seller. Nothing changes.
                 </p>
@@ -38,11 +36,9 @@ const PartnershipSection: React.FC = () => {
                 <div className="w-16 h-16 bg-realtor-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Users className="w-8 h-8 text-realtor-600" />
                 </div>
-                <h3 className="text-lg font-bold text-foreground mb-3">
-                  We Represent the Buyer
-                </h3>
+                <h3 className="text-lg font-bold text-foreground mb-3">We Represent the Buyer</h3>
                 <p className="text-muted-foreground">
-                  Propalyst finds the buyer and manages them through the entire process.
+                  Propalyst.com finds the buyer and manages them through the entire process.
                 </p>
               </div>
             </RevealAnimation>
@@ -52,40 +48,34 @@ const PartnershipSection: React.FC = () => {
                 <div className="w-16 h-16 bg-realtor-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Handshake className="w-8 h-8 text-realtor-600" />
                 </div>
-                <h3 className="text-lg font-bold text-foreground mb-3">
-                  Transparent 50/50 Split
-                </h3>
-                <p className="text-muted-foreground">
-                  Standard side-by-side fee basis. Fair and straightforward.
-                </p>
+                <h3 className="text-lg font-bold text-foreground mb-3">Transparent 50/50 Split</h3>
+                <p className="text-muted-foreground">Standard side-by-side fee basis. Fair and straightforward.</p>
               </div>
             </RevealAnimation>
           </div>
 
           {/* Key benefits callout */}
           <RevealAnimation delay={400}>
-            <div className="bg-realtor-600 rounded-2xl p-6 md:p-10 text-white text-center">
-              <h3 className="text-xl md:text-2xl font-bold mb-6 font-playfair">
-                You bring the seller. We bring the buyer.
-              </h3>
-              <div className="flex flex-col md:flex-row flex-wrap justify-center gap-4 md:gap-10">
-                <div className="flex items-center justify-center gap-2">
-                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+            <div className="bg-realtor-600 rounded-2xl p-8 md:p-10 text-white text-center">
+              <h3 className="text-2xl font-bold mb-6 font-playfair">You keep your client. We bring the buyer.</h3>
+              <div className="flex flex-wrap justify-center gap-6 md:gap-10">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
                     <Check className="w-4 h-4 text-white" />
                   </div>
-                  <span className="font-medium text-sm md:text-base">Free to Join</span>
+                  <span className="font-medium">No Upfront Fees</span>
                 </div>
-                <div className="flex items-center justify-center gap-2">
-                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
                     <Check className="w-4 h-4 text-white" />
                   </div>
-                  <span className="font-medium text-sm md:text-base">No Listing Charges</span>
+                  <span className="font-medium">No Listing Charges</span>
                 </div>
-                <div className="flex items-center justify-center gap-2">
-                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
                     <Check className="w-4 h-4 text-white" />
                   </div>
-                  <span className="font-medium text-sm md:text-base">Earn Extras for helping our buyers</span>
+                  <span className="font-medium">Pay Only When Deal Closes</span>
                 </div>
               </div>
             </div>
