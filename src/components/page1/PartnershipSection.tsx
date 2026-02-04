@@ -12,9 +12,7 @@ const PartnershipSection: React.FC = () => {
               The Propalyst.com partnership
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground font-playfair mb-4">
-              How does the <span className="text-realtor-600">Side-by-Side</span> work
-              <br />
-              with <span className="bg-gray-900 text-white px-2 py-1 rounded">Propalyst.com</span>?
+              How does the <span className="text-realtor-600">"Side-by-Side"</span> work?
             </h2>
           </div>
         </RevealAnimation>
@@ -59,8 +57,7 @@ const PartnershipSection: React.FC = () => {
           {/* Key benefits callout */}
           <RevealAnimation delay={400}>
             <div className="bg-realtor-600 rounded-2xl p-8 md:p-10 text-white text-center">
-              <h3 className="text-2xl font-bold mb-2 font-playfair">You bring the Seller. We bring the buyer.</h3>
-              <p className="text-xl font-bold mb-6 font-playfair text-white/90">"Side-by-Side" deals</p>
+              <h3 className="text-2xl font-bold mb-6 font-playfair">You bring the Seller. We bring the buyer.</h3>
               <div className="flex flex-wrap justify-center gap-6 md:gap-10">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
