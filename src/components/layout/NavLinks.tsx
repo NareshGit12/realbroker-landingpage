@@ -49,13 +49,16 @@ const NavLinks: React.FC<NavLinksProps> = ({
         Meet our Members
       </button>
       <button
-        onClick={() => handleClick("invite")}
+        onClick={() => {
+          navigate('/tools');
+          if (onItemClick) onItemClick();
+        }}
         className={cn(
           `${textSizeClass} font-medium transition-colors bg-red-600 text-white hover:bg-red-700 px-3 py-1 rounded border-none cursor-pointer`,
           isMobile && "w-full max-w-xs"
         )}
       >
-        Request Invite
+        Preview
       </button>
       <a 
         href="https://my.realbroker.app/login"

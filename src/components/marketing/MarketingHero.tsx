@@ -76,20 +76,10 @@ const MarketingHero: React.FC = () => {
               </p>
             </RevealAnimation>
 
-            <RevealAnimation delay={300}>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mx-auto max-w-md">
-                <a href="#invite" className="w-full sm:w-auto">
-                  <Button className="bg-realtor-600 hover:bg-realtor-700 text-white py-4 sm:py-6 px-4 sm:px-8 rounded-xl text-base sm:text-lg shadow-md w-full transition-all duration-300 hover:scale-105">
-                    Request Your Invitation
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </a>
-              </div>
-            </RevealAnimation>
           </div>
 
-          <RevealAnimation delay={400}>
-            <div className="w-full flex justify-center items-center mt-2">
+          <RevealAnimation delay={300}>
+            <div className="w-full flex flex-col justify-center items-center mt-2">
               <div className="max-w-[1200px] w-full mx-auto px-4">
                 <div className="relative rounded-2xl overflow-hidden mx-auto">
                   <img
@@ -99,6 +89,9 @@ const MarketingHero: React.FC = () => {
                     loading="lazy"
                   />
                 </div>
+                <p className="text-center text-gray-600 mt-4 text-sm md:text-base font-medium">
+                  Efficient Dashboard to stay on top of network activity
+                </p>
               </div>
             </div>
           </RevealAnimation>

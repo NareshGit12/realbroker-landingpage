@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface MemberAvatar {
@@ -6,25 +6,58 @@ interface MemberAvatar {
   avatar_url: string;
 }
 
+const BATCH_SIZE = 20;
+const ROTATION_INTERVAL = 120000; // 2 minutes in milliseconds
+
 const MemberCarousel: React.FC = () => {
   const [members, setMembers] = useState<MemberAvatar[]>([]);
+  const [allMembers, setAllMembers] = useState<MemberAvatar[]>([]);
+  const [currentBatchIndex, setCurrentBatchIndex] = useState(0);
 
+  // Fetch all members with avatars once
   useEffect(() => {
-    const fetchMembers = async () => {
+    const fetchAllMembers = async () => {
       const { data, error } = await supabase
         .from('profiles')
         .select('id, avatar_url')
         .ilike('role', '%user%')
-        .not('avatar_url', 'is', null)
-        .limit(20);
+        .not('avatar_url', 'is', null);
 
       if (!error && data) {
-        setMembers(data as MemberAvatar[]);
+        setAllMembers(data as MemberAvatar[]);
+        // Set initial batch
+        setMembers(data.slice(0, BATCH_SIZE) as MemberAvatar[]);
       }
     };
 
-    fetchMembers();
+    fetchAllMembers();
   }, []);
+
+  // Rotate batches every 2 minutes
+  useEffect(() => {
+    if (allMembers.length <= BATCH_SIZE) return;
+
+    const interval = setInterval(() => {
+      setCurrentBatchIndex((prevIndex) => {
+        const totalBatches = Math.ceil(allMembers.length / BATCH_SIZE);
+        const nextIndex = (prevIndex + 1) % totalBatches;
+        const startIdx = nextIndex * BATCH_SIZE;
+        const endIdx = Math.min(startIdx + BATCH_SIZE, allMembers.length);
+        
+        // If we're at the last batch and it's smaller, wrap around to include from beginning
+        let newBatch = allMembers.slice(startIdx, endIdx);
+        if (newBatch.length < BATCH_SIZE && allMembers.length > BATCH_SIZE) {
+          const remaining = BATCH_SIZE - newBatch.length;
+          newBatch = [...newBatch, ...allMembers.slice(0, remaining)];
+        }
+        
+        setMembers(newBatch);
+        return nextIndex;
+      });
+    }, ROTATION_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [allMembers]);
 
   // Duplicate members for seamless loop
   const duplicatedMembers = [...members, ...members];

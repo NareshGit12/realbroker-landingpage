@@ -63,23 +63,6 @@ const Tools: React.FC = () => {
         <EliteNetwork />
         <HowToJoin />
         <FinalCTA />
-        {/* Request Invitation CTA instead of form */}
-        <div id="invite" className="py-16 text-center">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground font-playfair mb-4">
-              Ready to Join?
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-xl mx-auto mb-8">
-              Request access to join Bangalore's most exclusive broker network.
-            </p>
-            <button
-              onClick={handleRequestInvite}
-              className="bg-realtor-600 hover:bg-realtor-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              Request Invitation
-            </button>
-          </div>
-        </div>
       </main>
       <Footer />
     </div>
