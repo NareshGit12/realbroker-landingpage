@@ -154,6 +154,51 @@ export type Database = {
         }
         Relationships: []
       }
+      agreement_audit_trail: {
+        Row: {
+          action: string
+          agreement_id: string
+          agreement_type: string
+          created_at: string | null
+          details: Json | null
+          id: string
+          ip_address: unknown
+          performed_by_email: string | null
+          performed_by_name: string | null
+          recipient_email: string | null
+          recipient_name: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          agreement_id: string
+          agreement_type: string
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          ip_address?: unknown
+          performed_by_email?: string | null
+          performed_by_name?: string | null
+          recipient_email?: string | null
+          recipient_name?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          agreement_id?: string
+          agreement_type?: string
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          ip_address?: unknown
+          performed_by_email?: string | null
+          performed_by_name?: string | null
+          recipient_email?: string | null
+          recipient_name?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       agreement_documents: {
         Row: {
           agreement_id: string
@@ -274,7 +319,7 @@ export type Database = {
           ip_address: unknown
           signature_data: Json | null
           signed_at: string | null
-          signer_id: string
+          signer_id: string | null
           signer_role: string
           status: Database["public"]["Enums"]["signature_status"] | null
           updated_at: string | null
@@ -287,7 +332,7 @@ export type Database = {
           ip_address?: unknown
           signature_data?: Json | null
           signed_at?: string | null
-          signer_id: string
+          signer_id?: string | null
           signer_role: string
           status?: Database["public"]["Enums"]["signature_status"] | null
           updated_at?: string | null
@@ -300,7 +345,7 @@ export type Database = {
           ip_address?: unknown
           signature_data?: Json | null
           signed_at?: string | null
-          signer_id?: string
+          signer_id?: string | null
           signer_role?: string
           status?: Database["public"]["Enums"]["signature_status"] | null
           updated_at?: string | null
@@ -394,192 +439,6 @@ export type Database = {
         }
         Relationships: []
       }
-      blog_articles: {
-        Row: {
-          author_id: string | null
-          content: string
-          created_at: string | null
-          excerpt: string | null
-          featured_image: string | null
-          id: string
-          published_at: string | null
-          seo_description: string | null
-          seo_title: string | null
-          slug: string
-          strapi_id: string
-          tags: string[] | null
-          title: string
-          updated_at: string | null
-          view_count: number | null
-        }
-        Insert: {
-          author_id?: string | null
-          content: string
-          created_at?: string | null
-          excerpt?: string | null
-          featured_image?: string | null
-          id?: string
-          published_at?: string | null
-          seo_description?: string | null
-          seo_title?: string | null
-          slug: string
-          strapi_id: string
-          tags?: string[] | null
-          title: string
-          updated_at?: string | null
-          view_count?: number | null
-        }
-        Update: {
-          author_id?: string | null
-          content?: string
-          created_at?: string | null
-          excerpt?: string | null
-          featured_image?: string | null
-          id?: string
-          published_at?: string | null
-          seo_description?: string | null
-          seo_title?: string | null
-          slug?: string
-          strapi_id?: string
-          tags?: string[] | null
-          title?: string
-          updated_at?: string | null
-          view_count?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "blog_articles_author_id_fkey"
-            columns: ["author_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      blog_comments: {
-        Row: {
-          article_id: string
-          content: string
-          created_at: string | null
-          id: string
-          parent_id: string | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          article_id: string
-          content: string
-          created_at?: string | null
-          id?: string
-          parent_id?: string | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          article_id?: string
-          content?: string
-          created_at?: string | null
-          id?: string
-          parent_id?: string | null
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "blog_comments_article_id_fkey"
-            columns: ["article_id"]
-            isOneToOne: false
-            referencedRelation: "blog_articles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "blog_comments_parent_id_fkey"
-            columns: ["parent_id"]
-            isOneToOne: false
-            referencedRelation: "blog_comments"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "blog_comments_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      blog_likes: {
-        Row: {
-          article_id: string
-          created_at: string | null
-          id: string
-          user_id: string
-        }
-        Insert: {
-          article_id: string
-          created_at?: string | null
-          id?: string
-          user_id: string
-        }
-        Update: {
-          article_id?: string
-          created_at?: string | null
-          id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "blog_likes_article_id_fkey"
-            columns: ["article_id"]
-            isOneToOne: false
-            referencedRelation: "blog_articles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "blog_likes_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      blog_saves: {
-        Row: {
-          article_id: string
-          created_at: string | null
-          id: string
-          user_id: string
-        }
-        Insert: {
-          article_id: string
-          created_at?: string | null
-          id?: string
-          user_id: string
-        }
-        Update: {
-          article_id?: string
-          created_at?: string | null
-          id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "blog_saves_article_id_fkey"
-            columns: ["article_id"]
-            isOneToOne: false
-            referencedRelation: "blog_articles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "blog_saves_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       broker_agreements: {
         Row: {
           agreement_date: string | null
@@ -597,8 +456,8 @@ export type Database = {
           execution_date: string | null
           expiry_date: string | null
           id: string
-          listing_broker_id: string
-          property_id: string
+          listing_broker_id: string | null
+          property_id: string | null
           seller_commission_fixed_amount: number | null
           seller_commission_percentage: number | null
           seller_commission_type:
@@ -606,7 +465,7 @@ export type Database = {
             | null
           seller_pays_commission: boolean | null
           sellers_broker_total_fees: string | null
-          selling_broker_id: string
+          selling_broker_id: string | null
           special_conditions: string | null
           status: Database["public"]["Enums"]["agreement_status"] | null
           updated_at: string | null
@@ -627,8 +486,8 @@ export type Database = {
           execution_date?: string | null
           expiry_date?: string | null
           id?: string
-          listing_broker_id: string
-          property_id: string
+          listing_broker_id?: string | null
+          property_id?: string | null
           seller_commission_fixed_amount?: number | null
           seller_commission_percentage?: number | null
           seller_commission_type?:
@@ -636,7 +495,7 @@ export type Database = {
             | null
           seller_pays_commission?: boolean | null
           sellers_broker_total_fees?: string | null
-          selling_broker_id: string
+          selling_broker_id?: string | null
           special_conditions?: string | null
           status?: Database["public"]["Enums"]["agreement_status"] | null
           updated_at?: string | null
@@ -657,8 +516,8 @@ export type Database = {
           execution_date?: string | null
           expiry_date?: string | null
           id?: string
-          listing_broker_id?: string
-          property_id?: string
+          listing_broker_id?: string | null
+          property_id?: string | null
           seller_commission_fixed_amount?: number | null
           seller_commission_percentage?: number | null
           seller_commission_type?:
@@ -666,7 +525,7 @@ export type Database = {
             | null
           seller_pays_commission?: boolean | null
           sellers_broker_total_fees?: string | null
-          selling_broker_id?: string
+          selling_broker_id?: string | null
           special_conditions?: string | null
           status?: Database["public"]["Enums"]["agreement_status"] | null
           updated_at?: string | null
@@ -1049,92 +908,21 @@ export type Database = {
           },
         ]
       }
-      crea_wapp: {
-        Row: {
-          agent_contact: string | null
-          agent_name: string
-          amenities: string | null
-          company_name: string | null
-          configuration: string | null
-          created_at: string
-          facing: string | null
-          floor: string | null
-          furnishing: string | null
-          id: string
-          listing_type: string | null
-          location: string | null
-          message_date: string | null
-          parking: number | null
-          price: number | null
-          price_text: string | null
-          project_name: string | null
-          property_type: string | null
-          raw_message: string
-          size_sqft: number | null
-          status: string | null
-          transaction_type: string | null
-        }
-        Insert: {
-          agent_contact?: string | null
-          agent_name: string
-          amenities?: string | null
-          company_name?: string | null
-          configuration?: string | null
-          created_at?: string
-          facing?: string | null
-          floor?: string | null
-          furnishing?: string | null
-          id?: string
-          listing_type?: string | null
-          location?: string | null
-          message_date?: string | null
-          parking?: number | null
-          price?: number | null
-          price_text?: string | null
-          project_name?: string | null
-          property_type?: string | null
-          raw_message: string
-          size_sqft?: number | null
-          status?: string | null
-          transaction_type?: string | null
-        }
-        Update: {
-          agent_contact?: string | null
-          agent_name?: string
-          amenities?: string | null
-          company_name?: string | null
-          configuration?: string | null
-          created_at?: string
-          facing?: string | null
-          floor?: string | null
-          furnishing?: string | null
-          id?: string
-          listing_type?: string | null
-          location?: string | null
-          message_date?: string | null
-          parking?: number | null
-          price?: number | null
-          price_text?: string | null
-          project_name?: string | null
-          property_type?: string | null
-          raw_message?: string
-          size_sqft?: number | null
-          status?: string | null
-          transaction_type?: string | null
-        }
-        Relationships: []
-      }
       demand_leads: {
         Row: {
           agent_id: number | null
+          attention_note: string | null
           client_intent: number | null
           client_name: string | null
           client_profile: string | null
           created_at: string | null
           email: string | null
           id: number
+          lead_number: number | null
           lead_status: Database["public"]["Enums"]["demand_lead_status"] | null
           market_feasibility: number | null
+          needs_lm_attention: boolean | null
+          needs_rm_attention: boolean | null
           next_action_date: string | null
           next_action_notes: string | null
           payload: Json | null
@@ -1145,14 +933,18 @@ export type Database = {
         }
         Insert: {
           agent_id?: number | null
+          attention_note?: string | null
           client_intent?: number | null
           client_name?: string | null
           client_profile?: string | null
           created_at?: string | null
           email?: string | null
           id?: number
+          lead_number?: number | null
           lead_status?: Database["public"]["Enums"]["demand_lead_status"] | null
           market_feasibility?: number | null
+          needs_lm_attention?: boolean | null
+          needs_rm_attention?: boolean | null
           next_action_date?: string | null
           next_action_notes?: string | null
           payload?: Json | null
@@ -1163,14 +955,18 @@ export type Database = {
         }
         Update: {
           agent_id?: number | null
+          attention_note?: string | null
           client_intent?: number | null
           client_name?: string | null
           client_profile?: string | null
           created_at?: string | null
           email?: string | null
           id?: number
+          lead_number?: number | null
           lead_status?: Database["public"]["Enums"]["demand_lead_status"] | null
           market_feasibility?: number | null
+          needs_lm_attention?: boolean | null
+          needs_rm_attention?: boolean | null
           next_action_date?: string | null
           next_action_notes?: string | null
           payload?: Json | null
@@ -1641,14 +1437,17 @@ export type Database = {
           agent_name: string | null
           agent_note: string | null
           agent_phone: string | null
-          client_feedback: string | null
+          attention_note: string | null
           created_at: string | null
           created_by: string | null
           date_entered_status: string | null
           id: string
           lead_id: number
+          lm_sm_comments: string | null
+          match_number: number | null
           match_status: Database["public"]["Enums"]["match_status"]
-          next_step: Database["public"]["Enums"]["matches_next_step"] | null
+          needs_lm_attention: boolean | null
+          needs_rm_attention: boolean | null
           rejection_reason: string | null
           short_desc: string | null
           supply_id: string
@@ -1660,14 +1459,17 @@ export type Database = {
           agent_name?: string | null
           agent_note?: string | null
           agent_phone?: string | null
-          client_feedback?: string | null
+          attention_note?: string | null
           created_at?: string | null
           created_by?: string | null
           date_entered_status?: string | null
           id?: string
           lead_id: number
+          lm_sm_comments?: string | null
+          match_number?: number | null
           match_status?: Database["public"]["Enums"]["match_status"]
-          next_step?: Database["public"]["Enums"]["matches_next_step"] | null
+          needs_lm_attention?: boolean | null
+          needs_rm_attention?: boolean | null
           rejection_reason?: string | null
           short_desc?: string | null
           supply_id: string
@@ -1679,14 +1481,17 @@ export type Database = {
           agent_name?: string | null
           agent_note?: string | null
           agent_phone?: string | null
-          client_feedback?: string | null
+          attention_note?: string | null
           created_at?: string | null
           created_by?: string | null
           date_entered_status?: string | null
           id?: string
           lead_id?: number
+          lm_sm_comments?: string | null
+          match_number?: number | null
           match_status?: Database["public"]["Enums"]["match_status"]
-          next_step?: Database["public"]["Enums"]["matches_next_step"] | null
+          needs_lm_attention?: boolean | null
+          needs_rm_attention?: boolean | null
           rejection_reason?: string | null
           short_desc?: string | null
           supply_id?: string
@@ -2147,13 +1952,13 @@ export type Database = {
           last_verified: string | null
           maint_charges: number | null
           marketing_tag: string | null
-          owner_name: string | null
-          owner_number: number | null
           price: number | null
           property_type: Database["public"]["Enums"]["property_type"]
           publish: number | null
           society_id: number | null
           source_key: string | null
+          source_name: string | null
+          source_number: number | null
           sqft: number | null
           static_flyer_url: string | null
           static_html_url: string | null
@@ -2186,13 +1991,13 @@ export type Database = {
           last_verified?: string | null
           maint_charges?: number | null
           marketing_tag?: string | null
-          owner_name?: string | null
-          owner_number?: number | null
           price?: number | null
           property_type?: Database["public"]["Enums"]["property_type"]
           publish?: number | null
           society_id?: number | null
           source_key?: string | null
+          source_name?: string | null
+          source_number?: number | null
           sqft?: number | null
           static_flyer_url?: string | null
           static_html_url?: string | null
@@ -2225,13 +2030,13 @@ export type Database = {
           last_verified?: string | null
           maint_charges?: number | null
           marketing_tag?: string | null
-          owner_name?: string | null
-          owner_number?: number | null
           price?: number | null
           property_type?: Database["public"]["Enums"]["property_type"]
           publish?: number | null
           society_id?: number | null
           source_key?: string | null
+          source_name?: string | null
+          source_number?: number | null
           sqft?: number | null
           static_flyer_url?: string | null
           static_html_url?: string | null
@@ -2513,8 +2318,8 @@ export type Database = {
           property_features: string | null
           property_type: string
           rb_agreement_id: string
-          rental_commission_percentage: number | null
-          sale_commission_percentage: number | null
+          rental_commission: string | null
+          sale_commission: string | null
           seller_address: string
           seller_company: string | null
           seller_email: string
@@ -2544,8 +2349,8 @@ export type Database = {
           property_features?: string | null
           property_type: string
           rb_agreement_id: string
-          rental_commission_percentage?: number | null
-          sale_commission_percentage?: number | null
+          rental_commission?: string | null
+          sale_commission?: string | null
           seller_address: string
           seller_company?: string | null
           seller_email: string
@@ -2575,8 +2380,8 @@ export type Database = {
           property_features?: string | null
           property_type?: string
           rb_agreement_id?: string
-          rental_commission_percentage?: number | null
-          sale_commission_percentage?: number | null
+          rental_commission?: string | null
+          sale_commission?: string | null
           seller_address?: string
           seller_company?: string | null
           seller_email?: string
@@ -2638,7 +2443,7 @@ export type Database = {
           id: string
           message: string | null
           recipient_email: string
-          recipient_id: string
+          recipient_id: string | null
           recipient_name: string
           recipient_role: string
           requester_id: string
@@ -2656,7 +2461,7 @@ export type Database = {
           id?: string
           message?: string | null
           recipient_email: string
-          recipient_id: string
+          recipient_id?: string | null
           recipient_name: string
           recipient_role: string
           requester_id: string
@@ -2674,7 +2479,7 @@ export type Database = {
           id?: string
           message?: string | null
           recipient_email?: string
-          recipient_id?: string
+          recipient_id?: string | null
           recipient_name?: string
           recipient_role?: string
           requester_id?: string
@@ -3246,70 +3051,6 @@ export type Database = {
       }
     }
     Views: {
-      crea_agent_summary: {
-        Row: {
-          agent_contact: string | null
-          agent_name: string | null
-          all_raw_messages: string[] | null
-          avg_price: number | null
-          avg_size_sqft: number | null
-          buy_sell_count: number | null
-          company_name: string | null
-          configurations: string[] | null
-          first_seen: string | null
-          furnished_count: number | null
-          last_seen: string | null
-          locations: string[] | null
-          max_price: number | null
-          max_size_sqft: number | null
-          min_price: number | null
-          min_size_sqft: number | null
-          property_types: string[] | null
-          ready_count: number | null
-          rent_lease_count: number | null
-          rent_listings_count: number | null
-          requirement_count: number | null
-          sale_listings_count: number | null
-          semi_furnished_count: number | null
-          total_posts: number | null
-          under_construction_count: number | null
-          unfurnished_count: number | null
-        }
-        Relationships: []
-      }
-      crea_top_agents_3m: {
-        Row: {
-          agent_contact: string | null
-          agent_name: string | null
-          company_name: string | null
-          last_seen: string | null
-          total_posts: number | null
-        }
-        Relationships: []
-      }
-      crea_top_agents_3m_msgs: {
-        Row: {
-          agent_contact: string | null
-          agent_name: string | null
-          company_name: string | null
-          id: string | null
-          message_date: string | null
-          raw_message: string | null
-          rn: number | null
-        }
-        Relationships: []
-      }
-      crea_top_agents_3m_msgs_grouped: {
-        Row: {
-          agent_contact: string | null
-          agent_name: string | null
-          company_name: string | null
-          last_seen: string | null
-          messages: Json | null
-          total_posts: number | null
-        }
-        Relationships: []
-      }
       locality_distributions: {
         Row: {
           area_0_500: number | null
@@ -3519,6 +3260,29 @@ export type Database = {
       generate_invite_code: { Args: never; Returns: string }
       generate_property_slug: { Args: { title: string }; Returns: string }
       generate_vanity_url: { Args: { full_name: string }; Returns: string }
+      get_audit_trail_for_token: {
+        Args: { token_id: string }
+        Returns: {
+          action: string
+          agreement_id: string
+          agreement_type: string
+          created_at: string | null
+          details: Json | null
+          id: string
+          ip_address: unknown
+          performed_by_email: string | null
+          performed_by_name: string | null
+          recipient_email: string | null
+          recipient_name: string | null
+          user_agent: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "agreement_audit_trail"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       get_connection_degree: {
         Args: { end_user_id: string; start_user_id: string }
         Returns: number
@@ -3674,14 +3438,16 @@ export type Database = {
       commission_type: "percentage" | "fixed_amount"
       demand_lead_status:
         | "New"
-        | "Need Client Discovery"
-        | "Active Search"
-        | "Matches"
-        | "Viewing"
-        | "Offer"
-        | "Closed_deal"
-        | "Closed_lost"
-        | "Abandoned"
+        | "Need More Info from Client"
+        | "Send Matches"
+        | "Waiting for Client Response"
+        | "Client Non Responsive (C)"
+        | "Auto Closed Due to Inactivity (C)"
+        | "Viewing Stage"
+        | "Offer Stage"
+        | "Closed_deal (C)"
+        | "Closed_lost (C)"
+        | "Closed by RM (C) Add Reason"
       direction:
         | "North"
         | "East"
@@ -3699,16 +3465,16 @@ export type Database = {
         | "leads_admin"
       match_status:
         | "Identified"
-        | "Verify Details with Other agent"
-        | "Details Collected"
-        | "Internal Rejection"
-        | "Unavailable Sold"
+        | "Need More details"
+        | "Please confirm if still available"
+        | "RM Rejection (C)"
+        | "Unavailable Sold (C)"
         | "Proposed to Client"
-        | "Information Requested"
-        | "Client Rejected"
+        | "Client Rejected (C)"
         | "Viewing Scheduled"
         | "Viewing Completed"
-        | "Offer Made"
+        | "Rejected After Viewing (C)"
+        | "Offer Stage"
       matches_next_step:
         | "Waiting for RM"
         | "Call_Selling_Agent_Verify_Details"
@@ -3880,14 +3646,16 @@ export const Constants = {
       commission_type: ["percentage", "fixed_amount"],
       demand_lead_status: [
         "New",
-        "Need Client Discovery",
-        "Active Search",
-        "Matches",
-        "Viewing",
-        "Offer",
-        "Closed_deal",
-        "Closed_lost",
-        "Abandoned",
+        "Need More Info from Client",
+        "Send Matches",
+        "Waiting for Client Response",
+        "Client Non Responsive (C)",
+        "Auto Closed Due to Inactivity (C)",
+        "Viewing Stage",
+        "Offer Stage",
+        "Closed_deal (C)",
+        "Closed_lost (C)",
+        "Closed by RM (C) Add Reason",
       ],
       direction: [
         "North",
@@ -3908,16 +3676,16 @@ export const Constants = {
       ],
       match_status: [
         "Identified",
-        "Verify Details with Other agent",
-        "Details Collected",
-        "Internal Rejection",
-        "Unavailable Sold",
+        "Need More details",
+        "Please confirm if still available",
+        "RM Rejection (C)",
+        "Unavailable Sold (C)",
         "Proposed to Client",
-        "Information Requested",
-        "Client Rejected",
+        "Client Rejected (C)",
         "Viewing Scheduled",
         "Viewing Completed",
-        "Offer Made",
+        "Rejected After Viewing (C)",
+        "Offer Stage",
       ],
       matches_next_step: [
         "Waiting for RM",

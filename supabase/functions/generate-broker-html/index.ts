@@ -106,19 +106,20 @@ serve(async (req) => {
             .eq('id', item.id);
 
           results.push({ id: item.entity_id, success: true });
-        } catch (error) {
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
           console.error(`Error processing broker ${item.entity_id}:`, error);
           
           await supabaseClient
             .from('html_generation_queue')
             .update({ 
               status: 'failed', 
-              error_message: error.message,
+              error_message: errorMessage,
               completed_at: new Date().toISOString()
             })
             .eq('id', item.id);
 
-          results.push({ id: item.entity_id, success: false, error: error.message });
+          results.push({ id: item.entity_id, success: false, error: errorMessage });
         }
       }
 
@@ -137,10 +138,11 @@ serve(async (req) => {
       { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
-  } catch (error) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error in generate-broker-html:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: errorMessage }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

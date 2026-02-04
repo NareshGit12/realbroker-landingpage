@@ -20,6 +20,7 @@ import AdminHTMLGeneration from "./pages/AdminHTMLGeneration";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import Page1 from "./pages/Page1";
 
 // Track page views when route changes
 const PageViewTracker = () => {
@@ -51,6 +52,7 @@ const App = () => (
           <Route path="/charter-and-conduct" element={<CharterAndConduct />} />
           <Route path="/charter" element={<Charter />} />
           <Route path="/members" element={<MeetOurMembers />} />
+          <Route path="/page1" element={<Page1 />} />
           <Route path="/login" element={<Login />} />
           <Route 
             path="/admin" 
