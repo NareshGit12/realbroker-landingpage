@@ -57,7 +57,7 @@ const PartnershipSection: React.FC = () => {
           {/* Key benefits callout */}
           <RevealAnimation delay={400}>
             <div className="bg-realtor-600 rounded-2xl p-8 md:p-10 text-white text-center">
-              <h3 className="text-2xl font-bold mb-6 font-playfair">You bring the Seller. We bring the buyer.</h3>
+              <h3 className="text-2xl font-bold mb-6 font-playfair">You bring the Seller. We bring the Buyer.</h3>
               <div className="flex flex-wrap justify-center gap-6 md:gap-10">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
