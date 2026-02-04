@@ -11,6 +11,7 @@ import RevealAnimation from '@/components/ui/RevealAnimation';
 const RequestAccessForm: React.FC = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -30,6 +31,7 @@ const RequestAccessForm: React.FC = () => {
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setPhotoFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhotoPreview(reader.result as string);
@@ -38,11 +40,36 @@ const RequestAccessForm: React.FC = () => {
     }
   };
 
+  const uploadPhoto = async (): Promise<string | null> => {
+    if (!photoFile) return null;
+    
+    const fileExt = photoFile.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+    
+    const { data, error } = await supabase.storage
+      .from('invite-photos')
+      .upload(fileName, photoFile);
+    
+    if (error) {
+      console.error('Error uploading photo:', error);
+      return null;
+    }
+    
+    const { data: urlData } = supabase.storage
+      .from('invite-photos')
+      .getPublicUrl(fileName);
+    
+    return urlData.publicUrl;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+      // Upload photo first if exists
+      const photoUrl = await uploadPhoto();
+
       const { error } = await supabase
         .from('invite_requests')
         .insert({
@@ -53,6 +80,7 @@ const RequestAccessForm: React.FC = () => {
           whatsapp_number: formData.whatsappNumber,
           email: formData.linkedinOrWebsite,
           message: formData.about,
+          profile_photo_url: photoUrl,
         });
 
       if (error) throw error;
@@ -72,6 +100,7 @@ const RequestAccessForm: React.FC = () => {
         about: '',
       });
       setPhotoPreview(null);
+      setPhotoFile(null);
     } catch (error) {
       console.error('Error submitting form:', error);
       toast({

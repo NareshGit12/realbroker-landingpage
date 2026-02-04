@@ -39,13 +39,13 @@ const MemberCarousel: React.FC = () => {
         <div 
           className="flex gap-4 animate-scroll"
           style={{
-            width: `${duplicatedMembers.length * 68}px`,
+            width: `${duplicatedMembers.length * 120}px`,
           }}
         >
           {duplicatedMembers.map((member, index) => (
             <div
               key={`${member.id}-${index}`}
-              className="flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-white shadow-lg"
+              className="flex-shrink-0 w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-white shadow-lg"
             >
               <img
                 src={member.avatar_url}
@@ -68,7 +68,7 @@ const MemberCarousel: React.FC = () => {
           }
         }
         .animate-scroll {
-          animation: scroll 20s linear infinite;
+          animation: scroll 27s linear infinite;
         }
         .animate-scroll:hover {
           animation-play-state: paused;
