@@ -52,13 +52,13 @@ const FeatureShowcase: React.FC = () => {
   const remainingFeatures = features.slice(1);
 
   return (
-    <section className="py-6 bg-white relative overflow-hidden">
+    <section className="pt-16 pb-6 bg-white relative overflow-hidden">
       {/* Background accents */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-realtor-100/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-realtor-50/30 rounded-full blur-3xl"></div>
 
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-4">
+        <div className="text-center mb-8">
           <RevealAnimation>
             <h2 className="text-3xl md:text-4xl font-bold mb-3 font-playfair">
               <span className="text-gray-900">Powerful Features for</span>

@@ -89,9 +89,10 @@ const MarketingHero: React.FC = () => {
                     loading="lazy"
                   />
                 </div>
-                <p className="text-center text-gray-600 mt-4 text-sm md:text-base font-medium">
-                  Efficient Dashboard to stay on top of network activity
-                </p>
+                <h2 className="text-center text-2xl md:text-3xl font-bold mt-8 font-playfair">
+                  <span className="text-gray-900">Efficient Dashboard to </span>
+                  <span className="text-realtor-600">stay on top of network activity</span>
+                </h2>
               </div>
             </div>
           </RevealAnimation>
