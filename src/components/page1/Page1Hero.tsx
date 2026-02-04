@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import RevealAnimation from '@/components/ui/RevealAnimation';
+import MemberCarousel from './MemberCarousel';
 
 const Page1Hero: React.FC = () => {
   const scrollToForm = () => {
@@ -36,21 +37,28 @@ const Page1Hero: React.FC = () => {
           </RevealAnimation>
           
           <RevealAnimation delay={200}>
-            <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed text-center">
               Join an exclusive, invite-only network of top-quality agents. No spam, no fake listings. 
               Just real inventory and real buyers.
             </p>
           </RevealAnimation>
           
           <RevealAnimation delay={300}>
-            <Button 
-              onClick={scrollToForm}
-              size="lg"
-              className="bg-realtor-600 hover:bg-realtor-700 text-white px-10 py-7 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              Apply to Join the Network
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <div className="flex flex-col items-center">
+              <Button 
+                onClick={scrollToForm}
+                size="lg"
+                className="bg-realtor-600 hover:bg-realtor-700 text-white px-8 py-6 md:px-10 md:py-7 rounded-xl text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Apply to Join the Network
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              
+              {/* Member Carousel */}
+              <div className="mt-10 w-full max-w-xl">
+                <MemberCarousel />
+              </div>
+            </div>
           </RevealAnimation>
         </div>
       </div>

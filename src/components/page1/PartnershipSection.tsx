@@ -64,28 +64,28 @@ const PartnershipSection: React.FC = () => {
 
           {/* Key benefits callout */}
           <RevealAnimation delay={400}>
-            <div className="bg-realtor-600 rounded-2xl p-8 md:p-10 text-white text-center">
-              <h3 className="text-2xl font-bold mb-6 font-playfair">
-                You keep your client. We bring the buyer.
+            <div className="bg-realtor-600 rounded-2xl p-6 md:p-10 text-white text-center">
+              <h3 className="text-xl md:text-2xl font-bold mb-6 font-playfair">
+                You bring the seller. We bring the buyer.
               </h3>
-              <div className="flex flex-wrap justify-center gap-6 md:gap-10">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+              <div className="flex flex-col md:flex-row flex-wrap justify-center gap-4 md:gap-10">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
                     <Check className="w-4 h-4 text-white" />
                   </div>
-                  <span className="font-medium">No Upfront Fees</span>
+                  <span className="font-medium text-sm md:text-base">No Upfront Fees</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
                     <Check className="w-4 h-4 text-white" />
                   </div>
-                  <span className="font-medium">No Listing Charges</span>
+                  <span className="font-medium text-sm md:text-base">No Listing Charges</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
                     <Check className="w-4 h-4 text-white" />
                   </div>
-                  <span className="font-medium">Pay Only When Deal Closes</span>
+                  <span className="font-medium text-sm md:text-base">Earn Extras for helping our buyers</span>
                 </div>
               </div>
             </div>
