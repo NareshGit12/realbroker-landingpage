@@ -15,7 +15,9 @@ const RequestAccessForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     company: '',
+    city: '',
     officeLocation: '',
+    whatsappNumber: '',
     linkedinOrWebsite: '',
     about: '',
   });
@@ -46,8 +48,10 @@ const RequestAccessForm: React.FC = () => {
         .insert({
           name: formData.name,
           company: formData.company,
+          city: formData.city,
           area: formData.officeLocation,
-          email: formData.linkedinOrWebsite, // Using email field for linkedin/website
+          whatsapp_number: formData.whatsappNumber,
+          email: formData.linkedinOrWebsite,
           message: formData.about,
         });
 
@@ -61,7 +65,9 @@ const RequestAccessForm: React.FC = () => {
       setFormData({
         name: '',
         company: '',
+        city: '',
         officeLocation: '',
+        whatsappNumber: '',
         linkedinOrWebsite: '',
         about: '',
       });
@@ -131,6 +137,22 @@ const RequestAccessForm: React.FC = () => {
                   />
                 </div>
 
+                {/* City */}
+                <div className="space-y-2">
+                  <Label htmlFor="city" className="text-foreground font-medium">
+                    City <span className="text-realtor-600">*</span>
+                  </Label>
+                  <Input
+                    id="city"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    placeholder="e.g., Bangalore, Mumbai, etc."
+                    required
+                    className="h-12 border-border/50 focus:border-realtor-500"
+                  />
+                </div>
+
                 {/* Office Location */}
                 <div className="space-y-2">
                   <Label htmlFor="officeLocation" className="text-foreground font-medium">
@@ -142,6 +164,23 @@ const RequestAccessForm: React.FC = () => {
                     value={formData.officeLocation}
                     onChange={handleInputChange}
                     placeholder="e.g., Indiranagar, Sadashivnagar, etc."
+                    required
+                    className="h-12 border-border/50 focus:border-realtor-500"
+                  />
+                </div>
+
+                {/* WhatsApp Number */}
+                <div className="space-y-2">
+                  <Label htmlFor="whatsappNumber" className="text-foreground font-medium">
+                    WhatsApp Number <span className="text-realtor-600">*</span>
+                  </Label>
+                  <Input
+                    id="whatsappNumber"
+                    name="whatsappNumber"
+                    type="tel"
+                    value={formData.whatsappNumber}
+                    onChange={handleInputChange}
+                    placeholder="+91 98765 43210"
                     required
                     className="h-12 border-border/50 focus:border-realtor-500"
                   />
@@ -167,13 +206,16 @@ const RequestAccessForm: React.FC = () => {
                   <Label htmlFor="about" className="text-foreground font-medium">
                     Tell us about yourself
                   </Label>
+                  <p className="text-xs text-muted-foreground">
+                    Write 4-5 lines about yourself, what areas you work in, how long you have been in the business, some background, education, types of properties and clients you specialize in, anything else that would enhance your profile.
+                  </p>
                   <Textarea
                     id="about"
                     name="about"
                     value={formData.about}
                     onChange={handleInputChange}
-                    placeholder="Your main areas and types of property you handle..."
-                    rows={4}
+                    placeholder="Tell us about your experience, expertise, and what makes you stand out..."
+                    rows={5}
                     className="border-border/50 focus:border-realtor-500 resize-none"
                   />
                 </div>
