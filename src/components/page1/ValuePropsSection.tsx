@@ -27,12 +27,12 @@ const valueProps = [
 
 const ValuePropsSection: React.FC = () => {
   return (
-    <section className="py-20 md:py-28 bg-white">
+    <section className="py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 md:px-6">
         <RevealAnimation>
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground font-playfair mb-4">
-              What RealBroker Does for <span className="text-realtor-600">You</span>
+              What <span className="text-realtor-600">'RealBroker Network'</span> Does for You
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Everything you need to close more deals and grow your business

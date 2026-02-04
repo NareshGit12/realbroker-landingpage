@@ -11,7 +11,7 @@ import SmartAgreements from "./pages/SmartAgreements";
 import TermsOfUse from "./pages/TermsOfUse";
 import CertifiedRealBroker from "./pages/CertifiedRealBroker";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-import Home2 from "./pages/Home2";
+import Page1 from "./pages/Page1";
 import NotFound from "./pages/NotFound";
 import CharterAndConduct from "./pages/CharterAndConduct";
 import Charter from "./pages/Charter";
@@ -20,7 +20,7 @@ import AdminHTMLGeneration from "./pages/AdminHTMLGeneration";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import Page1 from "./pages/Page1";
+import Tools from "./pages/Tools";
 
 // Track page views when route changes
 const PageViewTracker = () => {
@@ -44,7 +44,8 @@ const App = () => (
         <ScrollToTop />
         <PageViewTracker />
         <Routes>
-          <Route path="/" element={<Home2 />} />
+          <Route path="/" element={<Page1 />} />
+          <Route path="/tools" element={<Tools />} />
           <Route path="/smart-agreements" element={<SmartAgreements />} />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
           <Route path="/certified-realbroker" element={<CertifiedRealBroker />} />
@@ -52,7 +53,6 @@ const App = () => (
           <Route path="/charter-and-conduct" element={<CharterAndConduct />} />
           <Route path="/charter" element={<Charter />} />
           <Route path="/members" element={<MeetOurMembers />} />
-          <Route path="/page1" element={<Page1 />} />
           <Route path="/login" element={<Login />} />
           <Route 
             path="/admin" 

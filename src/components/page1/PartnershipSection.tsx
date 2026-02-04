@@ -73,7 +73,7 @@ const PartnershipSection: React.FC = () => {
                   <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
                     <Check className="w-4 h-4 text-white" />
                   </div>
-                  <span className="font-medium text-sm md:text-base">No Upfront Fees</span>
+                  <span className="font-medium text-sm md:text-base">Free to Join</span>
                 </div>
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">

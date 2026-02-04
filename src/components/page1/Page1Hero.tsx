@@ -13,7 +13,7 @@ const Page1Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center pt-24 pb-16 overflow-hidden">
+    <section className="relative min-h-[75vh] flex items-center justify-center pt-24 pb-8 overflow-hidden">
       {/* Subtle gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-white via-realtor-50/30 to-white -z-10" />
       
@@ -55,7 +55,7 @@ const Page1Hero: React.FC = () => {
               </Button>
               
               {/* Member Carousel */}
-              <div className="mt-10 w-full max-w-xl">
+              <div className="mt-8 w-full max-w-2xl">
                 <MemberCarousel />
               </div>
             </div>

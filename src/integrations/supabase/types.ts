@@ -1285,6 +1285,7 @@ export type Database = {
           id: string
           message: string | null
           name: string
+          profile_photo_url: string | null
           recipient_email: string | null
           Status: string | null
           subject: string | null
@@ -1300,6 +1301,7 @@ export type Database = {
           id?: string
           message?: string | null
           name: string
+          profile_photo_url?: string | null
           recipient_email?: string | null
           Status?: string | null
           subject?: string | null
@@ -1315,6 +1317,7 @@ export type Database = {
           id?: string
           message?: string | null
           name?: string
+          profile_photo_url?: string | null
           recipient_email?: string | null
           Status?: string | null
           subject?: string | null
