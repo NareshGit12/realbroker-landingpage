@@ -866,6 +866,36 @@ export type Database = {
           },
         ]
       }
+      concierge_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          lead_data: Json | null
+          messages: Json
+          session_id: string
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lead_data?: Json | null
+          messages?: Json
+          session_id: string
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lead_data?: Json | null
+          messages?: Json
+          session_id?: string
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       connections: {
         Row: {
           created_at: string
@@ -2783,21 +2813,6 @@ export type Database = {
         }
         Relationships: []
       }
-      temp_areas: {
-        Row: {
-          area_name: string
-          id: number
-        }
-        Insert: {
-          area_name: string
-          id?: number
-        }
-        Update: {
-          area_name?: string
-          id?: number
-        }
-        Relationships: []
-      }
       testimonials: {
         Row: {
           author_id: string
@@ -3292,19 +3307,6 @@ export type Database = {
       }
       get_invitation_by_code_and_email: {
         Args: { code: string; email: string }
-        Returns: {
-          id: string
-          invite_code: string
-          invitee_company_name: string
-          invitee_email: string
-          invitee_name: string
-          invitee_phone: string
-          inviter_id: string
-          status: string
-        }[]
-      }
-      get_invitation_details_by_code: {
-        Args: { code: string }
         Returns: {
           id: string
           invite_code: string

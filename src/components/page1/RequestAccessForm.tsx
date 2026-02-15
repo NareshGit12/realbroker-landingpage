@@ -15,7 +15,8 @@ const RequestAccessForm: React.FC = () => {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
-    company: '',
+    email: '',
+    company: 'Independent',
     city: '',
     officeLocation: '',
     whatsappNumber: '',
@@ -62,37 +63,99 @@ const RequestAccessForm: React.FC = () => {
     return urlData.publicUrl;
   };
 
+  const sendConfirmationEmail = async (name: string, email: string) => {
+    const subject = `${name}'s request to join RB has been submitted`;
+    const body = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>Thank you for your interest in RealBroker, ${name}!</h2>
+        <p>We have received your request to join the RealBroker Network.</p>
+        <p>Someone from our team will be in touch with you via WhatsApp soon.</p>
+        <br/>
+        <p>Best regards,</p>
+        <p><strong>The RealBroker Team</strong></p>
+      </div>
+    `;
+
+    try {
+      // Send to user
+      await supabase.functions.invoke('send-notification-email', {
+        body: { to: email, subject, body },
+      });
+      // CC to support
+      await supabase.functions.invoke('send-notification-email', {
+        body: { to: 'support@realbroker.app', subject, body },
+      });
+    } catch (error) {
+      console.error('Error sending confirmation email:', error);
+    }
+  };
+
+  const createWhatsAppOutbound = async (name: string, phone: string) => {
+    try {
+      await supabase.from('whatsapp_outbound' as any).insert({
+        phone,
+        user_name: name,
+        message: `Hi ${name}, thank you for your request to join the RealBroker Network! We have received your application and someone from our team will be in touch with you soon.`,
+        send_status: 'pending',
+        source: 'invite_request',
+        campaign_name: 'invite_request_confirmation',
+      });
+    } catch (error) {
+      console.error('Error creating WhatsApp outbound:', error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      // Upload photo first if exists
       const photoUrl = await uploadPhoto();
+
+      // Combine LinkedIn/website + about into message field
+      const messageParts: string[] = [];
+      if (formData.linkedinOrWebsite.trim()) {
+        messageParts.push(formData.linkedinOrWebsite.trim());
+      }
+      if (formData.about.trim()) {
+        messageParts.push(formData.about.trim());
+      }
+      const combinedMessage = messageParts.join('\n') || null;
+
+      const subject = `${formData.name}'s request to join RB has been submitted`;
 
       const { error } = await supabase
         .from('invite_requests')
         .insert({
           name: formData.name,
-          company: formData.company,
+          email: formData.email,
+          company: formData.company || 'Independent',
           city: formData.city,
           area: formData.officeLocation,
           whatsapp_number: formData.whatsappNumber,
-          email: formData.linkedinOrWebsite,
-          message: formData.about,
+          message: combinedMessage,
           profile_photo_url: photoUrl,
+          recipient_email: 'support@realbroker.app',
+          subject: subject,
         });
 
       if (error) throw error;
 
+      // Send confirmation email and WhatsApp in parallel
+      await Promise.all([
+        sendConfirmationEmail(formData.name, formData.email),
+        formData.whatsappNumber ? createWhatsAppOutbound(formData.name, formData.whatsappNumber) : Promise.resolve(),
+      ]);
+
       toast({
-        title: 'Request Submitted!',
-        description: 'Thank you for your interest. We\'ll review your application and get back to you soon.',
+        title: 'Request Submitted! 🎉',
+        description: 'Thank you for your interest in joining RealBroker. Someone from our team will be in touch with you via WhatsApp soon.',
       });
 
       setFormData({
         name: '',
-        company: '',
+        email: '',
+        company: 'Independent',
         city: '',
         officeLocation: '',
         whatsappNumber: '',
@@ -145,6 +208,23 @@ const RequestAccessForm: React.FC = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Enter your full name"
+                    required
+                    className="h-12 border-border/50 focus:border-realtor-500"
+                  />
+                </div>
+
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-foreground font-medium">
+                    Email Address <span className="text-realtor-600">*</span>
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="you@example.com"
                     required
                     className="h-12 border-border/50 focus:border-realtor-500"
                   />
