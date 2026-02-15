@@ -41,10 +41,11 @@ serve(async (req) => {
 
     // Send email using Resend with the requested email address
     const emailResponse = await resend.emails.send({
-      from: "RealBroker <invitations@realbroker.pro>",
+      from: "RealBroker <RealBroker@propalyst.com>",
       to: [to],
       subject: subject,
       html: body,
+      reply_to: "support@realbroker.app",
     });
 
     console.log("Email sent successfully:", emailResponse);
