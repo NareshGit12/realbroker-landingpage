@@ -20,7 +20,7 @@ const FooterNavigation: React.FC = () => {
     {
       title: "Resources",
       items: [
-        { name: "Certified RealBroker Program", path: "/certified-realbroker" },
+        
         { name: "Member Code of Conduct", path: "/charter-and-conduct" },
         { name: "Charter", path: "/charter" }
       ]
