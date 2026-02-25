@@ -26,6 +26,7 @@ export type Database = {
           onboarded: boolean | null
           phone: string
           rm: string | null
+          sender_jid: string | null
           serving_areas: string | null
           serving_areas_ids: Json | null
           supplier_type: string | null
@@ -45,6 +46,7 @@ export type Database = {
           onboarded?: boolean | null
           phone: string
           rm?: string | null
+          sender_jid?: string | null
           serving_areas?: string | null
           serving_areas_ids?: Json | null
           supplier_type?: string | null
@@ -64,6 +66,7 @@ export type Database = {
           onboarded?: boolean | null
           phone?: string
           rm?: string | null
+          sender_jid?: string | null
           serving_areas?: string | null
           serving_areas_ids?: Json | null
           supplier_type?: string | null
@@ -436,6 +439,111 @@ export type Database = {
           nearest_match?: string
           rationale?: string | null
           society_id?: number
+        }
+        Relationships: []
+      }
+      auto_search_runs: {
+        Row: {
+          error_details: string | null
+          id: string
+          leads_processed: number
+          matches_found: number
+          new_listings_scanned: number
+          run_completed_at: string | null
+          run_started_at: string
+          run_type: string
+          status: string
+        }
+        Insert: {
+          error_details?: string | null
+          id?: string
+          leads_processed?: number
+          matches_found?: number
+          new_listings_scanned?: number
+          run_completed_at?: string | null
+          run_started_at?: string
+          run_type?: string
+          status?: string
+        }
+        Update: {
+          error_details?: string | null
+          id?: string
+          leads_processed?: number
+          matches_found?: number
+          new_listings_scanned?: number
+          run_completed_at?: string | null
+          run_started_at?: string
+          run_type?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      autoloader_config: {
+        Row: {
+          batch_size: number
+          enabled: boolean
+          frequency_minutes: number
+          id: number
+          target_table: string
+          updated_at: string | null
+        }
+        Insert: {
+          batch_size?: number
+          enabled?: boolean
+          frequency_minutes?: number
+          id?: number
+          target_table?: string
+          updated_at?: string | null
+        }
+        Update: {
+          batch_size?: number
+          enabled?: boolean
+          frequency_minutes?: number
+          id?: number
+          target_table?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      autoloader_runs: {
+        Row: {
+          agents_created: number | null
+          batch_details: Json | null
+          completed_at: string | null
+          created_at: string | null
+          duplicates_skipped: number | null
+          error_message: string | null
+          id: string
+          listings_created: number | null
+          rows_read: number | null
+          started_at: string
+          status: string
+        }
+        Insert: {
+          agents_created?: number | null
+          batch_details?: Json | null
+          completed_at?: string | null
+          created_at?: string | null
+          duplicates_skipped?: number | null
+          error_message?: string | null
+          id?: string
+          listings_created?: number | null
+          rows_read?: number | null
+          started_at?: string
+          status?: string
+        }
+        Update: {
+          agents_created?: number | null
+          batch_details?: Json | null
+          completed_at?: string | null
+          created_at?: string | null
+          duplicates_skipped?: number | null
+          error_message?: string | null
+          id?: string
+          listings_created?: number | null
+          rows_read?: number | null
+          started_at?: string
+          status?: string
         }
         Relationships: []
       }
@@ -942,14 +1050,18 @@ export type Database = {
         Row: {
           agent_id: number | null
           attention_note: string | null
+          budget: string | null
           client_intent: number | null
           client_name: string | null
           client_profile: string | null
           created_at: string | null
           email: string | null
           id: number
+          last_auto_search_at: string | null
           lead_number: number | null
           lead_status: Database["public"]["Enums"]["demand_lead_status"] | null
+          lead_type: Database["public"]["Enums"]["lead_type"] | null
+          location: string | null
           market_feasibility: number | null
           needs_lm_attention: boolean | null
           needs_rm_attention: boolean | null
@@ -957,21 +1069,27 @@ export type Database = {
           next_action_notes: string | null
           payload: Json | null
           phone: string | null
+          property_type: Database["public"]["Enums"]["asset_type"] | null
           req_keywords: string[] | null
           rm: string | null
+          size: string | null
           title: string | null
         }
         Insert: {
           agent_id?: number | null
           attention_note?: string | null
+          budget?: string | null
           client_intent?: number | null
           client_name?: string | null
           client_profile?: string | null
           created_at?: string | null
           email?: string | null
           id?: number
+          last_auto_search_at?: string | null
           lead_number?: number | null
           lead_status?: Database["public"]["Enums"]["demand_lead_status"] | null
+          lead_type?: Database["public"]["Enums"]["lead_type"] | null
+          location?: string | null
           market_feasibility?: number | null
           needs_lm_attention?: boolean | null
           needs_rm_attention?: boolean | null
@@ -979,21 +1097,27 @@ export type Database = {
           next_action_notes?: string | null
           payload?: Json | null
           phone?: string | null
+          property_type?: Database["public"]["Enums"]["asset_type"] | null
           req_keywords?: string[] | null
           rm?: string | null
+          size?: string | null
           title?: string | null
         }
         Update: {
           agent_id?: number | null
           attention_note?: string | null
+          budget?: string | null
           client_intent?: number | null
           client_name?: string | null
           client_profile?: string | null
           created_at?: string | null
           email?: string | null
           id?: number
+          last_auto_search_at?: string | null
           lead_number?: number | null
           lead_status?: Database["public"]["Enums"]["demand_lead_status"] | null
+          lead_type?: Database["public"]["Enums"]["lead_type"] | null
+          location?: string | null
           market_feasibility?: number | null
           needs_lm_attention?: boolean | null
           needs_rm_attention?: boolean | null
@@ -1001,8 +1125,10 @@ export type Database = {
           next_action_notes?: string | null
           payload?: Json | null
           phone?: string | null
+          property_type?: Database["public"]["Enums"]["asset_type"] | null
           req_keywords?: string[] | null
           rm?: string | null
+          size?: string | null
           title?: string | null
         }
         Relationships: [
@@ -1158,6 +1284,33 @@ export type Database = {
         }
         Relationships: []
       }
+      gtemp: {
+        Row: {
+          code: string | null
+          firstname: string | null
+          ID: number
+          lastname: string | null
+          name: string | null
+          phone: string | null
+        }
+        Insert: {
+          code?: string | null
+          firstname?: string | null
+          ID?: number
+          lastname?: string | null
+          name?: string | null
+          phone?: string | null
+        }
+        Update: {
+          code?: string | null
+          firstname?: string | null
+          ID?: number
+          lastname?: string | null
+          name?: string | null
+          phone?: string | null
+        }
+        Relationships: []
+      }
       html_generation_metadata: {
         Row: {
           created_at: string | null
@@ -1253,13 +1406,13 @@ export type Database = {
       invitations: {
         Row: {
           accepted_at: string | null
+          avatar_url: string | null
           created_at: string
           id: string
           invite_code: string
+          invitee_bio: string | null
           invitee_company_name: string | null
           invitee_email: string
-          invitee_first_name: string | null
-          invitee_last_name: string | null
           invitee_name: string | null
           invitee_phone: string | null
           inviter_id: string
@@ -1270,13 +1423,13 @@ export type Database = {
         }
         Insert: {
           accepted_at?: string | null
+          avatar_url?: string | null
           created_at?: string
           id?: string
           invite_code: string
+          invitee_bio?: string | null
           invitee_company_name?: string | null
           invitee_email: string
-          invitee_first_name?: string | null
-          invitee_last_name?: string | null
           invitee_name?: string | null
           invitee_phone?: string | null
           inviter_id: string
@@ -1287,13 +1440,13 @@ export type Database = {
         }
         Update: {
           accepted_at?: string | null
+          avatar_url?: string | null
           created_at?: string
           id?: string
           invite_code?: string
+          invitee_bio?: string | null
           invitee_company_name?: string | null
           invitee_email?: string
-          invitee_first_name?: string | null
-          invitee_last_name?: string | null
           invitee_name?: string | null
           invitee_phone?: string | null
           inviter_id?: string
@@ -1483,6 +1636,7 @@ export type Database = {
           needs_rm_attention: boolean | null
           rejection_reason: string | null
           short_desc: string | null
+          source: string
           supply_id: string
           updated_at: string | null
           urgency_score: number | null
@@ -1505,6 +1659,7 @@ export type Database = {
           needs_rm_attention?: boolean | null
           rejection_reason?: string | null
           short_desc?: string | null
+          source?: string
           supply_id: string
           updated_at?: string | null
           urgency_score?: number | null
@@ -1527,6 +1682,7 @@ export type Database = {
           needs_rm_attention?: boolean | null
           rejection_reason?: string | null
           short_desc?: string | null
+          source?: string
           supply_id?: string
           updated_at?: string | null
           urgency_score?: number | null
@@ -2202,19 +2358,31 @@ export type Database = {
           content: string | null
           created_at: string
           doc_name: string | null
+          file_hash: string | null
+          file_type: string | null
           id: number
+          processing_summary: Json | null
+          uploaded_by: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
           doc_name?: string | null
+          file_hash?: string | null
+          file_type?: string | null
           id?: number
+          processing_summary?: Json | null
+          uploaded_by?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
           doc_name?: string | null
+          file_hash?: string | null
+          file_type?: string | null
           id?: number
+          processing_summary?: Json | null
+          uploaded_by?: string | null
         }
         Relationships: []
       }
@@ -2540,6 +2708,7 @@ export type Database = {
           image_url: string | null
           updated_at: string
           user_id: string
+          video_url: string | null
         }
         Insert: {
           content: string
@@ -2548,6 +2717,7 @@ export type Database = {
           image_url?: string | null
           updated_at?: string
           user_id: string
+          video_url?: string | null
         }
         Update: {
           content?: string
@@ -2556,6 +2726,7 @@ export type Database = {
           image_url?: string | null
           updated_at?: string
           user_id?: string
+          video_url?: string | null
         }
         Relationships: [
           {
@@ -2813,6 +2984,147 @@ export type Database = {
         }
         Relationships: []
       }
+      temp_dupetable: {
+        Row: {
+          agent_id: number | null
+          agent_name_msg: string | null
+          created_at: string | null
+          id: string | null
+          msg_type: string | null
+          occurrence_rank: number | null
+          place: string | null
+          price_total: number | null
+          property_type: string | null
+          size_value: number | null
+          text_snippet: string | null
+        }
+        Insert: {
+          agent_id?: number | null
+          agent_name_msg?: string | null
+          created_at?: string | null
+          id?: string | null
+          msg_type?: string | null
+          occurrence_rank?: number | null
+          place?: string | null
+          price_total?: number | null
+          property_type?: string | null
+          size_value?: number | null
+          text_snippet?: string | null
+        }
+        Update: {
+          agent_id?: number | null
+          agent_name_msg?: string | null
+          created_at?: string | null
+          id?: string | null
+          msg_type?: string | null
+          occurrence_rank?: number | null
+          place?: string | null
+          price_total?: number | null
+          property_type?: string | null
+          size_value?: number | null
+          text_snippet?: string | null
+        }
+        Relationships: []
+      }
+      temp_wapp_listings: {
+        Row: {
+          agent_id: number | null
+          agent_name_msg: string | null
+          agent_phone_msg: string | null
+          bedrooms: number | null
+          city: string | null
+          created_at: string | null
+          created_by: string | null
+          dedupe_hash: string | null
+          file_name: string | null
+          fts: unknown
+          id: string
+          location_name: string | null
+          msg_timestamp: string | null
+          msg_type: string | null
+          other_attributes: Json | null
+          price_per_unit: number | null
+          price_total: number | null
+          property_type: string | null
+          raw_text: string
+          seoslug: string | null
+          size_unit: string | null
+          size_value: number | null
+          society_name: string | null
+          source_group: string | null
+          wapp_raw_id: string | null
+        }
+        Insert: {
+          agent_id?: number | null
+          agent_name_msg?: string | null
+          agent_phone_msg?: string | null
+          bedrooms?: number | null
+          city?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          dedupe_hash?: string | null
+          file_name?: string | null
+          fts?: unknown
+          id?: string
+          location_name?: string | null
+          msg_timestamp?: string | null
+          msg_type?: string | null
+          other_attributes?: Json | null
+          price_per_unit?: number | null
+          price_total?: number | null
+          property_type?: string | null
+          raw_text: string
+          seoslug?: string | null
+          size_unit?: string | null
+          size_value?: number | null
+          society_name?: string | null
+          source_group?: string | null
+          wapp_raw_id?: string | null
+        }
+        Update: {
+          agent_id?: number | null
+          agent_name_msg?: string | null
+          agent_phone_msg?: string | null
+          bedrooms?: number | null
+          city?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          dedupe_hash?: string | null
+          file_name?: string | null
+          fts?: unknown
+          id?: string
+          location_name?: string | null
+          msg_timestamp?: string | null
+          msg_type?: string | null
+          other_attributes?: Json | null
+          price_per_unit?: number | null
+          price_total?: number | null
+          property_type?: string | null
+          raw_text?: string
+          seoslug?: string | null
+          size_unit?: string | null
+          size_value?: number | null
+          society_name?: string | null
+          source_group?: string | null
+          wapp_raw_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "temp_wapp_listings_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agent_master"
+            referencedColumns: ["agent_id"]
+          },
+          {
+            foreignKeyName: "temp_wapp_listings_wapp_raw_id_fkey"
+            columns: ["wapp_raw_id"]
+            isOneToOne: false
+            referencedRelation: "wapp_raw"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       testimonials: {
         Row: {
           author_id: string
@@ -2857,6 +3169,149 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      wapp_listings: {
+        Row: {
+          agent_id: number | null
+          agent_name_msg: string | null
+          agent_phone_msg: string | null
+          bedrooms: number | null
+          city: string | null
+          created_at: string | null
+          created_by: string | null
+          dedupe_hash: string | null
+          file_name: string | null
+          fts: unknown
+          id: string
+          location_name: string | null
+          msg_timestamp: string | null
+          msg_type: string | null
+          other_attributes: Json | null
+          price_per_unit: number | null
+          price_total: number | null
+          property_type: string | null
+          raw_sender_name: string | null
+          raw_text: string
+          sender_jid: string | null
+          seoslug: string | null
+          size_unit: string | null
+          size_value: number | null
+          society_name: string | null
+          source_group: string | null
+          wapp_raw_id: string | null
+        }
+        Insert: {
+          agent_id?: number | null
+          agent_name_msg?: string | null
+          agent_phone_msg?: string | null
+          bedrooms?: number | null
+          city?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          dedupe_hash?: string | null
+          file_name?: string | null
+          fts?: unknown
+          id?: string
+          location_name?: string | null
+          msg_timestamp?: string | null
+          msg_type?: string | null
+          other_attributes?: Json | null
+          price_per_unit?: number | null
+          price_total?: number | null
+          property_type?: string | null
+          raw_sender_name?: string | null
+          raw_text: string
+          sender_jid?: string | null
+          seoslug?: string | null
+          size_unit?: string | null
+          size_value?: number | null
+          society_name?: string | null
+          source_group?: string | null
+          wapp_raw_id?: string | null
+        }
+        Update: {
+          agent_id?: number | null
+          agent_name_msg?: string | null
+          agent_phone_msg?: string | null
+          bedrooms?: number | null
+          city?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          dedupe_hash?: string | null
+          file_name?: string | null
+          fts?: unknown
+          id?: string
+          location_name?: string | null
+          msg_timestamp?: string | null
+          msg_type?: string | null
+          other_attributes?: Json | null
+          price_per_unit?: number | null
+          price_total?: number | null
+          property_type?: string | null
+          raw_sender_name?: string | null
+          raw_text?: string
+          sender_jid?: string | null
+          seoslug?: string | null
+          size_unit?: string | null
+          size_value?: number | null
+          society_name?: string | null
+          source_group?: string | null
+          wapp_raw_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wapp_listings_agent_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agent_master"
+            referencedColumns: ["agent_id"]
+          },
+        ]
+      }
+      wapp_raw: {
+        Row: {
+          chat_jid: string | null
+          created_at: string
+          id: string
+          is_from_me: boolean | null
+          media_type: string | null
+          message_date: string | null
+          message_text: string | null
+          msg_id: string | null
+          processed_at: string | null
+          sender_jid: string | null
+          sender_name: string | null
+          source: string | null
+        }
+        Insert: {
+          chat_jid?: string | null
+          created_at?: string
+          id?: string
+          is_from_me?: boolean | null
+          media_type?: string | null
+          message_date?: string | null
+          message_text?: string | null
+          msg_id?: string | null
+          processed_at?: string | null
+          sender_jid?: string | null
+          sender_name?: string | null
+          source?: string | null
+        }
+        Update: {
+          chat_jid?: string | null
+          created_at?: string
+          id?: string
+          is_from_me?: boolean | null
+          media_type?: string | null
+          message_date?: string | null
+          message_text?: string | null
+          msg_id?: string | null
+          processed_at?: string | null
+          sender_jid?: string | null
+          sender_name?: string | null
+          source?: string | null
+        }
+        Relationships: []
       }
       whatsapp_listing_data: {
         Row: {
@@ -3067,6 +3522,51 @@ export type Database = {
         }
         Relationships: []
       }
+      whatsmeow_contacts: {
+        Row: {
+          business_name: string | null
+          first_name: string | null
+          full_name: string | null
+          our_jid: string
+          push_name: string | null
+          redacted_phone: string | null
+          their_jid: string
+        }
+        Insert: {
+          business_name?: string | null
+          first_name?: string | null
+          full_name?: string | null
+          our_jid: string
+          push_name?: string | null
+          redacted_phone?: string | null
+          their_jid: string
+        }
+        Update: {
+          business_name?: string | null
+          first_name?: string | null
+          full_name?: string | null
+          our_jid?: string
+          push_name?: string | null
+          redacted_phone?: string | null
+          their_jid?: string
+        }
+        Relationships: []
+      }
+      whatsmeow_lid_map: {
+        Row: {
+          lid: string
+          pn: string
+        }
+        Insert: {
+          lid: string
+          pn: string
+        }
+        Update: {
+          lid?: string
+          pn?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       locality_distributions: {
@@ -3270,6 +3770,7 @@ export type Database = {
         }[]
       }
       claim_invitation: { Args: { code: string }; Returns: boolean }
+      count_pending_wapp_raw: { Args: never; Returns: number }
       execute_readonly_query: { Args: { query_text: string }; Returns: Json }
       force_delete_connection: {
         Args: { connection_id: string }
@@ -3318,6 +3819,22 @@ export type Database = {
           status: string
         }[]
       }
+      get_invitation_prefill: {
+        Args: { code: string }
+        Returns: {
+          avatar_url: string
+          created_at: string
+          id: string
+          invite_code: string
+          invitee_bio: string
+          invitee_company_name: string
+          invitee_email: string
+          invitee_name: string
+          invitee_phone: string
+          inviter_id: string
+          status: string
+        }[]
+      }
       get_invite_code_status: {
         Args: { code: string }
         Returns: {
@@ -3356,6 +3873,7 @@ export type Database = {
           image_url: string | null
           updated_at: string
           user_id: string
+          video_url: string | null
         }[]
         SetofOptions: {
           from: "*"
@@ -3417,11 +3935,84 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: never; Returns: boolean }
+      search_wapp_listings: {
+        Args: {
+          filter_bedrooms?: string
+          filter_location?: string
+          filter_max_price?: number
+          filter_max_size?: number
+          filter_min_price?: number
+          filter_min_size?: number
+          filter_msg_type?: string
+          filter_type?: string
+          page_num?: number
+          page_size?: number
+          search_query?: string
+        }
+        Returns: {
+          agent_name_msg: string
+          agent_phone_msg: string
+          bedrooms: number
+          city: string
+          id: string
+          location_name: string
+          msg_timestamp: string
+          msg_type: string
+          other_attributes: Json
+          price_per_unit: number
+          price_total: number
+          property_type: string
+          rank: number
+          raw_sender_name: string
+          raw_text: string
+          sender_jid: string
+          seoslug: string
+          size_unit: string
+          size_value: number
+          society_name: string
+          wapp_raw_id: string
+        }[]
+      }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
       update_broker_rating: {
         Args: { input_broker_id: string }
         Returns: number
+      }
+      wapp_raw_insert: {
+        Args: {
+          p_message_date: string
+          p_message_text: string
+          p_sender_name: string
+        }
+        Returns: string
+      }
+      wapp_raw_list: {
+        Args: { p_limit?: number; p_since?: string }
+        Returns: {
+          chat_jid: string | null
+          created_at: string
+          id: string
+          is_from_me: boolean | null
+          media_type: string | null
+          message_date: string | null
+          message_text: string | null
+          msg_id: string | null
+          processed_at: string | null
+          sender_jid: string | null
+          sender_name: string | null
+          source: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "wapp_raw"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      wapp_raw_update: {
+        Args: { p_id: string; p_message_text: string; p_sender_name: string }
+        Returns: undefined
       }
     }
     Enums: {
@@ -3440,6 +4031,9 @@ export type Database = {
         | "Commercial"
         | "Villament"
         | "Plot"
+        | "Retail"
+        | "PG"
+        | "Farmhouse"
       commission_type: "percentage" | "fixed_amount"
       demand_lead_status:
         | "New"
@@ -3462,6 +4056,7 @@ export type Database = {
         | "North-West"
         | "South-East"
         | "South-West"
+      lead_type: "Demand Buy" | "Demand Rent" | "Supply Sale" | "Supply Rent"
       leads_app_role:
         | "admin"
         | "leads_rm"
@@ -3647,6 +4242,9 @@ export const Constants = {
         "Commercial",
         "Villament",
         "Plot",
+        "Retail",
+        "PG",
+        "Farmhouse",
       ],
       commission_type: ["percentage", "fixed_amount"],
       demand_lead_status: [
@@ -3672,6 +4270,7 @@ export const Constants = {
         "South-East",
         "South-West",
       ],
+      lead_type: ["Demand Buy", "Demand Rent", "Supply Sale", "Supply Rent"],
       leads_app_role: [
         "admin",
         "leads_rm",
