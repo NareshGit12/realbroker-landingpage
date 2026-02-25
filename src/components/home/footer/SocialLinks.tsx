@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Instagram, Linkedin } from 'lucide-react';
+import { Instagram, Linkedin, Facebook } from 'lucide-react';
 import Logo from '@/components/layout/Logo';
 
 const SocialLinks: React.FC = () => {
@@ -13,11 +13,14 @@ const SocialLinks: React.FC = () => {
         The exclusive platform for real estate professionals to connect, share listings, and close more deals.
       </p>
       <div className="flex gap-4">
-        <a href="https://instagram.com/realbrokernetwork/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-realtor-600 transition-colors">
+        <a href="https://instagram.com/realbrokernetwork/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
           <Instagram className="h-5 w-5" />
         </a>
-        <a href="https://www.linkedin.com/company/getrealbroker/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-realtor-600 transition-colors">
+        <a href="https://www.linkedin.com/company/getrealbroker/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
           <Linkedin className="h-5 w-5" />
+        </a>
+        <a href="https://www.facebook.com/people/RealBroker-Network/61587129039732/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+          <Facebook className="h-5 w-5" />
         </a>
       </div>
     </div>
