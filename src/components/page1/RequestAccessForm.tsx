@@ -19,6 +19,7 @@ const RequestAccessForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -39,6 +40,7 @@ const RequestAccessForm: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) {
       setPhotoFile(file);
+      setPhotoError(null);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhotoPreview(reader.result as string);
@@ -117,6 +119,12 @@ const RequestAccessForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!photoFile) {
+      setPhotoError('Professional photo is required to create a RealBroker Member Profile');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -260,23 +268,29 @@ const RequestAccessForm: React.FC = () => {
                       Tell us about yourself
                     </Label>
                     <p className="text-xs text-muted-foreground">
-                      Write 4-5 lines about yourself, what areas you work in, how long you have been in the business, some background, education, types of properties and clients you specialize in, anything else that would enhance your profile.
+                      To ensure quality of the network, We screen & vet all requests to join. A professional bio is required to join RealBroker
                     </p>
-                    <Textarea id="about" name="about" value={formData.about} onChange={handleInputChange} placeholder="Tell us about your experience, expertise, and what makes you stand out..." rows={5} className="border-border/50 focus:border-realtor-500 resize-none" />
+                    <p className="text-xs text-muted-foreground">
+                      Write 4-5 lines about yourself, what part of the city you work in, how long you have been in the business, some background, education, types of properties and clients you specialize in, anything else that would enhance your profile.
+                    </p>
+                    <Textarea id="about" name="about" value={formData.about} onChange={handleInputChange} placeholder="Write 4-5 lines about yourself, what part of the city you work in, how long you have been in the business, some background, education, types of properties and clients you specialize in, anything else that would enhance your profile." rows={5} className="border-border/50 focus:border-realtor-500 resize-none" />
                   </div>
 
                   {/* Photo Upload */}
                   <div className="space-y-2">
                     <Label className="text-foreground font-medium">
-                      Photo (For your RB Member Profile)
+                      Photo (For your RB Member Profile) <span className="text-realtor-600">*</span>
                     </Label>
+                    <p className="text-xs text-muted-foreground">
+                      Professional Photo is required to create a RealBroker Member Profile
+                    </p>
                     <div className="flex items-center gap-4">
-                      <label className="flex items-center gap-3 px-6 py-3 bg-muted hover:bg-muted/80 rounded-lg cursor-pointer transition-colors border border-border/50">
+                      <label className={`flex items-center gap-3 px-6 py-3 bg-muted hover:bg-muted/80 rounded-lg cursor-pointer transition-colors border ${photoError ? 'border-red-500' : 'border-border/50'}`}>
                         <Upload className="w-5 h-5 text-muted-foreground" />
                         <span className="text-muted-foreground text-sm font-medium">
                           {photoPreview ? 'Change Photo' : 'Upload Photo'}
                         </span>
-                        <input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+                        <input type="file" accept="image/*" required onChange={handlePhotoChange} className="hidden" />
                       </label>
                       {photoPreview && (
                         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-realtor-200">
@@ -284,6 +298,9 @@ const RequestAccessForm: React.FC = () => {
                         </div>
                       )}
                     </div>
+                    {photoError && (
+                      <p className="text-sm text-red-500 mt-1">{photoError}</p>
+                    )}
                   </div>
 
                   {/* Submit Button */}
