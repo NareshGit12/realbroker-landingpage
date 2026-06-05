@@ -314,7 +314,7 @@ const RequestAccessForm: React.FC = () => {
                     </Label>
                     <p className="text-xs text-muted-foreground">
                       To ensure quality of the network, We screen & vet all requests to join. A professional bio is
-                      required to join RealBroker
+                      required to join RealBroker.
                     </p>
 
                     <Textarea
