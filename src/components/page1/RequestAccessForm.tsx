@@ -19,6 +19,7 @@ const RequestAccessForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
