@@ -260,9 +260,12 @@ const RequestAccessForm: React.FC = () => {
                       Tell us about yourself
                     </Label>
                     <p className="text-xs text-muted-foreground">
-                      Write 4-5 lines about yourself, what areas you work in, how long you have been in the business, some background, education, types of properties and clients you specialize in, anything else that would enhance your profile.
+                      To ensure quality of the network, We screen & vet all requests to join. A professional bio is required to join RealBroker
                     </p>
-                    <Textarea id="about" name="about" value={formData.about} onChange={handleInputChange} placeholder="Tell us about your experience, expertise, and what makes you stand out..." rows={5} className="border-border/50 focus:border-realtor-500 resize-none" />
+                    <p className="text-xs text-muted-foreground">
+                      Write 4-5 lines about yourself, what part of the city you work in, how long you have been in the business, some background, education, types of properties and clients you specialize in, anything else that would enhance your profile.
+                    </p>
+                    <Textarea id="about" name="about" value={formData.about} onChange={handleInputChange} placeholder="Write 4-5 lines about yourself, what part of the city you work in, how long you have been in the business, some background, education, types of properties and clients you specialize in, anything else that would enhance your profile." rows={5} className="border-border/50 focus:border-realtor-500 resize-none" />
                   </div>
 
                   {/* Photo Upload */}
