@@ -119,6 +119,12 @@ const RequestAccessForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!photoFile) {
+      setPhotoError('Professional photo is required to create a RealBroker Member Profile');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
