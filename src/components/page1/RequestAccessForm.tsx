@@ -279,15 +279,18 @@ const RequestAccessForm: React.FC = () => {
                   {/* Photo Upload */}
                   <div className="space-y-2">
                     <Label className="text-foreground font-medium">
-                      Photo (For your RB Member Profile)
+                      Photo (For your RB Member Profile) <span className="text-realtor-600">*</span>
                     </Label>
+                    <p className="text-xs text-muted-foreground">
+                      Professional Photo is required to create a RealBroker Member Profile
+                    </p>
                     <div className="flex items-center gap-4">
-                      <label className="flex items-center gap-3 px-6 py-3 bg-muted hover:bg-muted/80 rounded-lg cursor-pointer transition-colors border border-border/50">
+                      <label className={`flex items-center gap-3 px-6 py-3 bg-muted hover:bg-muted/80 rounded-lg cursor-pointer transition-colors border ${photoError ? 'border-red-500' : 'border-border/50'}`}>
                         <Upload className="w-5 h-5 text-muted-foreground" />
                         <span className="text-muted-foreground text-sm font-medium">
                           {photoPreview ? 'Change Photo' : 'Upload Photo'}
                         </span>
-                        <input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+                        <input type="file" accept="image/*" required onChange={handlePhotoChange} className="hidden" />
                       </label>
                       {photoPreview && (
                         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-realtor-200">
@@ -295,6 +298,9 @@ const RequestAccessForm: React.FC = () => {
                         </div>
                       )}
                     </div>
+                    {photoError && (
+                      <p className="text-sm text-red-500 mt-1">{photoError}</p>
+                    )}
                   </div>
 
                   {/* Submit Button */}
