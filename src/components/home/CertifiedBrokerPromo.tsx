@@ -22,7 +22,7 @@ const CertifiedBrokerPromo: React.FC = () => {
               to="/certified-realbroker"
               className="inline-flex items-center gap-2 bg-realtor-600 hover:bg-realtor-700 text-white px-5 py-3 rounded-lg font-medium transition-colors"
             >
-              Learn More <ArrowRight className="h-5 w-5" />
+              Learn about the Certified RealBroker program <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
         </RevealAnimation>

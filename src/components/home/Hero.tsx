@@ -57,7 +57,7 @@ const Hero: React.FC = () => {
               </a>
               <a href="#features" className="w-full sm:w-auto sm:flex-1">
                 <Button variant="outline" className="border-realtor-200 hover:bg-realtor-50 text-realtor-800 py-6 px-8 rounded-xl text-lg w-full">
-                  Learn More
+                  Explore network features
                 </Button>
               </a>
             </div>
