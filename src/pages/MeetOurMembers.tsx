@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Seo from '@/components/seo/Seo';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
 import BrokerCard, { BrokerInfo } from '@/components/members/BrokerCard';
