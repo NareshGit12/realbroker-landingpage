@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import Seo from '@/components/seo/Seo';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
 import { toast } from 'sonner';
@@ -24,6 +25,8 @@ Good photos, real listings, clear terms. Let's raise the bar for how our industr
 We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate faster, simpler, and more profitable.`;
 
   return (
+    <>
+      <Seo title="RealBroker Charter | Our Founding Principles" description="The RealBroker charter: the principles of trust, transparency, and collaboration that guide every broker in our invite-only network." path="/charter" />
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
       <Navbar />
 
@@ -49,6 +52,7 @@ We use tech to cut out the chaos (no more WhatsApp spam!) and make real estate f
 
       <Footer />
     </div>
+    </>
   );
 };
 
