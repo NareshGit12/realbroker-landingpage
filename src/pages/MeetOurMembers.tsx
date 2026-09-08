@@ -158,9 +158,39 @@ const MeetOurMembers = () => {
 
   const displayMembers = useFallbackData ? fallbackBrokers : members;
 
+  const membersJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'RealBroker Members',
+    url: 'https://realbroker-landingpage.lovable.app/members',
+    description: 'Directory of vetted broker members of the RealBroker network.',
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: displayMembers.slice(0, 50).map((m: any, i: number) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'RealEstateAgent',
+          name: m.name,
+          ...(m.company ? { worksFor: { '@type': 'Organization', name: m.company } } : {}),
+          ...(m.location
+            ? { address: { '@type': 'PostalAddress', addressLocality: m.location } }
+            : {}),
+        },
+      })),
+    },
+  };
+
   return (
     <>
+      <Seo
+        title="Meet Our Members | RealBroker Broker Directory"
+        description="Browse the vetted brokers in the RealBroker network — their companies, areas of expertise, and the Bangalore micro-markets they work in."
+        path="/members"
+        jsonLd={membersJsonLd}
+      />
       <Navbar />
+
       <main>
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4 max-w-6xl">
