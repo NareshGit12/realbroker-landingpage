@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Seo from '@/components/seo/Seo';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
 
@@ -10,6 +11,8 @@ const TermsOfUse: React.FC = () => {
   }, []);
 
   return (
+    <>
+      <Seo title="Terms of Use | RealBroker" description="The terms governing membership and use of the RealBroker broker-to-broker network and website, including conduct and account rules." path="/terms-of-use" />
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow pt-20 pb-16">
@@ -92,6 +95,7 @@ const TermsOfUse: React.FC = () => {
       </main>
       <Footer />
     </div>
+    </>
   );
 };
 

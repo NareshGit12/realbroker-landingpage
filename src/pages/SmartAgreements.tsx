@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Seo from '@/components/seo/Seo';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
 import RevealAnimation from '@/components/ui/RevealAnimation';
@@ -10,6 +11,8 @@ import { Link } from 'react-router-dom';
 
 const SmartAgreements: React.FC = () => {
   return (
+    <>
+      <Seo title="Smart Agreements | Co-Broking Made Simple" description="Digital co-broking agreements for RealBroker members: clear ownership, agreed splits, and a secure record of every partnered deal." path="/smart-agreements" />
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
@@ -292,6 +295,7 @@ const SmartAgreements: React.FC = () => {
       
       <Footer />
     </div>
+    </>
   );
 };
 

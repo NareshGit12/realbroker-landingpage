@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import Seo from '@/components/seo/Seo';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
 import { supabase } from '@/integrations/supabase/client';
@@ -67,6 +68,8 @@ const CharterAndConduct = () => {
   ];
 
   return (
+    <>
+      <Seo title="Charter and Code of Conduct | RealBroker" description="The charter and code of conduct every RealBroker member agrees to, covering ethics, data quality, and fair collaboration between brokers." path="/charter-and-conduct" />
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
       <Navbar />
 
@@ -109,6 +112,7 @@ const CharterAndConduct = () => {
 
       <Footer />
     </div>
+    </>
   );
 };
 

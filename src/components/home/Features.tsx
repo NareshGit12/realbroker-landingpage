@@ -25,8 +25,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, del
         {link && (
           <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
             <Link to={link} className="text-realtor-600 text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all">
-              Learn more <ArrowUpRight className="h-3 w-3" />
+              Learn more about {title} <ArrowUpRight className="h-3 w-3" />
             </Link>
+
           </div>
         )}
       </div>

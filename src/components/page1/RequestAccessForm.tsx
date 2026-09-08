@@ -348,7 +348,7 @@ const RequestAccessForm: React.FC = () => {
                       </label>
                       {photoPreview && (
                         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-realtor-200">
-                          <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+                          <img src={photoPreview} alt="Preview of your uploaded professional profile photo" className="w-full h-full object-cover" />
                         </div>
                       )}
                     </div>

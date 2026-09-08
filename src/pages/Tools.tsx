@@ -1,6 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Seo from '@/components/seo/Seo';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
 import MarketingHero from '@/components/marketing/MarketingHero';
@@ -53,6 +54,8 @@ const Tools: React.FC = () => {
   };
 
   return (
+    <>
+      <Seo title="RealBroker Tools | Dashboard for Member Brokers" description="Preview the RealBroker dashboard: structured inventory sharing, partner discovery, and deal collaboration tools for member brokers." path="/tools" />
     <div className="min-h-screen w-full overflow-x-hidden bg-white text-gray-900">
       <Navbar />
       <main className="space-y-4">
@@ -66,6 +69,7 @@ const Tools: React.FC = () => {
       </main>
       <Footer />
     </div>
+    </>
   );
 };
 

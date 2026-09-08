@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Seo from '@/components/seo/Seo';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/home/Footer';
 
@@ -10,6 +11,8 @@ const PrivacyPolicy: React.FC = () => {
   }, []);
 
   return (
+    <>
+      <Seo title="Privacy Policy | RealBroker" description="How RealBroker collects, uses, and protects the personal information of brokers and visitors using our network and website." path="/privacy" />
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow pt-20 pb-16">
@@ -114,6 +117,7 @@ const PrivacyPolicy: React.FC = () => {
       </main>
       <Footer />
     </div>
+    </>
   );
 };
 

@@ -3,11 +3,14 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Mail } from 'lucide-react';
+import Seo from '@/components/seo/Seo';
 import Navbar from '@/components/layout/Navbar';
 import CertifiedPageFooter from '@/components/home/CertifiedPageFooter';
 
 const CertifiedRealBroker: React.FC = () => {
   return (
+    <>
+      <Seo title="Certified RealBroker Program | Get Certified" description="Join the Certified RealBroker program for vetted real estate professionals and gain access to exclusive tools, resources, and support." path="/certified-realbroker" />
     <div className="flex flex-col min-h-screen">
       <Navbar />
       
@@ -119,6 +122,7 @@ const CertifiedRealBroker: React.FC = () => {
       
       <CertifiedPageFooter />
     </div>
+    </>
   );
 };
 

@@ -1,0 +1,18 @@
+# RealBroker
+
+> An invite-only, broker-to-broker network for Bangalore's real estate professionals, enabling trusted collaboration and side-by-side deals on verified inventory.
+
+## Pages
+
+- [Home](/): What RealBroker is, the side-by-side partnership model, and the request-to-join form.
+- [Members](/members): Directory of vetted broker members with their profiles and areas of expertise.
+- [Tools](/tools): Preview of the dashboard and tools available to network members.
+- [Certified RealBroker](/certified-realbroker): The certification programme for member brokers.
+- [Smart Agreements](/smart-agreements): How co-broking agreements work inside the network.
+
+## Optional
+
+- [Charter](/charter): The network's charter.
+- [Charter and Conduct](/charter-and-conduct): Code of conduct for members.
+- [Terms of Use](/terms-of-use): Terms governing use of the site.
+- [Privacy Policy](/privacy): How member and visitor data is handled.
