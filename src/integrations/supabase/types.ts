@@ -84,6 +84,13 @@ export type Database = {
             foreignKeyName: "active_tasks_match_id_fkey"
             columns: ["match_id"]
             isOneToOne: false
+            referencedRelation: "chase_broker_promises"
+            referencedColumns: ["match_id"]
+          },
+          {
+            foreignKeyName: "active_tasks_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
             referencedRelation: "matching_supply"
             referencedColumns: ["id"]
           },
@@ -93,18 +100,20 @@ export type Database = {
         Row: {
           agent_id: number
           agent_name: string | null
+          best_contact_phone: string | null
           city: string | null
           company_address: string | null
           company_name: string | null
           created_at: string | null
           notes: string | null
-          onboarded: boolean | null
           phone: string
           rm: string | null
+          score: number | null
           sender_jid: string | null
           serving_areas: string | null
           serving_areas_ids: Json | null
           Society: string | null
+          society_ids: Json | null
           supplier_type: string | null
           tempphone: string | null
           updated_at: string | null
@@ -114,18 +123,20 @@ export type Database = {
         Insert: {
           agent_id?: number
           agent_name?: string | null
+          best_contact_phone?: string | null
           city?: string | null
           company_address?: string | null
           company_name?: string | null
           created_at?: string | null
           notes?: string | null
-          onboarded?: boolean | null
           phone: string
           rm?: string | null
+          score?: number | null
           sender_jid?: string | null
           serving_areas?: string | null
           serving_areas_ids?: Json | null
           Society?: string | null
+          society_ids?: Json | null
           supplier_type?: string | null
           tempphone?: string | null
           updated_at?: string | null
@@ -135,18 +146,20 @@ export type Database = {
         Update: {
           agent_id?: number
           agent_name?: string | null
+          best_contact_phone?: string | null
           city?: string | null
           company_address?: string | null
           company_name?: string | null
           created_at?: string | null
           notes?: string | null
-          onboarded?: boolean | null
           phone?: string
           rm?: string | null
+          score?: number | null
           sender_jid?: string | null
           serving_areas?: string | null
           serving_areas_ids?: Json | null
           Society?: string | null
+          society_ids?: Json | null
           supplier_type?: string | null
           tempphone?: string | null
           updated_at?: string | null
@@ -493,57 +506,6 @@ export type Database = {
           },
         ]
       }
-      ai_agent_engagement_state: {
-        Row: {
-          active_property_intake_request_id: string | null
-          active_sa_request_id: string | null
-          created_at: string
-          current_agent: string | null
-          current_state: string
-          last_transition_at: string
-          meta: Json
-          phone: string
-          updated_at: string
-        }
-        Insert: {
-          active_property_intake_request_id?: string | null
-          active_sa_request_id?: string | null
-          created_at?: string
-          current_agent?: string | null
-          current_state?: string
-          last_transition_at?: string
-          meta?: Json
-          phone: string
-          updated_at?: string
-        }
-        Update: {
-          active_property_intake_request_id?: string | null
-          active_sa_request_id?: string | null
-          created_at?: string
-          current_agent?: string | null
-          current_state?: string
-          last_transition_at?: string
-          meta?: Json
-          phone?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "ai_agent_engagement_state_active_property_intake_request_id_fke"
-            columns: ["active_property_intake_request_id"]
-            isOneToOne: false
-            referencedRelation: "property_intake_requests"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "ai_agent_engagement_state_active_sa_request_id_fkey"
-            columns: ["active_sa_request_id"]
-            isOneToOne: false
-            referencedRelation: "sa_requests"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       ai_agent_media: {
         Row: {
           byte_size: number | null
@@ -622,6 +584,7 @@ export type Database = {
           direction: string
           id: number
           kapso_wamid: string | null
+          match_id: string | null
           media_refs: Json
           message_type: string | null
           phone: string
@@ -638,6 +601,7 @@ export type Database = {
           direction: string
           id?: number
           kapso_wamid?: string | null
+          match_id?: string | null
           media_refs?: Json
           message_type?: string | null
           phone: string
@@ -654,6 +618,7 @@ export type Database = {
           direction?: string
           id?: number
           kapso_wamid?: string | null
+          match_id?: string | null
           media_refs?: Json
           message_type?: string | null
           phone?: string
@@ -664,6 +629,20 @@ export type Database = {
           tool_name?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "ai_agent_messages_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "chase_broker_promises"
+            referencedColumns: ["match_id"]
+          },
+          {
+            foreignKeyName: "ai_agent_messages_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matching_supply"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "ai_agent_messages_property_intake_request_id_fkey"
             columns: ["property_intake_request_id"]
@@ -1246,6 +1225,27 @@ export type Database = {
         }
         Relationships: []
       }
+      builder_lookup: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: number
+          keyword: string
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          id?: number
+          keyword: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: number
+          keyword?: string
+        }
+        Relationships: []
+      }
       buyer_agreement_signatures: {
         Row: {
           agreement_id: string
@@ -1398,6 +1398,93 @@ export type Database = {
         }
         Relationships: []
       }
+      chase_engine_runs: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          engine_enabled: boolean | null
+          error: string | null
+          finished_at: string | null
+          id: string
+          outcome_counts: Json | null
+          planned: number | null
+          quiet_hours_open: boolean | null
+          ran: boolean | null
+          reason: string | null
+          reconcile_created: number | null
+          reconcile_skipped: number | null
+          scanned: number | null
+          shadow_mode: boolean | null
+          snapshot: Json | null
+          started_at: string | null
+          trigger: string
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          engine_enabled?: boolean | null
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          outcome_counts?: Json | null
+          planned?: number | null
+          quiet_hours_open?: boolean | null
+          ran?: boolean | null
+          reason?: string | null
+          reconcile_created?: number | null
+          reconcile_skipped?: number | null
+          scanned?: number | null
+          shadow_mode?: boolean | null
+          snapshot?: Json | null
+          started_at?: string | null
+          trigger?: string
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          engine_enabled?: boolean | null
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          outcome_counts?: Json | null
+          planned?: number | null
+          quiet_hours_open?: boolean | null
+          ran?: boolean | null
+          reason?: string | null
+          reconcile_created?: number | null
+          reconcile_skipped?: number | null
+          scanned?: number | null
+          shadow_mode?: boolean | null
+          snapshot?: Json | null
+          started_at?: string | null
+          trigger?: string
+        }
+        Relationships: []
+      }
+      chase_escalation_playbook: {
+        Row: {
+          action: string
+          kind: string
+          title: string
+          updated_at: string
+          why: string
+        }
+        Insert: {
+          action: string
+          kind: string
+          title: string
+          updated_at?: string
+          why: string
+        }
+        Update: {
+          action?: string
+          kind?: string
+          title?: string
+          updated_at?: string
+          why?: string
+        }
+        Relationships: []
+      }
       cities: {
         Row: {
           created_at: string
@@ -1419,6 +1506,8 @@ export type Database = {
       company: {
         Row: {
           Address: string | null
+          authorized_sign_image: string | null
+          authorized_sign_name: string | null
           brai: boolean | null
           City: string | null
           CoKey: string | null
@@ -1430,10 +1519,13 @@ export type Database = {
           Logo: string | null
           Manager: string | null
           nar: boolean | null
+          payment_bank_details: string | null
           realtor: boolean | null
         }
         Insert: {
           Address?: string | null
+          authorized_sign_image?: string | null
+          authorized_sign_name?: string | null
           brai?: boolean | null
           City?: string | null
           CoKey?: string | null
@@ -1445,10 +1537,13 @@ export type Database = {
           Logo?: string | null
           Manager?: string | null
           nar?: boolean | null
+          payment_bank_details?: string | null
           realtor?: boolean | null
         }
         Update: {
           Address?: string | null
+          authorized_sign_image?: string | null
+          authorized_sign_name?: string | null
           brai?: boolean | null
           City?: string | null
           CoKey?: string | null
@@ -1460,6 +1555,7 @@ export type Database = {
           Logo?: string | null
           Manager?: string | null
           nar?: boolean | null
+          payment_bank_details?: string | null
           realtor?: boolean | null
         }
         Relationships: [
@@ -1547,14 +1643,20 @@ export type Database = {
       demand_leads: {
         Row: {
           agent_id: number | null
+          agent_muted: boolean
           attention_note: string | null
+          automation_enabled: boolean
+          automation_toggled_at: string | null
+          automation_toggled_by: string | null
           bedrooms_search: string | null
           budget: string | null
+          chase_attention: string | null
           client_intent: number | null
           client_name: string | null
           client_profile: string | null
           created_at: string | null
           email: string | null
+          escalation_email_sent_at: string | null
           id: number
           last_auto_search_at: string | null
           last_match_notified_at: string | null
@@ -1565,14 +1667,14 @@ export type Database = {
           lead_type: Database["public"]["Enums"]["lead_type"] | null
           location: string | null
           market_feasibility: number | null
-          needs_lm_attention: boolean | null
-          needs_rm_attention: boolean | null
           next_action_date: string | null
           next_action_deadline: string | null
           next_action_notes: string | null
+          otp_state: Json | null
           payload: Json | null
           phone: string | null
-          property_type: Database["public"]["Enums"]["asset_type"] | null
+          phone_verified_at: string | null
+          property_type: string | null
           report_url: string | null
           req_keywords: string[] | null
           rm: string | null
@@ -1581,14 +1683,20 @@ export type Database = {
         }
         Insert: {
           agent_id?: number | null
+          agent_muted?: boolean
           attention_note?: string | null
+          automation_enabled?: boolean
+          automation_toggled_at?: string | null
+          automation_toggled_by?: string | null
           bedrooms_search?: string | null
           budget?: string | null
+          chase_attention?: string | null
           client_intent?: number | null
           client_name?: string | null
           client_profile?: string | null
           created_at?: string | null
           email?: string | null
+          escalation_email_sent_at?: string | null
           id?: number
           last_auto_search_at?: string | null
           last_match_notified_at?: string | null
@@ -1599,14 +1707,14 @@ export type Database = {
           lead_type?: Database["public"]["Enums"]["lead_type"] | null
           location?: string | null
           market_feasibility?: number | null
-          needs_lm_attention?: boolean | null
-          needs_rm_attention?: boolean | null
           next_action_date?: string | null
           next_action_deadline?: string | null
           next_action_notes?: string | null
+          otp_state?: Json | null
           payload?: Json | null
           phone?: string | null
-          property_type?: Database["public"]["Enums"]["asset_type"] | null
+          phone_verified_at?: string | null
+          property_type?: string | null
           report_url?: string | null
           req_keywords?: string[] | null
           rm?: string | null
@@ -1615,14 +1723,20 @@ export type Database = {
         }
         Update: {
           agent_id?: number | null
+          agent_muted?: boolean
           attention_note?: string | null
+          automation_enabled?: boolean
+          automation_toggled_at?: string | null
+          automation_toggled_by?: string | null
           bedrooms_search?: string | null
           budget?: string | null
+          chase_attention?: string | null
           client_intent?: number | null
           client_name?: string | null
           client_profile?: string | null
           created_at?: string | null
           email?: string | null
+          escalation_email_sent_at?: string | null
           id?: number
           last_auto_search_at?: string | null
           last_match_notified_at?: string | null
@@ -1633,14 +1747,14 @@ export type Database = {
           lead_type?: Database["public"]["Enums"]["lead_type"] | null
           location?: string | null
           market_feasibility?: number | null
-          needs_lm_attention?: boolean | null
-          needs_rm_attention?: boolean | null
           next_action_date?: string | null
           next_action_deadline?: string | null
           next_action_notes?: string | null
+          otp_state?: Json | null
           payload?: Json | null
           phone?: string | null
-          property_type?: Database["public"]["Enums"]["asset_type"] | null
+          phone_verified_at?: string | null
+          property_type?: string | null
           report_url?: string | null
           req_keywords?: string[] | null
           rm?: string | null
@@ -2024,6 +2138,89 @@ export type Database = {
         }
         Relationships: []
       }
+      invoices: {
+        Row: {
+          amount: number
+          company_id: number | null
+          created_at: string
+          created_by: string | null
+          customer_address: string | null
+          customer_email: string | null
+          customer_name: string
+          customer_phone: string | null
+          description: string
+          emailed_at: string | null
+          id: string
+          invoice_date: string
+          invoice_number: string
+          notes: string | null
+          party_role: string | null
+          property_details: string | null
+          rm_email: string | null
+          rm_name: string | null
+          rm_phone: string | null
+          status: string
+          transaction_type: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          company_id?: number | null
+          created_at?: string
+          created_by?: string | null
+          customer_address?: string | null
+          customer_email?: string | null
+          customer_name: string
+          customer_phone?: string | null
+          description?: string
+          emailed_at?: string | null
+          id?: string
+          invoice_date?: string
+          invoice_number: string
+          notes?: string | null
+          party_role?: string | null
+          property_details?: string | null
+          rm_email?: string | null
+          rm_name?: string | null
+          rm_phone?: string | null
+          status?: string
+          transaction_type?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          company_id?: number | null
+          created_at?: string
+          created_by?: string | null
+          customer_address?: string | null
+          customer_email?: string | null
+          customer_name?: string
+          customer_phone?: string | null
+          description?: string
+          emailed_at?: string | null
+          id?: string
+          invoice_date?: string
+          invoice_number?: string
+          notes?: string | null
+          party_role?: string | null
+          property_details?: string | null
+          rm_email?: string | null
+          rm_name?: string | null
+          rm_phone?: string | null
+          status?: string
+          transaction_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads_sm_rm: {
         Row: {
           assigned_by: string | null
@@ -2162,6 +2359,33 @@ export type Database = {
         }
         Relationships: []
       }
+      listing_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: number
+          ip_hash: string | null
+          listing_id: string
+          meta: Json | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: never
+          ip_hash?: string | null
+          listing_id: string
+          meta?: Json | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: never
+          ip_hash?: string | null
+          listing_id?: string
+          meta?: Json | null
+        }
+        Relationships: []
+      }
       local_areas: {
         Row: {
           area: string
@@ -2179,11 +2403,13 @@ export type Database = {
           infrastructure: Json | null
           last_analyzed: string | null
           local_amenities: Json | null
+          local_cluster: string | null
           market_data: Json | null
           narratives: Json | null
           overview: string | null
           property_count: number | null
           search_queries_used: string[] | null
+          similar_entities: Json | null
           slug: string | null
           vibe_and_lifestyle: Json | null
         }
@@ -2203,11 +2429,13 @@ export type Database = {
           infrastructure?: Json | null
           last_analyzed?: string | null
           local_amenities?: Json | null
+          local_cluster?: string | null
           market_data?: Json | null
           narratives?: Json | null
           overview?: string | null
           property_count?: number | null
           search_queries_used?: string[] | null
+          similar_entities?: Json | null
           slug?: string | null
           vibe_and_lifestyle?: Json | null
         }
@@ -2227,11 +2455,13 @@ export type Database = {
           infrastructure?: Json | null
           last_analyzed?: string | null
           local_amenities?: Json | null
+          local_cluster?: string | null
           market_data?: Json | null
           narratives?: Json | null
           overview?: string | null
           property_count?: number | null
           search_queries_used?: string[] | null
+          similar_entities?: Json | null
           slug?: string | null
           vibe_and_lifestyle?: Json | null
         }
@@ -2284,31 +2514,54 @@ export type Database = {
           agent_note: string | null
           agent_phone: string | null
           attention_note: string | null
-          broker_details_json: Json
+          broker_close_out_sent_at: string | null
           broker_details_summary: string | null
           broker_details_updated_at: string | null
+          broker_promise_at: string | null
+          broker_promise_count: number
+          broker_promise_due_at: string | null
+          chase_attention: string | null
+          chase_count: number
+          chase_resume_at: string | null
           chaser_count: number | null
+          client_chase_count: number
+          closed_at: string | null
+          closed_by: string | null
+          closed_reason: string | null
+          consecutive_send_failures: number
           created_at: string | null
           created_by: string | null
           customer_note: string | null
           date_entered_status: string | null
+          escalation_email_sent_at: string | null
+          flyer: string | null
           id: string
+          is_closed: boolean
+          last_action_at: string
+          last_client_chase_at: string | null
           last_sourced_at: string | null
+          last_status_change_at: string | null
+          last_status_changed_by: string | null
+          last_supply_chase_at: string | null
           last_task_generated_at: string | null
           lead_id: number
           linked_property_id: string | null
           lm_sm_comments: string | null
+          match_confidence: number | null
           match_number: number | null
+          match_score_breakdown: Json
           match_status: Database["public"]["Enums"]["match_status"]
-          needs_lm_attention: boolean | null
-          needs_rm_attention: boolean | null
+          non_negotiables: Json | null
+          non_negotiables_checked_at: string | null
+          non_negotiables_extracted_at: string | null
           post_viewing_feedback_due_at: string | null
+          pre_close_match_status: string | null
           rejection_reason: string | null
           short_desc: string | null
           source: string
+          supply_chase_count: number
           supply_id: string
           updated_at: string | null
-          urgency_score: number | null
           viewing_completed_at: string | null
           viewing_date: string | null
           viewing_scheduled_at: string | null
@@ -2318,31 +2571,54 @@ export type Database = {
           agent_note?: string | null
           agent_phone?: string | null
           attention_note?: string | null
-          broker_details_json?: Json
+          broker_close_out_sent_at?: string | null
           broker_details_summary?: string | null
           broker_details_updated_at?: string | null
+          broker_promise_at?: string | null
+          broker_promise_count?: number
+          broker_promise_due_at?: string | null
+          chase_attention?: string | null
+          chase_count?: number
+          chase_resume_at?: string | null
           chaser_count?: number | null
+          client_chase_count?: number
+          closed_at?: string | null
+          closed_by?: string | null
+          closed_reason?: string | null
+          consecutive_send_failures?: number
           created_at?: string | null
           created_by?: string | null
           customer_note?: string | null
           date_entered_status?: string | null
+          escalation_email_sent_at?: string | null
+          flyer?: string | null
           id?: string
+          is_closed?: boolean
+          last_action_at?: string
+          last_client_chase_at?: string | null
           last_sourced_at?: string | null
+          last_status_change_at?: string | null
+          last_status_changed_by?: string | null
+          last_supply_chase_at?: string | null
           last_task_generated_at?: string | null
           lead_id: number
           linked_property_id?: string | null
           lm_sm_comments?: string | null
+          match_confidence?: number | null
           match_number?: number | null
+          match_score_breakdown?: Json
           match_status?: Database["public"]["Enums"]["match_status"]
-          needs_lm_attention?: boolean | null
-          needs_rm_attention?: boolean | null
+          non_negotiables?: Json | null
+          non_negotiables_checked_at?: string | null
+          non_negotiables_extracted_at?: string | null
           post_viewing_feedback_due_at?: string | null
+          pre_close_match_status?: string | null
           rejection_reason?: string | null
           short_desc?: string | null
           source?: string
+          supply_chase_count?: number
           supply_id: string
           updated_at?: string | null
-          urgency_score?: number | null
           viewing_completed_at?: string | null
           viewing_date?: string | null
           viewing_scheduled_at?: string | null
@@ -2352,31 +2628,54 @@ export type Database = {
           agent_note?: string | null
           agent_phone?: string | null
           attention_note?: string | null
-          broker_details_json?: Json
+          broker_close_out_sent_at?: string | null
           broker_details_summary?: string | null
           broker_details_updated_at?: string | null
+          broker_promise_at?: string | null
+          broker_promise_count?: number
+          broker_promise_due_at?: string | null
+          chase_attention?: string | null
+          chase_count?: number
+          chase_resume_at?: string | null
           chaser_count?: number | null
+          client_chase_count?: number
+          closed_at?: string | null
+          closed_by?: string | null
+          closed_reason?: string | null
+          consecutive_send_failures?: number
           created_at?: string | null
           created_by?: string | null
           customer_note?: string | null
           date_entered_status?: string | null
+          escalation_email_sent_at?: string | null
+          flyer?: string | null
           id?: string
+          is_closed?: boolean
+          last_action_at?: string
+          last_client_chase_at?: string | null
           last_sourced_at?: string | null
+          last_status_change_at?: string | null
+          last_status_changed_by?: string | null
+          last_supply_chase_at?: string | null
           last_task_generated_at?: string | null
           lead_id?: number
           linked_property_id?: string | null
           lm_sm_comments?: string | null
+          match_confidence?: number | null
           match_number?: number | null
+          match_score_breakdown?: Json
           match_status?: Database["public"]["Enums"]["match_status"]
-          needs_lm_attention?: boolean | null
-          needs_rm_attention?: boolean | null
+          non_negotiables?: Json | null
+          non_negotiables_checked_at?: string | null
+          non_negotiables_extracted_at?: string | null
           post_viewing_feedback_due_at?: string | null
+          pre_close_match_status?: string | null
           rejection_reason?: string | null
           short_desc?: string | null
           source?: string
+          supply_chase_count?: number
           supply_id?: string
           updated_at?: string | null
-          urgency_score?: number | null
           viewing_completed_at?: string | null
           viewing_date?: string | null
           viewing_scheduled_at?: string | null
@@ -3300,6 +3599,13 @@ export type Database = {
             foreignKeyName: "sa_requests_match_id_fkey"
             columns: ["match_id"]
             isOneToOne: false
+            referencedRelation: "chase_broker_promises"
+            referencedColumns: ["match_id"]
+          },
+          {
+            foreignKeyName: "sa_requests_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
             referencedRelation: "matching_supply"
             referencedColumns: ["id"]
           },
@@ -3373,9 +3679,11 @@ export type Database = {
           broker_phone: string | null
           created_at: string | null
           custom_terms: string | null
+          exclusive_months: number | null
           expected_price_rent: string | null
           expiry_date: string | null
           id: string
+          is_exclusive: boolean
           non_circumvention_months: number | null
           notice_period_days: number | null
           property_address: string
@@ -3404,9 +3712,11 @@ export type Database = {
           broker_phone?: string | null
           created_at?: string | null
           custom_terms?: string | null
+          exclusive_months?: number | null
           expected_price_rent?: string | null
           expiry_date?: string | null
           id?: string
+          is_exclusive?: boolean
           non_circumvention_months?: number | null
           notice_period_days?: number | null
           property_address: string
@@ -3435,9 +3745,11 @@ export type Database = {
           broker_phone?: string | null
           created_at?: string | null
           custom_terms?: string | null
+          exclusive_months?: number | null
           expected_price_rent?: string | null
           expiry_date?: string | null
           id?: string
+          is_exclusive?: boolean
           non_circumvention_months?: number | null
           notice_period_days?: number | null
           property_address?: string
@@ -3621,6 +3933,7 @@ export type Database = {
           narratives: Json | null
           property_images: Json | null
           search_score: number | null
+          similar_entities: Json | null
           slug: string
           source_analyses: Json | null
           source_citations: Json | null
@@ -3649,6 +3962,7 @@ export type Database = {
           narratives?: Json | null
           property_images?: Json | null
           search_score?: number | null
+          similar_entities?: Json | null
           slug: string
           source_analyses?: Json | null
           source_citations?: Json | null
@@ -3677,6 +3991,7 @@ export type Database = {
           narratives?: Json | null
           property_images?: Json | null
           search_score?: number | null
+          similar_entities?: Json | null
           slug?: string
           source_analyses?: Json | null
           source_citations?: Json | null
@@ -3846,192 +4161,6 @@ export type Database = {
           id?: string
         }
         Relationships: []
-      }
-      temp_cleanup_wl: {
-        Row: {
-          first_created: string | null
-          id: number
-          listing_ids: string | null
-          num_listings: number | null
-          properties: string | null
-          wapp_raw_id: string | null
-        }
-        Insert: {
-          first_created?: string | null
-          id: number
-          listing_ids?: string | null
-          num_listings?: number | null
-          properties?: string | null
-          wapp_raw_id?: string | null
-        }
-        Update: {
-          first_created?: string | null
-          id?: number
-          listing_ids?: string | null
-          num_listings?: number | null
-          properties?: string | null
-          wapp_raw_id?: string | null
-        }
-        Relationships: []
-      }
-      temp_dupetable: {
-        Row: {
-          agent_id: number | null
-          dup_count: number | null
-          id: string | null
-          location_name: string | null
-          price_total: number | null
-          property_type: string | null
-          size_value: number | null
-          society_name: string | null
-        }
-        Insert: {
-          agent_id?: number | null
-          dup_count?: number | null
-          id?: string | null
-          location_name?: string | null
-          price_total?: number | null
-          property_type?: string | null
-          size_value?: number | null
-          society_name?: string | null
-        }
-        Update: {
-          agent_id?: number | null
-          dup_count?: number | null
-          id?: string | null
-          location_name?: string | null
-          price_total?: number | null
-          property_type?: string | null
-          size_value?: number | null
-          society_name?: string | null
-        }
-        Relationships: []
-      }
-      temp_multirow: {
-        Row: {
-          message_date: string | null
-          message_text: string | null
-          processed_at: string | null
-          raw_id: string | null
-          sender_name: string | null
-          source: string | null
-        }
-        Insert: {
-          message_date?: string | null
-          message_text?: string | null
-          processed_at?: string | null
-          raw_id?: string | null
-          sender_name?: string | null
-          source?: string | null
-        }
-        Update: {
-          message_date?: string | null
-          message_text?: string | null
-          processed_at?: string | null
-          raw_id?: string | null
-          sender_name?: string | null
-          source?: string | null
-        }
-        Relationships: []
-      }
-      temp_wapp_listings: {
-        Row: {
-          agent_id: number | null
-          agent_name_msg: string | null
-          agent_phone_msg: string | null
-          bedrooms: number | null
-          city: string | null
-          created_at: string | null
-          created_by: string | null
-          dedupe_hash: string | null
-          file_name: string | null
-          fts: unknown
-          id: string
-          location_name: string | null
-          msg_timestamp: string | null
-          msg_type: string | null
-          other_attributes: Json | null
-          price_per_unit: number | null
-          price_total: number | null
-          property_type: string | null
-          raw_text: string
-          seoslug: string | null
-          size_unit: string | null
-          size_value: number | null
-          society_name: string | null
-          source_group: string | null
-          wapp_raw_id: string | null
-        }
-        Insert: {
-          agent_id?: number | null
-          agent_name_msg?: string | null
-          agent_phone_msg?: string | null
-          bedrooms?: number | null
-          city?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          dedupe_hash?: string | null
-          file_name?: string | null
-          fts?: unknown
-          id?: string
-          location_name?: string | null
-          msg_timestamp?: string | null
-          msg_type?: string | null
-          other_attributes?: Json | null
-          price_per_unit?: number | null
-          price_total?: number | null
-          property_type?: string | null
-          raw_text: string
-          seoslug?: string | null
-          size_unit?: string | null
-          size_value?: number | null
-          society_name?: string | null
-          source_group?: string | null
-          wapp_raw_id?: string | null
-        }
-        Update: {
-          agent_id?: number | null
-          agent_name_msg?: string | null
-          agent_phone_msg?: string | null
-          bedrooms?: number | null
-          city?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          dedupe_hash?: string | null
-          file_name?: string | null
-          fts?: unknown
-          id?: string
-          location_name?: string | null
-          msg_timestamp?: string | null
-          msg_type?: string | null
-          other_attributes?: Json | null
-          price_per_unit?: number | null
-          price_total?: number | null
-          property_type?: string | null
-          raw_text?: string
-          seoslug?: string | null
-          size_unit?: string | null
-          size_value?: number | null
-          society_name?: string | null
-          source_group?: string | null
-          wapp_raw_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "temp_wapp_listings_agent_id_fkey"
-            columns: ["agent_id"]
-            isOneToOne: false
-            referencedRelation: "agent_master"
-            referencedColumns: ["agent_id"]
-          },
-          {
-            foreignKeyName: "temp_wapp_listings_wapp_raw_id_fkey"
-            columns: ["wapp_raw_id"]
-            isOneToOne: false
-            referencedRelation: "wapp_raw"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       testimonials: {
         Row: {
@@ -4208,6 +4337,7 @@ export type Database = {
           agent_id: number | null
           agent_name_msg: string | null
           agent_phone_msg: string | null
+          area_id: string | null
           bedrooms: number | null
           city: string | null
           consumer_display_text: string | null
@@ -4216,6 +4346,7 @@ export type Database = {
           dedupe_hash: string | null
           embedding: string | null
           file_name: string | null
+          flyer: string | null
           fts: unknown
           id: string
           location_name: string | null
@@ -4231,6 +4362,7 @@ export type Database = {
           seoslug: string | null
           size_unit: string | null
           size_value: number | null
+          society_id: number | null
           society_name: string | null
           source_group: string | null
           source_id: number | null
@@ -4241,6 +4373,7 @@ export type Database = {
           agent_id?: number | null
           agent_name_msg?: string | null
           agent_phone_msg?: string | null
+          area_id?: string | null
           bedrooms?: number | null
           city?: string | null
           consumer_display_text?: string | null
@@ -4249,6 +4382,7 @@ export type Database = {
           dedupe_hash?: string | null
           embedding?: string | null
           file_name?: string | null
+          flyer?: string | null
           fts?: unknown
           id?: string
           location_name?: string | null
@@ -4264,6 +4398,7 @@ export type Database = {
           seoslug?: string | null
           size_unit?: string | null
           size_value?: number | null
+          society_id?: number | null
           society_name?: string | null
           source_group?: string | null
           source_id?: number | null
@@ -4274,6 +4409,7 @@ export type Database = {
           agent_id?: number | null
           agent_name_msg?: string | null
           agent_phone_msg?: string | null
+          area_id?: string | null
           bedrooms?: number | null
           city?: string | null
           consumer_display_text?: string | null
@@ -4282,6 +4418,7 @@ export type Database = {
           dedupe_hash?: string | null
           embedding?: string | null
           file_name?: string | null
+          flyer?: string | null
           fts?: unknown
           id?: string
           location_name?: string | null
@@ -4297,6 +4434,7 @@ export type Database = {
           seoslug?: string | null
           size_unit?: string | null
           size_value?: number | null
+          society_id?: number | null
           society_name?: string | null
           source_group?: string | null
           source_id?: number | null
@@ -4310,6 +4448,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "agent_master"
             referencedColumns: ["agent_id"]
+          },
+          {
+            foreignKeyName: "wapp_listings_area_id_fkey"
+            columns: ["area_id"]
+            isOneToOne: false
+            referencedRelation: "local_areas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wapp_listings_society_id_fkey"
+            columns: ["society_id"]
+            isOneToOne: false
+            referencedRelation: "society"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -4512,15 +4664,7 @@ export type Database = {
           status?: string | null
           wapp_raw_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "wapp_listings2_agent_id_fkey"
-            columns: ["agent_id"]
-            isOneToOne: false
-            referencedRelation: "agent_master"
-            referencedColumns: ["agent_id"]
-          },
-        ]
+        Relationships: []
       }
       wapp_outbound: {
         Row: {
@@ -4697,6 +4841,57 @@ export type Database = {
           source?: string | null
         }
         Relationships: []
+      }
+      web_listings: {
+        Row: {
+          additional_images: Json | null
+          created_at: string | null
+          hero_image_url: string | null
+          id: string
+          is_published: boolean | null
+          similar_communities: string | null
+          updated_at: string | null
+          web_content: string
+          web_title: string
+        }
+        Insert: {
+          additional_images?: Json | null
+          created_at?: string | null
+          hero_image_url?: string | null
+          id: string
+          is_published?: boolean | null
+          similar_communities?: string | null
+          updated_at?: string | null
+          web_content: string
+          web_title: string
+        }
+        Update: {
+          additional_images?: Json | null
+          created_at?: string | null
+          hero_image_url?: string | null
+          id?: string
+          is_published?: boolean | null
+          similar_communities?: string | null
+          updated_at?: string | null
+          web_content?: string
+          web_title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "web_listings_wapp_listing_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "wapp_listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "web_listings_wapp_listing_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "wl_view"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       whatsapp_listing_data: {
         Row: {
@@ -4880,6 +5075,60 @@ export type Database = {
       }
     }
     Views: {
+      chase_broker_promises: {
+        Row: {
+          broker_name: string | null
+          broker_phone: string | null
+          broker_promise_at: string | null
+          broker_promise_count: number | null
+          broker_promise_due_at: string | null
+          client_name: string | null
+          is_due: boolean | null
+          lead_id: number | null
+          listing_label: string | null
+          match_id: string | null
+          match_number: number | null
+          match_status: string | null
+          nudges_sent: number | null
+          rm: string | null
+          rm_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matching_supply_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "demand_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chase_escalations: {
+        Row: {
+          action: string | null
+          age_days: number | null
+          broker_name: string | null
+          broker_phone: string | null
+          client_name: string | null
+          detail: string | null
+          escalation_key: string | null
+          kind: string | null
+          lead_id: number | null
+          level: string | null
+          listing_label: string | null
+          match_id: string | null
+          match_number: number | null
+          match_status: string | null
+          raised_at: string | null
+          raw_flag: string | null
+          rm: string | null
+          rm_email: string | null
+          rm_name: string | null
+          title: string | null
+          why: string | null
+        }
+        Relationships: []
+      }
       locality_distributions: {
         Row: {
           area_0_500: number | null
@@ -4910,6 +5159,20 @@ export type Database = {
           type_independent_house: number | null
           type_plot: number | null
           type_villa: number | null
+        }
+        Relationships: []
+      }
+      mv_market_intelligence_summary: {
+        Row: {
+          area_name: string | null
+          bhk: string | null
+          builder_name: string | null
+          median_price: number | null
+          msg_type: string | null
+          price_spectrum_json: Json | null
+          property_type: string | null
+          region_cluster: string | null
+          total_units: number | null
         }
         Relationships: []
       }
@@ -5071,9 +5334,48 @@ export type Database = {
         }
         Relationships: []
       }
+      wl_view: {
+        Row: {
+          area_id: string | null
+          bedrooms: number | null
+          city: string | null
+          created_at: string | null
+          id: string | null
+          local_cluster: string | null
+          msg_timestamp: string | null
+          msg_type: string | null
+          price_total: number | null
+          property_type: string | null
+          size_unit: string | null
+          size_value: number | null
+          society_id: number | null
+          society_name: string | null
+          status: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wapp_listings_area_id_fkey"
+            columns: ["area_id"]
+            isOneToOne: false
+            referencedRelation: "local_areas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wapp_listings_society_id_fkey"
+            columns: ["society_id"]
+            isOneToOne: false
+            referencedRelation: "society"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       admin_count_rows: { Args: { table_name: string }; Returns: number }
+      admin_delete_property_cascade: {
+        Args: { p_property_id: string }
+        Returns: Json
+      }
       admin_get_tables: {
         Args: never
         Returns: {
@@ -5082,8 +5384,30 @@ export type Database = {
       }
       can_access_lead_tasks: { Args: { _lead_id: number }; Returns: boolean }
       can_manage_wapp_raw: { Args: { _user_id: string }; Returns: boolean }
+      canonicalize_place: { Args: { p: string }; Returns: string }
+      chase_append_match_note: {
+        Args: { p_match_id: string; p_note: string }
+        Returns: undefined
+      }
+      chase_escalation_kind: { Args: { flag: string }; Returns: string }
+      chase_listing_label: { Args: { short_desc: string }; Returns: string }
+      chase_recommend_unavailable: {
+        Args: { p_detail?: string; p_match_id: string; p_source?: string }
+        Returns: Json
+      }
       claim_invitation: { Args: { code: string }; Returns: boolean }
+      concierge_market_read: {
+        Args: {
+          p_areas: string[]
+          p_bedrooms?: number
+          p_budget_rupees: number
+          p_intent?: string
+          p_property_type?: string
+        }
+        Returns: Json
+      }
       count_pending_wapp_raw: { Args: never; Returns: number }
+      current_company_id: { Args: never; Returns: number }
       delete_agreement_with_audit: {
         Args: { target_agreement_id: string; target_agreement_type: string }
         Returns: boolean
@@ -5099,12 +5423,32 @@ export type Database = {
           ts_new: string
         }[]
       }
+      find_cross_duplicate_listings_v2: {
+        Args: { existing_ids: string[]; new_ids: string[] }
+        Returns: {
+          id_existing: string
+          id_new: string
+          reason: string
+          ts_existing: string
+          ts_new: string
+        }[]
+      }
       find_duplicate_listings: {
         Args: { listing_ids: string[] }
         Returns: {
           id_a: string
           id_b: string
           sim: number
+          ts_a: string
+          ts_b: string
+        }[]
+      }
+      find_duplicate_listings_v2: {
+        Args: { listing_ids: string[] }
+        Returns: {
+          id_a: string
+          id_b: string
+          reason: string
           ts_a: string
           ts_b: string
         }[]
@@ -5116,6 +5460,18 @@ export type Database = {
       generate_invite_code: { Args: never; Returns: string }
       generate_property_slug: { Args: { title: string }; Returns: string }
       generate_vanity_url: { Args: { full_name: string }; Returns: string }
+      get_ai_agent_timeline: {
+        Args: { p_lead_id: number }
+        Returns: {
+          counterparty: string
+          created_at: string
+          detail: string
+          event: string
+          ist: string
+          kind: string
+          match_no: string
+        }[]
+      }
       get_audit_trail_for_token: {
         Args: { token_id: string }
         Returns: {
@@ -5282,6 +5638,10 @@ export type Database = {
           video_url: string
         }[]
       }
+      get_unpublished_supply_listings: {
+        Args: { batch_limit?: number }
+        Returns: Json[]
+      }
       get_user_connections_with_profiles: {
         Args: { limit_count: number; user_uuid: string }
         Returns: {
@@ -5319,8 +5679,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_otp_attempts: { Args: { p_lead_id: number }; Returns: number }
       insert_wapp_raw_message_batch: { Args: { p_rows: Json }; Returns: number }
       is_admin: { Args: never; Returns: boolean }
+      is_admin_or_ops: { Args: never; Returns: boolean }
+      is_company_manager: { Args: { _company_id: number }; Returns: boolean }
+      listing_phone_key: { Args: { phone: string }; Returns: string }
+      listing_place_key: {
+        Args: { location: string; society: string }
+        Returns: string
+      }
       match_listings_by_vector:
         | {
             Args: {
@@ -5410,6 +5778,86 @@ export type Database = {
         }
         Returns: string
       }
+      search_listings_v2: {
+        Args: {
+          p_areas?: string[]
+          p_bedrooms_max?: number
+          p_bedrooms_min?: number
+          p_days_back?: number
+          p_keywords?: string
+          p_keywords_fts?: string
+          p_msg_types?: string[]
+          p_page?: number
+          p_page_size?: number
+          p_ppsf_max?: number
+          p_ppsf_min?: number
+          p_price_max?: number
+          p_price_min?: number
+          p_property_types?: string[]
+          p_size_max?: number
+          p_size_min?: number
+        }
+        Returns: {
+          agent_display_name: string
+          bedrooms: number
+          city: string
+          excerpt: string
+          has_flyer: boolean
+          id: string
+          location_name: string
+          msg_timestamp: string
+          msg_type: string
+          price_per_unit: number
+          price_total: number
+          property_type: string
+          seoslug: string
+          size_unit: string
+          size_value: number
+          society_name: string
+          total_count: number
+        }[]
+      }
+      search_listings_v3: {
+        Args: {
+          p_areas?: string[]
+          p_bedrooms_max?: number
+          p_bedrooms_min?: number
+          p_days_back?: number
+          p_keywords?: string
+          p_keywords_fts?: string
+          p_msg_types?: string[]
+          p_page?: number
+          p_page_size?: number
+          p_ppsf_max?: number
+          p_ppsf_min?: number
+          p_price_max?: number
+          p_price_min?: number
+          p_property_types?: string[]
+          p_required_fts?: string
+          p_size_max?: number
+          p_size_min?: number
+          p_societies?: string[]
+        }
+        Returns: {
+          agent_display_name: string
+          bedrooms: number
+          city: string
+          excerpt: string
+          has_flyer: boolean
+          id: string
+          location_name: string
+          msg_timestamp: string
+          msg_type: string
+          price_per_unit: number
+          price_total: number
+          property_type: string
+          seoslug: string
+          size_unit: string
+          size_value: number
+          society_name: string
+          total_count: number
+        }[]
+      }
       search_wapp_listings: {
         Args: {
           filter_bedrooms?: string
@@ -5451,107 +5899,12 @@ export type Database = {
       }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
-      task_drop: {
-        Args: { p_reason?: string; p_task_id: string }
+      suggest_societies: {
+        Args: { p_limit?: number; p_query: string }
         Returns: {
-          action_log: Json
-          assigned_to: string | null
-          chaser_sequence_num: number | null
-          created_at: string
-          id: string
-          lead_id: number
-          match_id: string | null
-          next_chaser_at: string | null
-          priority_score: number
-          snooze_count: number
-          snooze_until: string | null
-          status: string
-          task_description: string | null
-          task_title: string | null
-          task_type: string
-          updated_at: string
-          visible_at: string
-        }
-        SetofOptions: {
-          from: "*"
-          to: "active_tasks"
-          isOneToOne: true
-          isSetofReturn: false
-        }
-      }
-      task_for_lead_status: {
-        Args: { _status: string }
-        Returns: {
-          delay_min: number
-          description: string
-          priority: number
-          task_type: string
+          listing_count: number
+          society_name: string
         }[]
-      }
-      task_for_match_status: {
-        Args: { _status: string }
-        Returns: {
-          delay_min: number
-          description: string
-          priority: number
-          task_type: string
-        }[]
-      }
-      task_resolve: {
-        Args: { p_notes?: string; p_task_id: string }
-        Returns: {
-          action_log: Json
-          assigned_to: string | null
-          chaser_sequence_num: number | null
-          created_at: string
-          id: string
-          lead_id: number
-          match_id: string | null
-          next_chaser_at: string | null
-          priority_score: number
-          snooze_count: number
-          snooze_until: string | null
-          status: string
-          task_description: string | null
-          task_title: string | null
-          task_type: string
-          updated_at: string
-          visible_at: string
-        }
-        SetofOptions: {
-          from: "*"
-          to: "active_tasks"
-          isOneToOne: true
-          isSetofReturn: false
-        }
-      }
-      task_snooze: {
-        Args: { p_minutes: number; p_notes?: string; p_task_id: string }
-        Returns: {
-          action_log: Json
-          assigned_to: string | null
-          chaser_sequence_num: number | null
-          created_at: string
-          id: string
-          lead_id: number
-          match_id: string | null
-          next_chaser_at: string | null
-          priority_score: number
-          snooze_count: number
-          snooze_until: string | null
-          status: string
-          task_description: string | null
-          task_title: string | null
-          task_type: string
-          updated_at: string
-          visible_at: string
-        }
-        SetofOptions: {
-          from: "*"
-          to: "active_tasks"
-          isOneToOne: true
-          isSetofReturn: false
-        }
       }
       update_broker_rating: {
         Args: { input_broker_id: string }
@@ -5618,17 +5971,12 @@ export type Database = {
       blog_post_status: "draft" | "scheduled" | "published" | "archived"
       commission_type: "percentage" | "fixed_amount"
       demand_lead_status:
-        | "New"
-        | "Discovery Call Pending"
-        | "Sending Matches"
-        | "Waiting for Client Shortlist"
-        | "Client Non Responsive (C)"
-        | "Next Action Overdue (C)"
-        | "Viewing Stage"
-        | "Offer Stage"
-        | "Closed_deal (C)"
-        | "Closed_lost (C)"
-        | "Closed by RM (C) Add Reason"
+        | "discovery_pending"
+        | "active"
+        | "paused"
+        | "non_responsive"
+        | "closed"
+        | "deal_successful"
       direction:
         | "North"
         | "East"
@@ -5646,20 +5994,17 @@ export type Database = {
         | "leads_sm"
         | "leads_admin"
       match_status:
-        | "Identified"
-        | "Client Interested-Get Details"
-        | "Waiting for Details"
-        | "RM Rejection (C)"
-        | "Unavailable Sold (C)"
-        | "Details Received; Shared with Client"
-        | "Client Rejected (C)"
-        | "Viewing Requested"
-        | "Viewing Completed"
-        | "Rejected After Viewing (C)"
-        | "Offer Stage"
-        | "Duplicate (C)"
-        | "Viewing Scheduled"
-        | "Draft-Not Ready for Client"
+        | "draft"
+        | "identified"
+        | "interested"
+        | "details_requested"
+        | "details_received"
+        | "viewing_requested"
+        | "viewing_scheduled"
+        | "viewing_completed"
+        | "offer_stage"
+        | "closed"
+        | "deal_successful"
       matches_next_step:
         | "Waiting for RM"
         | "Call_Selling_Agent_Verify_Details"
@@ -5684,6 +6029,8 @@ export type Database = {
         | "Condition"
         | "Other"
         | "Duplicate"
+        | "Incorrect Config"
+        | "No Longer Available"
       signature_status: "pending" | "signed" | "declined"
     }
     CompositeTypes: {
@@ -5700,12 +6047,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -5729,11 +6076,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -5754,11 +6101,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -5779,11 +6126,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -5796,11 +6143,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -5837,17 +6184,12 @@ export const Constants = {
       blog_post_status: ["draft", "scheduled", "published", "archived"],
       commission_type: ["percentage", "fixed_amount"],
       demand_lead_status: [
-        "New",
-        "Discovery Call Pending",
-        "Sending Matches",
-        "Waiting for Client Shortlist",
-        "Client Non Responsive (C)",
-        "Next Action Overdue (C)",
-        "Viewing Stage",
-        "Offer Stage",
-        "Closed_deal (C)",
-        "Closed_lost (C)",
-        "Closed by RM (C) Add Reason",
+        "discovery_pending",
+        "active",
+        "paused",
+        "non_responsive",
+        "closed",
+        "deal_successful",
       ],
       direction: [
         "North",
@@ -5868,20 +6210,17 @@ export const Constants = {
         "leads_admin",
       ],
       match_status: [
-        "Identified",
-        "Client Interested-Get Details",
-        "Waiting for Details",
-        "RM Rejection (C)",
-        "Unavailable Sold (C)",
-        "Details Received; Shared with Client",
-        "Client Rejected (C)",
-        "Viewing Requested",
-        "Viewing Completed",
-        "Rejected After Viewing (C)",
-        "Offer Stage",
-        "Duplicate (C)",
-        "Viewing Scheduled",
-        "Draft-Not Ready for Client",
+        "draft",
+        "identified",
+        "interested",
+        "details_requested",
+        "details_received",
+        "viewing_requested",
+        "viewing_scheduled",
+        "viewing_completed",
+        "offer_stage",
+        "closed",
+        "deal_successful",
       ],
       matches_next_step: [
         "Waiting for RM",
@@ -5909,6 +6248,8 @@ export const Constants = {
         "Condition",
         "Other",
         "Duplicate",
+        "Incorrect Config",
+        "No Longer Available",
       ],
       signature_status: ["pending", "signed", "declined"],
     },
