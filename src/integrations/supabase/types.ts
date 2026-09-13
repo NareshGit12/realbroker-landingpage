@@ -5778,6 +5778,10 @@ export type Database = {
         }
         Returns: string
       }
+      report_activity: {
+        Args: { p_from: string; p_rm_ids?: string[]; p_to: string }
+        Returns: Json
+      }
       search_listings_v2: {
         Args: {
           p_areas?: string[]
