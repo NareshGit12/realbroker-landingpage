@@ -163,7 +163,7 @@ const MeetOurMembers = () => {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'RealBroker Members',
-    url: 'https://realbroker-landingpage.lovable.app/members',
+    url: 'https://realbroker.network/members',
     description: 'Directory of vetted broker members of the RealBroker network.',
     mainEntity: {
       '@type': 'ItemList',
