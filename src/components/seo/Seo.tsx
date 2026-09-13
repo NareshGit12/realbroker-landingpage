@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-const SITE_URL = "https://realbroker-landingpage.lovable.app";
+const SITE_URL = "https://realbroker.network";
 
 interface SeoProps {
   title: string;
