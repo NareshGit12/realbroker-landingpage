@@ -8,7 +8,7 @@ import PartnershipSection from '@/components/page1/PartnershipSection';
 import RequestAccessForm from '@/components/page1/RequestAccessForm';
 import TrustBar from '@/components/page1/TrustBar';
 
-const SITE_URL = 'https://realbroker-landingpage.lovable.app';
+const SITE_URL = 'https://realbroker.network';
 
 const homeJsonLd = [
   {
