@@ -56,36 +56,11 @@ const RequestAccessForm: React.FC = () => {
     return urlData.publicUrl;
   };
 
-  const sendConfirmationEmail = async () => {
-    const subject = `${formData.name}'s request to join RB has been submitted`;
-    const submittedOn = new Date().toLocaleString();
-    const body = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Thank you for your interest in RealBroker, ${formData.name}!</h2>
-        <p>We have received your request to join the RealBroker Network.</p>
-        <p>Someone from our team will be in touch with you via WhatsApp soon.</p>
-        <br/>
-        <h3>Application Details:</h3>
-        <p><strong>Name:</strong> ${formData.name}</p>
-        <p><strong>Email:</strong> ${formData.email}</p>
-        <p><strong>Company:</strong> ${formData.company || "Independent"}</p>
-        <p><strong>LinkedIn/Website:</strong> ${formData.linkedinOrWebsite || "Not provided"}</p>
-        <p><strong>WhatsApp:</strong> ${formData.whatsappNumber || "Not provided"}</p>
-        <p><strong>City:</strong> ${formData.city}</p>
-        <p><strong>Area:</strong> ${formData.officeLocation || "Not provided"}</p>
-        <p><strong>Message:</strong> ${formData.about || "No message provided"}</p>
-        <p><strong>Submitted on:</strong> ${submittedOn}</p>
-        <br/>
-        <p>Best regards,</p>
-        <p><strong>The RealBroker Team</strong></p>
-      </div>
-    `;
+  // The edge function builds and sends both emails (applicant + support) from the saved row.
+  const sendConfirmationEmail = async (requestId: string) => {
     try {
       await supabase.functions.invoke("send-notification-email", {
-        body: { to: formData.email, subject, body },
-      });
-      await supabase.functions.invoke("send-notification-email", {
-        body: { to: "support@realbroker.app", subject, body },
+        body: { invite_request_id: requestId },
       });
     } catch (error) {
       console.error("Error sending confirmation email:", error);
@@ -131,7 +106,10 @@ const RequestAccessForm: React.FC = () => {
 
       const subject = `${formData.name}'s request to join RB has been submitted`;
 
+      // The id is generated here because anonymous visitors can't read the row back.
+      const requestId = crypto.randomUUID();
       const { error } = await supabase.from("invite_requests").insert({
+        id: requestId,
         name: formData.name,
         email: formData.email,
         company: formData.company || "Independent",
@@ -147,7 +125,7 @@ const RequestAccessForm: React.FC = () => {
       if (error) throw error;
 
       await Promise.all([
-        sendConfirmationEmail(),
+        sendConfirmationEmail(requestId),
         formData.whatsappNumber ? createWhatsAppOutbound(formData.name, formData.whatsappNumber) : Promise.resolve(),
       ]);
 
