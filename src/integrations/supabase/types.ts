@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "12.2.3"
   }
   public: {
     Tables: {
@@ -755,6 +755,63 @@ export type Database = {
           nearest_match?: string
           rationale?: string | null
           society_id?: number
+        }
+        Relationships: []
+      }
+      auth_otp_codes: {
+        Row: {
+          attempts: number
+          channel: string
+          code_hash: string
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          ip: string | null
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          channel: string
+          code_hash: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          ip?: string | null
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          channel?: string
+          code_hash?: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          ip?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      auth_otp_events: {
+        Row: {
+          created_at: string
+          id: number
+          ip: string
+          kind: string
+        }
+        Insert: {
+          created_at?: string
+          id?: never
+          ip: string
+          kind: string
+        }
+        Update: {
+          created_at?: string
+          id?: never
+          ip?: string
+          kind?: string
         }
         Relationships: []
       }
@@ -1640,6 +1697,99 @@ export type Database = {
           },
         ]
       }
+      contact_events: {
+        Row: {
+          action: string
+          caller_id: string
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          owner_id: string
+        }
+        Insert: {
+          action: string
+          caller_id: string
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          owner_id: string
+        }
+        Update: {
+          action?: string
+          caller_id?: string
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          owner_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_events_caller_id_fkey"
+            columns: ["caller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contact_events_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customer_feedback: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          improvements: string | null
+          metadata: Json
+          name: string
+          nps_score: number | null
+          overall_rating: number | null
+          phone: string | null
+          service_tags: string[]
+          source: string
+          updated_at: string
+          what_went_well: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          improvements?: string | null
+          metadata?: Json
+          name: string
+          nps_score?: number | null
+          overall_rating?: number | null
+          phone?: string | null
+          service_tags?: string[]
+          source?: string
+          updated_at?: string
+          what_went_well?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          improvements?: string | null
+          metadata?: Json
+          name?: string
+          nps_score?: number | null
+          overall_rating?: number | null
+          phone?: string | null
+          service_tags?: string[]
+          source?: string
+          updated_at?: string
+          what_went_well?: string | null
+        }
+        Relationships: []
+      }
       demand_leads: {
         Row: {
           agent_id: number | null
@@ -1649,8 +1799,15 @@ export type Database = {
           automation_toggled_at: string | null
           automation_toggled_by: string | null
           bedrooms_search: string | null
+          broker_automation_enabled: boolean
+          broker_automation_toggled_at: string | null
+          broker_automation_toggled_by: string | null
           budget: string | null
           chase_attention: string | null
+          chase_attention_updated_at: string | null
+          client_automation_enabled: boolean
+          client_automation_toggled_at: string | null
+          client_automation_toggled_by: string | null
           client_intent: number | null
           client_name: string | null
           client_profile: string | null
@@ -1689,8 +1846,15 @@ export type Database = {
           automation_toggled_at?: string | null
           automation_toggled_by?: string | null
           bedrooms_search?: string | null
+          broker_automation_enabled?: boolean
+          broker_automation_toggled_at?: string | null
+          broker_automation_toggled_by?: string | null
           budget?: string | null
           chase_attention?: string | null
+          chase_attention_updated_at?: string | null
+          client_automation_enabled?: boolean
+          client_automation_toggled_at?: string | null
+          client_automation_toggled_by?: string | null
           client_intent?: number | null
           client_name?: string | null
           client_profile?: string | null
@@ -1729,8 +1893,15 @@ export type Database = {
           automation_toggled_at?: string | null
           automation_toggled_by?: string | null
           bedrooms_search?: string | null
+          broker_automation_enabled?: boolean
+          broker_automation_toggled_at?: string | null
+          broker_automation_toggled_by?: string | null
           budget?: string | null
           chase_attention?: string | null
+          chase_attention_updated_at?: string | null
+          client_automation_enabled?: boolean
+          client_automation_toggled_at?: string | null
+          client_automation_toggled_by?: string | null
           client_intent?: number | null
           client_name?: string | null
           client_profile?: string | null
@@ -2038,16 +2209,23 @@ export type Database = {
           accepted_at: string | null
           avatar_url: string | null
           created_at: string
+          expires_at: string | null
           id: string
           invite_code: string
+          invite_source: string | null
+          invite_token: string | null
+          invitee_areas: string[] | null
           invitee_bio: string | null
           invitee_company_name: string | null
           invitee_email: string
           invitee_name: string | null
           invitee_phone: string | null
+          invitee_phone_last10: string | null
           inviter_id: string
           message: string | null
           recipient_id: string | null
+          revoked_at: string | null
+          revoked_by: string | null
           status: string
           updated_at: string
         }
@@ -2055,16 +2233,23 @@ export type Database = {
           accepted_at?: string | null
           avatar_url?: string | null
           created_at?: string
+          expires_at?: string | null
           id?: string
           invite_code: string
+          invite_source?: string | null
+          invite_token?: string | null
+          invitee_areas?: string[] | null
           invitee_bio?: string | null
           invitee_company_name?: string | null
           invitee_email: string
           invitee_name?: string | null
           invitee_phone?: string | null
+          invitee_phone_last10?: string | null
           inviter_id: string
           message?: string | null
           recipient_id?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
           status?: string
           updated_at?: string
         }
@@ -2072,26 +2257,87 @@ export type Database = {
           accepted_at?: string | null
           avatar_url?: string | null
           created_at?: string
+          expires_at?: string | null
           id?: string
           invite_code?: string
+          invite_source?: string | null
+          invite_token?: string | null
+          invitee_areas?: string[] | null
           invitee_bio?: string | null
           invitee_company_name?: string | null
           invitee_email?: string
           invitee_name?: string | null
           invitee_phone?: string | null
+          invitee_phone_last10?: string | null
           inviter_id?: string
           message?: string | null
           recipient_id?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
           status?: string
           updated_at?: string
         }
         Relationships: []
+      }
+      invite_otp_codes: {
+        Row: {
+          attempts: number
+          bio_drafts: number
+          claim_expires_at: string | null
+          claim_hash: string | null
+          claim_used_at: string | null
+          code_hash: string
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          invitation_id: string
+          ip: string | null
+        }
+        Insert: {
+          attempts?: number
+          bio_drafts?: number
+          claim_expires_at?: string | null
+          claim_hash?: string | null
+          claim_used_at?: string | null
+          code_hash: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          invitation_id: string
+          ip?: string | null
+        }
+        Update: {
+          attempts?: number
+          bio_drafts?: number
+          claim_expires_at?: string | null
+          claim_hash?: string | null
+          claim_used_at?: string | null
+          code_hash?: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invitation_id?: string
+          ip?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invite_otp_codes_invitation_id_fkey"
+            columns: ["invitation_id"]
+            isOneToOne: false
+            referencedRelation: "invitations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       invite_requests: {
         Row: {
           area: string | null
           city: string | null
           company: string
+          confirmation_sent_at: string | null
           created_at: string
           email: string
           heading_variant_id: number | null
@@ -2108,6 +2354,7 @@ export type Database = {
           area?: string | null
           city?: string | null
           company: string
+          confirmation_sent_at?: string | null
           created_at?: string
           email: string
           heading_variant_id?: number | null
@@ -2124,6 +2371,7 @@ export type Database = {
           area?: string | null
           city?: string | null
           company?: string
+          confirmation_sent_at?: string | null
           created_at?: string
           email?: string
           heading_variant_id?: number | null
@@ -2521,6 +2769,7 @@ export type Database = {
           broker_promise_count: number
           broker_promise_due_at: string | null
           chase_attention: string | null
+          chase_attention_updated_at: string | null
           chase_count: number
           chase_resume_at: string | null
           chaser_count: number | null
@@ -2559,6 +2808,7 @@ export type Database = {
           rejection_reason: string | null
           short_desc: string | null
           source: string
+          sourcing_hold: Json | null
           supply_chase_count: number
           supply_id: string
           updated_at: string | null
@@ -2578,6 +2828,7 @@ export type Database = {
           broker_promise_count?: number
           broker_promise_due_at?: string | null
           chase_attention?: string | null
+          chase_attention_updated_at?: string | null
           chase_count?: number
           chase_resume_at?: string | null
           chaser_count?: number | null
@@ -2616,6 +2867,7 @@ export type Database = {
           rejection_reason?: string | null
           short_desc?: string | null
           source?: string
+          sourcing_hold?: Json | null
           supply_chase_count?: number
           supply_id: string
           updated_at?: string | null
@@ -2635,6 +2887,7 @@ export type Database = {
           broker_promise_count?: number
           broker_promise_due_at?: string | null
           chase_attention?: string | null
+          chase_attention_updated_at?: string | null
           chase_count?: number
           chase_resume_at?: string | null
           chaser_count?: number | null
@@ -2673,6 +2926,7 @@ export type Database = {
           rejection_reason?: string | null
           short_desc?: string | null
           source?: string
+          sourcing_hold?: Json | null
           supply_chase_count?: number
           supply_id?: string
           updated_at?: string | null
@@ -3037,10 +3291,13 @@ export type Database = {
           bio: string | null
           brokercard: string | null
           city: string | null
+          code_of_conduct_accepted_at: string | null
           company_id: number | null
           company_name: string | null
+          cover_image: string | null
           email: string | null
           email_daily_summary: boolean | null
+          email_history: Json
           email_instant_notifications: boolean | null
           email_weekly_listings: boolean | null
           email_weekly_members: boolean | null
@@ -3052,6 +3309,7 @@ export type Database = {
           mkt_emails: boolean | null
           notes: string | null
           phone: string | null
+          phone_last10: string | null
           rating: number | null
           role: string
           static_html_url: string | null
@@ -3065,10 +3323,13 @@ export type Database = {
           bio?: string | null
           brokercard?: string | null
           city?: string | null
+          code_of_conduct_accepted_at?: string | null
           company_id?: number | null
           company_name?: string | null
+          cover_image?: string | null
           email?: string | null
           email_daily_summary?: boolean | null
+          email_history?: Json
           email_instant_notifications?: boolean | null
           email_weekly_listings?: boolean | null
           email_weekly_members?: boolean | null
@@ -3080,6 +3341,7 @@ export type Database = {
           mkt_emails?: boolean | null
           notes?: string | null
           phone?: string | null
+          phone_last10?: string | null
           rating?: number | null
           role?: string
           static_html_url?: string | null
@@ -3093,10 +3355,13 @@ export type Database = {
           bio?: string | null
           brokercard?: string | null
           city?: string | null
+          code_of_conduct_accepted_at?: string | null
           company_id?: number | null
           company_name?: string | null
+          cover_image?: string | null
           email?: string | null
           email_daily_summary?: boolean | null
+          email_history?: Json
           email_instant_notifications?: boolean | null
           email_weekly_listings?: boolean | null
           email_weekly_members?: boolean | null
@@ -3108,6 +3373,7 @@ export type Database = {
           mkt_emails?: boolean | null
           notes?: string | null
           phone?: string | null
+          phone_last10?: string | null
           rating?: number | null
           role?: string
           static_html_url?: string | null
@@ -3158,6 +3424,7 @@ export type Database = {
           sqft: number | null
           static_html_url: string | null
           status: Database["public"]["Enums"]["property_status"] | null
+          thumbnail_url: string | null
           title: string
           updated_at: string
           user_id: string
@@ -3197,6 +3464,7 @@ export type Database = {
           sqft?: number | null
           static_html_url?: string | null
           status?: Database["public"]["Enums"]["property_status"] | null
+          thumbnail_url?: string | null
           title: string
           updated_at?: string
           user_id: string
@@ -3236,6 +3504,7 @@ export type Database = {
           sqft?: number | null
           static_html_url?: string | null
           status?: Database["public"]["Enums"]["property_status"] | null
+          thumbnail_url?: string | null
           title?: string
           updated_at?: string
           user_id?: string
@@ -3376,6 +3645,39 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_url_redirects: {
+        Row: {
+          created_at: string
+          old_slug: string
+          property_id: string
+        }
+        Insert: {
+          created_at?: string
+          old_slug: string
+          property_id: string
+        }
+        Update: {
+          created_at?: string
+          old_slug?: string
+          property_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_url_redirects_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "property_url_redirects_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties_with_agent"
             referencedColumns: ["id"]
           },
         ]
@@ -3881,6 +4183,7 @@ export type Database = {
           created_at: string
           id: string
           image_url: string | null
+          is_pinned: boolean | null
           updated_at: string
           user_id: string
           video_url: string | null
@@ -3890,6 +4193,7 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string | null
+          is_pinned?: boolean | null
           updated_at?: string
           user_id: string
           video_url?: string | null
@@ -3899,6 +4203,7 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string | null
+          is_pinned?: boolean | null
           updated_at?: string
           user_id?: string
           video_url?: string | null
@@ -4893,6 +5198,42 @@ export type Database = {
           },
         ]
       }
+      web_listings_archive: {
+        Row: {
+          additional_images: Json | null
+          created_at: string | null
+          hero_image_url: string | null
+          id: string
+          is_published: boolean | null
+          similar_communities: string | null
+          updated_at: string | null
+          web_content: string
+          web_title: string
+        }
+        Insert: {
+          additional_images?: Json | null
+          created_at?: string | null
+          hero_image_url?: string | null
+          id: string
+          is_published?: boolean | null
+          similar_communities?: string | null
+          updated_at?: string | null
+          web_content: string
+          web_title: string
+        }
+        Update: {
+          additional_images?: Json | null
+          created_at?: string | null
+          hero_image_url?: string | null
+          id?: string
+          is_published?: boolean | null
+          similar_communities?: string | null
+          updated_at?: string | null
+          web_content?: string
+          web_title?: string
+        }
+        Relationships: []
+      }
       whatsapp_listing_data: {
         Row: {
           agent_contact: string | null
@@ -5107,13 +5448,19 @@ export type Database = {
         Row: {
           action: string | null
           age_days: number | null
+          broker_automation_enabled: boolean | null
           broker_name: string | null
           broker_phone: string | null
+          client_automation_enabled: boolean | null
           client_name: string | null
+          client_phone: string | null
           detail: string | null
           escalation_key: string | null
+          fact: string | null
+          headline: string | null
           kind: string | null
           lead_id: number | null
+          lead_status: string | null
           level: string | null
           listing_label: string | null
           match_id: string | null
@@ -5125,7 +5472,9 @@ export type Database = {
           rm_email: string | null
           rm_name: string | null
           title: string | null
+          type: string | null
           why: string | null
+          window_closes_at: string | null
         }
         Relationships: []
       }
@@ -5371,6 +5720,10 @@ export type Database = {
       }
     }
     Functions: {
+      admin_cleanup_user_dependencies: {
+        Args: { p_user_id: string }
+        Returns: Json
+      }
       admin_count_rows: { Args: { table_name: string }; Returns: number }
       admin_delete_property_cascade: {
         Args: { p_property_id: string }
@@ -5382,19 +5735,104 @@ export type Database = {
           tablename: string
         }[]
       }
+      admin_get_user_dependencies: {
+        Args: { p_user_id: string }
+        Returns: Json
+      }
+      admin_is_admin_role: { Args: never; Returns: boolean }
+      admin_list_vetted_invitations: {
+        Args: never
+        Returns: {
+          accepted_at: string
+          avatar_url: string
+          created_at: string
+          expires_at: string
+          id: string
+          invite_source: string
+          invitee_areas: string[]
+          invitee_company_name: string
+          invitee_email: string
+          invitee_name: string
+          invitee_phone: string
+          inviter_id: string
+          inviter_name: string
+          recipient_id: string
+          revoked_at: string
+          revoked_by_name: string
+          state: string
+        }[]
+      }
+      ai_agent_today_stats: { Args: never; Returns: Json }
+      archive_column_list: {
+        Args: { p_archive: string; p_live: string }
+        Returns: string
+      }
+      archive_wapp_rows: {
+        Args: { p_days?: number; p_limit?: number }
+        Returns: Json
+      }
+      auth_otp_claim_attempt: {
+        Args: { p_channel: string; p_max_attempts: number; p_user_id: string }
+        Returns: {
+          attempts: number
+          code_hash: string
+          id: string
+          status: string
+        }[]
+      }
+      auth_otp_find_user: {
+        Args: { p_channel: string; p_value: string }
+        Returns: {
+          email: string
+          full_name: string
+          phone_last10: string
+          user_id: string
+        }[]
+      }
+      auth_otp_reserve: {
+        Args: {
+          p_channel: string
+          p_code_hash: string
+          p_cooldown_seconds: number
+          p_ip: string
+          p_max_per_hour: number
+          p_ttl_minutes: number
+          p_user_id: string
+        }
+        Returns: string
+      }
       can_access_lead_tasks: { Args: { _lead_id: number }; Returns: boolean }
       can_manage_wapp_raw: { Args: { _user_id: string }; Returns: boolean }
+      can_toggle_lead_automation: { Args: never; Returns: boolean }
       canonicalize_place: { Args: { p: string }; Returns: string }
       chase_append_match_note: {
         Args: { p_match_id: string; p_note: string }
         Returns: undefined
       }
+      chase_auto_pilot_retired_flag: {
+        Args: { flag: string }
+        Returns: boolean
+      }
+      chase_escalation_headline: {
+        Args: { escalation_type: string }
+        Returns: string
+      }
       chase_escalation_kind: { Args: { flag: string }; Returns: string }
+      chase_escalation_reason: { Args: { notes: string }; Returns: string }
+      chase_escalation_type: {
+        Args: { flag: string; is_lead: boolean; match_status: string }
+        Returns: string
+      }
       chase_listing_label: { Args: { short_desc: string }; Returns: string }
       chase_recommend_unavailable: {
         Args: { p_detail?: string; p_match_id: string; p_source?: string }
         Returns: Json
       }
+      chase_rm_answer: {
+        Args: { p_answer: string; p_lead_id: number; p_match_id: string }
+        Returns: string
+      }
+      chase_window_closes_at: { Args: { p_phone: string }; Returns: string }
       claim_invitation: { Args: { code: string }; Returns: boolean }
       concierge_market_read: {
         Args: {
@@ -5407,6 +5845,30 @@ export type Database = {
         Returns: Json
       }
       count_pending_wapp_raw: { Args: never; Returns: number }
+      create_vetted_invitation: {
+        Args: {
+          p_areas: string[]
+          p_avatar_url: string
+          p_code: string
+          p_company: string
+          p_email: string
+          p_inviter_id: string
+          p_member_cap: number
+          p_member_daily_cap: number
+          p_message: string
+          p_name: string
+          p_phone: string
+          p_source: string
+          p_token: string
+          p_valid_days: number
+        }
+        Returns: {
+          expires_at: string
+          invitation_id: string
+          open_count: number
+          status: string
+        }[]
+      }
       current_company_id: { Args: never; Returns: number }
       delete_agreement_with_audit: {
         Args: { target_agreement_id: string; target_agreement_type: string }
@@ -5461,6 +5923,18 @@ export type Database = {
       generate_property_slug: { Args: { title: string }; Returns: string }
       generate_vanity_url: { Args: { full_name: string }; Returns: string }
       get_ai_agent_timeline: {
+        Args: { p_lead_id: number }
+        Returns: {
+          counterparty: string
+          created_at: string
+          detail: string
+          event: string
+          ist: string
+          kind: string
+          match_no: string
+        }[]
+      }
+      get_ai_agent_timeline_unguarded: {
         Args: { p_lead_id: number }
         Returns: {
           counterparty: string
@@ -5576,6 +6050,7 @@ export type Database = {
           created_at: string
           id: string
           image_url: string | null
+          is_pinned: boolean | null
           updated_at: string
           user_id: string
           video_url: string | null
@@ -5672,6 +6147,7 @@ export type Database = {
       }
       get_wapp_sent_last_hour: { Args: never; Returns: number }
       get_wapp_sent_today: { Args: never; Returns: number }
+      has_leads_access: { Args: never; Returns: boolean }
       has_leads_role: {
         Args: {
           _role: Database["public"]["Enums"]["leads_app_role"]
@@ -5681,6 +6157,30 @@ export type Database = {
       }
       increment_otp_attempts: { Args: { p_lead_id: number }; Returns: number }
       insert_wapp_raw_message_batch: { Args: { p_rows: Json }; Returns: number }
+      invite_otp_claim_attempt: {
+        Args: { p_invitation_id: string; p_max_attempts: number }
+        Returns: {
+          attempts: number
+          code_hash: string
+          id: string
+          status: string
+        }[]
+      }
+      invite_otp_reserve: {
+        Args: {
+          p_code_hash: string
+          p_cooldown_seconds: number
+          p_invitation_id: string
+          p_ip: string
+          p_max_per_hour: number
+          p_ttl_minutes: number
+        }
+        Returns: string
+      }
+      invite_use_bio_draft: {
+        Args: { p_code_id: string; p_max: number }
+        Returns: boolean
+      }
       is_admin: { Args: never; Returns: boolean }
       is_admin_or_ops: { Args: never; Returns: boolean }
       is_company_manager: { Args: { _company_id: number }; Returns: boolean }
@@ -5688,6 +6188,10 @@ export type Database = {
       listing_place_key: {
         Args: { location: string; society: string }
         Returns: string
+      }
+      log_contact: {
+        Args: { _action: string; _entity_id: string; _entity_type: string }
+        Returns: undefined
       }
       match_listings_by_vector:
         | {
@@ -5766,6 +6270,34 @@ export type Database = {
               status: string
             }[]
           }
+      my_vetted_invitations: {
+        Args: never
+        Returns: {
+          accepted_at: string
+          created_at: string
+          expires_at: string
+          id: string
+          invite_token: string
+          invitee_areas: string[]
+          invitee_company_name: string
+          invitee_email: string
+          invitee_name: string
+          invitee_phone: string
+          state: string
+        }[]
+      }
+      ops_health_secret_ok: { Args: { p_secret: string }; Returns: boolean }
+      ops_health_snapshot: { Args: never; Returns: Json }
+      phone_in_use: { Args: { p_phone: string }; Returns: boolean }
+      phone_match_key: { Args: { phone: string }; Returns: string }
+      propalyst_property_slug: {
+        Args: { max_length?: number; property_title: string }
+        Returns: string
+      }
+      propalyst_property_slug_from_url: {
+        Args: { url: string }
+        Returns: string
+      }
       propalyst_property_url_for_title: {
         Args: { property_title: string }
         Returns: string
@@ -5778,9 +6310,116 @@ export type Database = {
         }
         Returns: string
       }
+      property_related_listing_cards: {
+        Args: { p_limit?: number; p_property_id: string }
+        Returns: {
+          agent_name_msg: string
+          bedrooms: number
+          city: string
+          consumer_display_text: string
+          flyer: string
+          hero_image_url: string
+          id: string
+          location_name: string
+          matched_on: string
+          msg_timestamp: string
+          msg_type: string
+          price_per_unit: number
+          price_total: number
+          property_type: string
+          seoslug: string
+          size_unit: string
+          size_value: number
+          society_name: string
+          status: string
+          web_content: string
+          web_title: string
+        }[]
+      }
+      random_profile_cover: { Args: never; Returns: string }
+      rb_has_any_role: {
+        Args: { p_roles: string[]; p_user_id: string }
+        Returns: boolean
+      }
+      rb_i_am_staff: { Args: never; Returns: boolean }
+      related_listings_for: {
+        Args: {
+          p_area_id: string
+          p_bedrooms: number
+          p_communities: string[]
+          p_exclude_id: string
+          p_limit?: number
+          p_location_name: string
+          p_msg_type: string
+          p_price: number
+          p_property_type: string
+          p_size: number
+          p_society_id: number
+          p_society_name: string
+        }
+        Returns: {
+          bedrooms: number
+          created_at: string
+          id: string
+          location_name: string
+          matched_on: string
+          msg_type: string
+          price: number
+          property_type: string
+          size_value: number
+          society_name: string
+          status: string
+        }[]
+      }
+      related_properties: {
+        Args: { p_id: string; p_limit?: number }
+        Returns: {
+          bedrooms: number
+          created_at: string
+          id: string
+          location_name: string
+          matched_on: string
+          msg_type: string
+          price: number
+          property_type: string
+          size_value: number
+          society_name: string
+          status: string
+        }[]
+      }
+      related_property_cards: {
+        Args: { p_id: string; p_limit?: number }
+        Returns: {
+          agent_name_msg: string
+          bedrooms: number
+          city: string
+          consumer_display_text: string
+          flyer: string
+          hero_image_url: string
+          id: string
+          location_name: string
+          matched_on: string
+          msg_timestamp: string
+          msg_type: string
+          price_per_unit: number
+          price_total: number
+          property_type: string
+          seoslug: string
+          size_unit: string
+          size_value: number
+          society_name: string
+          status: string
+          web_content: string
+          web_title: string
+        }[]
+      }
       report_activity: {
         Args: { p_from: string; p_rm_ids?: string[]; p_to: string }
         Returns: Json
+      }
+      revoke_vetted_invitation: {
+        Args: { p_invitation_id: string }
+        Returns: boolean
       }
       search_listings_v2: {
         Args: {
@@ -5910,6 +6549,10 @@ export type Database = {
           society_name: string
         }[]
       }
+      sync_archive_columns: {
+        Args: { p_archive: string; p_live: string }
+        Returns: undefined
+      }
       update_broker_rating: {
         Args: { input_broker_id: string }
         Returns: number
@@ -5981,6 +6624,7 @@ export type Database = {
         | "non_responsive"
         | "closed"
         | "deal_successful"
+        | "auto_pilot"
       direction:
         | "North"
         | "East"
@@ -6194,6 +6838,7 @@ export const Constants = {
         "non_responsive",
         "closed",
         "deal_successful",
+        "auto_pilot",
       ],
       direction: [
         "North",
