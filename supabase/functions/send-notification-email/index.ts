@@ -61,13 +61,18 @@ serve(async (req) => {
     <p><strong>WhatsApp:</strong> ${esc(r.whatsapp_number || "Not provided")}</p>
     <p><strong>City:</strong> ${esc(r.city || "Not provided")}</p>
     <p><strong>Area:</strong> ${esc(r.area || "Not provided")}</p>
-    <p><strong>Message:</strong> ${esc(r.message || "No message provided").replace(/\n/g, "<br>")}</p>
+    <p><strong>Message:</strong> ${esc(String(r.message || "No message provided").slice(0, 2000)).replace(/\n/g, "<br>")}</p>
     <p><strong>Submitted on:</strong> ${esc(submitted)}</p>`;
-  const subject = `${String(r.name ?? "").slice(0, 80)}'s request to join RB has been submitted`;
+  const name = String(r.name ?? "").replace(/https?:\/\/\S+|www\.\S+/gi, "").trim().slice(0, 60);
+  const subject = "Your request to join RealBroker has been received";
 
   let sent = 0;
   const email = String(r.email ?? "").trim();
-  if (isEmail(email)) {
+  // Applicant copy at most once a day per address, so the form can't be used to mail someone repeatedly.
+  const { count: recent } = await db.from("invite_requests").select("id", { count: "exact", head: true })
+    .ilike("email", email).neq("id", id)
+    .gte("confirmation_sent_at", new Date(Date.now() - 24 * 3600_000).toISOString());
+  if (isEmail(email) && (recent ?? 0) === 0) {
     try {
       await resend.emails.send({
         from: FROM,
@@ -75,10 +80,10 @@ serve(async (req) => {
         subject,
         reply_to: SUPPORT_EMAIL,
         html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2>Thank you for your interest in RealBroker, ${esc(r.name)}!</h2>
+          <h2>Thank you for your interest in RealBroker, ${esc(name)}!</h2>
           <p>We have received your request to join the RealBroker Network.</p>
           <p>Someone from our team will be in touch with you via WhatsApp soon.</p>
-          <br/><h3>Application Details:</h3>${details}
+          <p>If you didn't make this request, you can ignore this email.</p>
           <br/><p>Best regards,</p><p><strong>The RealBroker Team</strong></p></div>`,
       });
       sent++;
@@ -91,7 +96,7 @@ serve(async (req) => {
     await resend.emails.send({
       from: FROM,
       to: [SUPPORT_EMAIL],
-      subject,
+      subject: `Join request: ${name || "(no name)"}`,
       reply_to: isEmail(email) ? email : SUPPORT_EMAIL,
       html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2>New request to join RealBroker</h2>${details}
