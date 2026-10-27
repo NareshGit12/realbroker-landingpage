@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 
 const SITE_URL = "https://realbroker.network";
-const OG_IMAGE = `${SITE_URL}/og-image.png?v=2`;
+const OG_IMAGE = `${SITE_URL}/og-image.png?v=3`;
 
 interface SeoProps {
   title: string;
