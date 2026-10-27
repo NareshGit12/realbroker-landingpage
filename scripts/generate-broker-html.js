@@ -15,7 +15,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.dirname(__dirname);
 const SITE_URL = 'https://realbroker.network';
-const APP_URL = 'https://my.realbroker.app';
+const APP_URL = 'https://new.realbroker.app';
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
@@ -134,7 +134,7 @@ async function main() {
   const { data: all, error: allErr } = await supabase
     .from('profiles')
     .select(BROKER_COLUMNS)
-    .ilike('role', '%user%')
+    .or('role.ilike.%user%,role.ilike.%admin%,role.ilike.%ops%')
     .not('full_name', 'is', null)
     .order('member_since', { ascending: true, nullsFirst: false });
   if (allErr) throw allErr;

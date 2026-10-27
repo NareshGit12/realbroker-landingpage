@@ -1,5 +1,5 @@
 // The RealBroker app (rb9). Change APP_URL here if the app moves to another domain.
-export const APP_URL = 'https://my.realbroker.app';
+export const APP_URL = 'https://new.realbroker.app';
 export const LOGIN_URL = `${APP_URL}/login`;
 export const REQUEST_INVITE_URL = `${APP_URL}/request-invite`;
 export const SITE_URL = 'https://realbroker.network';

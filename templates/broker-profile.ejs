@@ -66,11 +66,11 @@
   <meta property="og:url" content="<%= b.page_url %>">
   <meta property="og:title" content="<%= name %><%= company ? ' — ' + company : '' %>">
   <meta property="og:description" content="<%= desc %>">
-  <% if (isHttp(b.avatar_url)) { %><meta property="og:image" content="<%= b.avatar_url %>"><% } %>
+  <meta property="og:image" content="<%= isHttp(b.avatar_url) ? b.avatar_url : b.site_url + '/og-image.png?v=2' %>">
   <meta name="twitter:card" content="summary">
   <meta name="theme-color" content="#ffffff">
-  <link rel="icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="icon" href="/favicon.ico?v=2">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">

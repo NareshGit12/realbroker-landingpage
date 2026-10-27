@@ -63,7 +63,7 @@ export function PhoneFrame({ src, alt, width, height }: { src: string; alt: stri
 }
 
 export const SCREENS = {
-  properties: { src: '/screens/app-properties.webp', width: 1600, height: 917, url: 'my.realbroker.app/properties', alt: 'RealBroker property search with filters for area, budget and BHK' },
-  network: { src: '/screens/app-network.webp', width: 1600, height: 1075, url: 'my.realbroker.app/network', alt: 'RealBroker network page with verified member cards' },
+  properties: { src: '/screens/app-properties.webp', width: 1600, height: 917, url: 'new.realbroker.app/properties', alt: 'RealBroker property search with filters for area, budget and BHK' },
+  network: { src: '/screens/app-network.webp', width: 1600, height: 1075, url: 'new.realbroker.app/network', alt: 'RealBroker network page with verified member cards' },
   week: { src: '/screens/app-your-week.webp', width: 720, height: 843, alt: 'RealBroker on a phone: search and your week of calls, WhatsApps and views' },
 };

@@ -15,6 +15,7 @@ export interface Member {
 }
 
 // Only public profile fields; phone and email stay out of the member list.
+// Members are users plus admin and ops accounts (they are brokers too).
 const COLUMNS = 'id, full_name, company_name, areas, avatar_url, cover_image, static_html_url, vanity_url, member_since';
 
 type Row = { id: string; full_name: string | null; company_name: string | null; areas: string[] | null; avatar_url: string | null; cover_image: string | null; static_html_url: string | null; vanity_url: string | null; member_since: string | null };
@@ -38,7 +39,7 @@ const toMember = (p: Row): Member | null => {
 let cache: Promise<Member[]> | null = null;
 export function loadMembers(): Promise<Member[]> {
   if (!cache) {
-    cache = Promise.resolve(supabase.from('profiles').select(COLUMNS).ilike('role', '%user%').order('member_since', { ascending: false, nullsFirst: false }).limit(1000))
+    cache = Promise.resolve(supabase.from('profiles').select(COLUMNS).or('role.ilike.%user%,role.ilike.%admin%,role.ilike.%ops%').order('member_since', { ascending: false, nullsFirst: false }).limit(1000))
       .then(({ data, error }) => {
         if (error) throw error;
         return ((data || []) as Row[]).map(toMember).filter((m): m is Member => !!m);
