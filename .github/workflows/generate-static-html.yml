@@ -24,16 +24,16 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install dependencies
         run: |
@@ -59,9 +59,11 @@ jobs:
             exit 0
           fi
           git commit -m "chore: regenerate broker HTML files [skip ci]"
+          # npm install can rewrite package-lock.json; drop that so the rebase below has a clean tree.
+          git checkout -- . && git clean -fdq -e node_modules
           # main may have moved while the pages were generating: rebase onto it and retry.
           for attempt in 1 2 3; do
-            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            git pull --rebase --autostash origin main && git push origin HEAD:main && exit 0
             echo "Push attempt $attempt failed, retrying..."
             sleep 10
           done
