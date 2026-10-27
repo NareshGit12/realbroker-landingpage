@@ -12,6 +12,10 @@ on:
         type: boolean
         default: false
 
+concurrency:
+  group: generate-static-html
+  cancel-in-progress: false
+
 jobs:
   generate-broker-html:
     runs-on: ubuntu-latest
@@ -24,6 +28,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -48,13 +53,19 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add public/*/ || true
+          git add public/*/ public/sitemap.xml || true
           if git diff --staged --quiet; then
             echo "No HTML files changed, skipping commit"
-          else
-            git commit -m "chore: regenerate broker HTML files [skip ci]"
-            git push
+            exit 0
           fi
+          git commit -m "chore: regenerate broker HTML files [skip ci]"
+          # main may have moved while the pages were generating: rebase onto it and retry.
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            echo "Push attempt $attempt failed, retrying..."
+            sleep 10
+          done
+          exit 1
 
       - name: Notify on completion
         if: always()
