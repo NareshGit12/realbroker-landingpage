@@ -14,9 +14,8 @@ interface SitemapEntry {
 const routes: SitemapEntry[] = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/members", changefreq: "weekly", priority: "0.9" },
-  { path: "/tools", changefreq: "monthly", priority: "0.8" },
-  { path: "/certified-realbroker", changefreq: "monthly", priority: "0.7" },
-  { path: "/smart-agreements", changefreq: "monthly", priority: "0.7" },
+  { path: "/product", changefreq: "monthly", priority: "0.8" },
+  { path: "/agreements", changefreq: "monthly", priority: "0.7" },
   { path: "/charter", changefreq: "monthly", priority: "0.6" },
   { path: "/charter-and-conduct", changefreq: "monthly", priority: "0.6" },
   { path: "/terms-of-use", changefreq: "yearly", priority: "0.3" },
@@ -24,7 +23,7 @@ const routes: SitemapEntry[] = [
 ];
 
 // Static member profile pages live in public/<city>/<slug>.html
-const SKIP_DIRS = new Set(["lovable-uploads"]);
+const SKIP_DIRS = new Set(["lovable-uploads", "screens"]);
 const publicDir = resolve("public");
 
 const memberEntries: SitemapEntry[] = readdirSync(publicDir)
@@ -33,7 +32,7 @@ const memberEntries: SitemapEntry[] = readdirSync(publicDir)
     readdirSync(join(publicDir, dir))
       .filter((file) => file.endsWith(".html"))
       .map((file) => ({
-        path: `/${dir}/${file}`,
+        path: file === "index.html" ? `/${dir}/` : `/${dir}/${file}`,
         changefreq: "weekly" as const,
         priority: "0.8",
       })),

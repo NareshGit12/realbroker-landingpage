@@ -1,5 +1,11 @@
 # Broker Profile Static HTML Generation System
 
+> **Update (27 Oct 2026):** pages are built by `scripts/generate-broker-html.js` with `templates/broker-profile.ejs` (profile) and
+> `templates/members-index.ejs` (a plain-HTML directory at `/<city>/`), styled by `public/static-pages.css` to match the site.
+> Network-only and sold/rented listings are left off the public pages. After changing a template, run the
+> **Generate Static HTML Pages** workflow by hand with **"Regenerate every member page"** ticked (sets `REGENERATE_ALL=1`).
+
+
 ## Overview
 
 This system automatically generates static HTML pages for broker profiles, providing:

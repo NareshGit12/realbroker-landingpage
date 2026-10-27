@@ -5,7 +5,12 @@ on:
     # Run every Sunday at 2 AM UTC
     - cron: '0 2 * * 0'
   workflow_dispatch:
-    # Allow manual triggering
+    # Allow manual triggering. Tick "regenerate all" after changing the page templates.
+    inputs:
+      regenerate_all:
+        description: 'Regenerate every member page (not just the queue)'
+        type: boolean
+        default: false
 
 jobs:
   generate-broker-html:
@@ -36,6 +41,7 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          REGENERATE_ALL: ${{ inputs.regenerate_all && '1' || '' }}
         run: node scripts/generate-broker-html.js
 
       - name: Commit and push changes

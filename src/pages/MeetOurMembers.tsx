@@ -1,245 +1,92 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Search } from 'lucide-react';
 import Seo from '@/components/seo/Seo';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/home/Footer';
-import BrokerCard, { BrokerInfo } from '@/components/members/BrokerCard';
-import RevealAnimation from '@/components/ui/RevealAnimation';
-import { supabase } from '@/integrations/supabase/client';
+import SiteLayout from '@/components/site/SiteLayout';
+import MemberCard from '@/components/site/MemberCard';
+import { useMembers } from '@/components/site/members';
+import { REQUEST_INVITE_URL, SITE_URL } from '@/components/site/links';
 
-const MeetOurMembers = () => {
-  const [members, setMembers] = useState<BrokerInfo[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [displayCount, setDisplayCount] = useState(50);
+const PAGE = 24;
+const norm = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim();
 
-  useEffect(() => {
-    async function fetchMembers() {
-      if (loading) return;
-      console.log('[MeetOurMembers] fetching profiles with role=user, limit:', displayCount);
-      setLoading(true);
+export default function MeetOurMembers() {
+  const members = useMembers();
+  const [query, setQuery] = useState('');
+  const [area, setArea] = useState<string | null>(null);
+  const [limit, setLimit] = useState(PAGE);
 
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .ilike('role', '%user%')
-        .limit(displayCount);
-
-      if (error) {
-        console.error('Error fetching members:', error);
-        setLoading(false);
-        return;
-      }
-
-      const rows = data || [];
-
-      // Helper function to generate static HTML URL
-      const generateStaticHtmlUrl = (fullName: string, companyName: string, city: string): string | undefined => {
-        if (!fullName || !companyName) return undefined;
-        
-        const citySlug = city.toLowerCase().replace(/\s+/g, '-');
-        const nameSlug = fullName.toLowerCase().replace(/\s+/g, '-');
-        const companySlug = companyName.toLowerCase().replace(/\s+/g, '-');
-        const filename = `${nameSlug}-${companySlug}.html`;
-        
-        return `/${citySlug}/${filename}`;
-      };
-
-      const formattedMembers: BrokerInfo[] = rows.map((profile: any) => {
-        const staticUrl = profile.static_html_url || generateStaticHtmlUrl(
-          profile.full_name,
-          profile.company_name,
-          profile.city || 'bangalore'
-        );
-        
-        return {
-          id: profile.id,
-          name: profile.full_name || 'Unknown Name',
-          agency: profile.company_name || 'Independent Broker',
-          location: profile.city || 'Bangalore',
-          description: profile.bio || 'Professional real estate broker specializing in residential and commercial properties.',
-          imageSrc: profile.avatar_url || '/placeholder.svg',
-          rating: Number(profile.rating ?? 4),
-          expertiseAreas: (profile.areas ?? ['Residential', 'Commercial']) as string[],
-          memberSince: profile.member_since
-            ? new Date(profile.member_since).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-            : 'Recent Member',
-          propertiesCount: 0,
-          vanityUrl: profile.vanity_url || undefined,
-          staticHtmlUrl: staticUrl,
-        };
-      });
-
-      setMembers(formattedMembers);
-      setLoading(false);
+  // The most common areas among members become the quick filters.
+  const topAreas = useMemo(() => {
+    const counts = new Map<string, { name: string; n: number }>();
+    for (const m of members || []) for (const a of m.areas) {
+      const k = norm(a);
+      const cur = counts.get(k) || { name: a.trim(), n: 0 };
+      cur.n += 1;
+      counts.set(k, cur);
     }
-    
-    fetchMembers();
+    return [...counts.values()].sort((a, b) => b.n - a.n).slice(0, 8).map((x) => x.name);
+  }, [members]);
 
-    // Load more members when scrolled to end
-    const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 &&
-        !loading
-      ) {
-        setDisplayCount(prev => prev + 10);
-      }
-    };
+  const filtered = useMemo(() => {
+    const q = norm(query);
+    return (members || []).filter((m) => {
+      if (area && !m.areas.some((a) => norm(a) === norm(area))) return false;
+      if (!q) return true;
+      return norm([m.name, m.company, ...m.areas].join(' ')).includes(q);
+    });
+  }, [members, query, area]);
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-    
-  }, [displayCount]);
-
-  // Fallback to sample data if no members found
-  const useFallbackData = members.length === 0 && !loading;
-  
-  // Sample broker data as fallback
-  const fallbackBrokers: BrokerInfo[] = [
-    {
-      id: '1',
-      name: 'Shinoj Nambiar',
-      agency: 'GoSpaze Realty',
-      location: 'Bangalore',
-      description: "Shinoj Nambiar is a RERA-certified real estate professional with over a decade of industry experience. He is the visionary founder of GoSpaze, a platform committed to transparent real estate services.",
-      imageSrc: '/lovable-uploads/56a0fa98-6072-4e44-a72c-039ebd60c476.png',
-      rating: 5,
-      expertiseAreas: ['Whitefield', 'East Bangalore', 'Bellandur'],
-      memberSince: 'May 2025',
-      propertiesCount: 0,
-      staticHtmlUrl: '/bangalore/shinoj-nambiar-gospaze-realty.html'
-    },
-    {
-      id: '2',
-      name: 'Priya Sharma',
-      agency: 'Anthra Real Estate Agency',
-      location: 'Bangalore',
-      description: 'Priya Sharma is a senior broker specializing in luxury properties across Bangalore. With 8 years of experience, she has closed over 200 deals in the premium segment and maintains a stellar reputation for client satisfaction.',
-      imageSrc: '/photo-1581091226825-a6a2a5aee158',
-      rating: 5,
-      expertiseAreas: ['Koramangala', 'Indiranagar', 'HSR Layout'],
-      memberSince: 'March 2024',
-      propertiesCount: 12
-    },
-    {
-      id: '3',
-      name: 'Rajiv Menon',
-      agency: 'Prime Properties',
-      location: 'Bangalore',
-      description: "Rajiv is an award-winning real estate professional with expertise in commercial real estate and investment properties. He has advised numerous international clients looking to invest in Bangalore's growing tech corridors.",
-      imageSrc: '/photo-1519085360753-af0119f7cbe7',
-      rating: 4,
-      expertiseAreas: ['Electronic City', 'Whitefield', 'Outer Ring Road'],
-      memberSince: 'January 2023',
-      propertiesCount: 24
-    },
-    {
-      id: '4',
-      name: 'Kavita Reddy',
-      agency: 'Dreams Realty',
-      location: 'Bangalore',
-      description: 'With specialization in the tech corridor of Bangalore, Kavita has helped numerous IT professionals find their dream homes. Her attention to detail and understanding of client needs makes her one of the most sought-after brokers.',
-      imageSrc: '/photo-1605810230434-7631ac76ec81',
-      rating: 4,
-      expertiseAreas: ['JP Nagar', 'Bannerghatta Road', 'BTM Layout'],
-      memberSince: 'October 2022',
-      propertiesCount: 18
-    },
-    {
-      id: '5',
-      name: 'Anand Kumar',
-      agency: 'Horizon Estates',
-      location: 'Bangalore',
-      description: "Anand specializes in luxury villa projects and gated communities. With over 15 years in real estate, he has an unparalleled network of high-net-worth clients and developers in Bangalore's premium neighborhoods.",
-      imageSrc: '/photo-1560250097-0b93528c311a',
-      rating: 5,
-      expertiseAreas: ['Sadashivanagar', 'Dollars Colony', 'Hebbal'],
-      memberSince: 'April 2021',
-      propertiesCount: 32
-    }
-  ];
-
-  const displayMembers = useFallbackData ? fallbackBrokers : members;
-
-  const membersJsonLd = {
+  const shown = filtered.slice(0, limit);
+  const jsonLd = members && members.length ? {
     '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: 'RealBroker Members',
-    url: 'https://realbroker.network/members',
-    description: 'Directory of vetted broker members of the RealBroker network.',
-    mainEntity: {
-      '@type': 'ItemList',
-      itemListElement: displayMembers.slice(0, 50).map((m: any, i: number) => ({
-        '@type': 'ListItem',
-        position: i + 1,
-        item: {
-          '@type': 'RealEstateAgent',
-          name: m.name,
-          ...(m.company ? { worksFor: { '@type': 'Organization', name: m.company } } : {}),
-          ...(m.location
-            ? { address: { '@type': 'PostalAddress', addressLocality: m.location } }
-            : {}),
-        },
-      })),
-    },
-  };
+    '@type': 'ItemList',
+    name: 'RealBroker members in Bangalore',
+    itemListElement: members.filter((m) => !m.external).slice(0, 100).map((m, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE_URL}${m.href}`, name: m.name })),
+  } : undefined;
 
-  return (
-    <>
-      <Seo
-        title="Meet Our Members | RealBroker Broker Directory"
-        description="Browse the vetted brokers in the RealBroker network — their companies, areas of expertise, and the Bangalore micro-markets they work in."
-        path="/members"
-        jsonLd={membersJsonLd}
-      />
-      <Navbar />
+  return <>
+    <Seo title="Meet our members — verified real estate brokers in Bangalore | RealBroker"
+      description="Browse 100+ verified real estate brokers in Bangalore on RealBroker. Find brokers by name, company or area, from Indiranagar and Koramangala to Whitefield."
+      path="/members" jsonLd={jsonLd} />
+    <SiteLayout>
+      <section className="lp-mhead">
+        <div className="lp-wrap">
+          <p className="lp-crumbs"><Link to="/">Home</Link> › Members</p>
+          <h1 className="lp-page-h1">Meet our members</h1>
+          <p className="lp-sub" style={{ margin: '8px 0 20px', fontSize: 16 }}>100+ verified brokers across Bangalore. Find the right broker for an area, a property type or a deal.</p>
+          <label className="lp-search">
+            <Search aria-hidden="true" />
+            <span className="sr-only">Search members</span>
+            <input type="search" value={query} onChange={(e) => { setQuery(e.target.value); setLimit(PAGE); }} placeholder="Search by name, company or area" />
+          </label>
+          {topAreas.length > 0 && <div className="lp-chips" role="group" aria-label="Filter by area">
+            <button type="button" className="lp-chip" aria-pressed={!area} onClick={() => { setArea(null); setLimit(PAGE); }}>All areas</button>
+            {topAreas.map((a) => <button key={a} type="button" className="lp-chip" aria-pressed={area === a} onClick={() => { setArea(area === a ? null : a); setLimit(PAGE); }}>{a}</button>)}
+          </div>}
+        </div>
+      </section>
 
-      <main>
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <RevealAnimation>
-              <div className="text-center mb-12">
-                <span className="inline-block py-1 px-3 mb-4 mt-8 text-xs font-medium uppercase tracking-wider bg-realtor-100 text-realtor-800 rounded-full">
-                  Our Network
-                </span>
-                <h1 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900">
-                  Meet Our <span className="text-realtor-600">Members</span>
-                </h1>
-                <p className="text-lg text-gray-800 max-w-2xl mx-auto">
-                  Connect with our exclusive network of top-performing real estate professionals in Bangalore
-                </p>
+      <section className="lp-mlist">
+        <div className="lp-wrap">
+          <p className="lp-mcount" aria-live="polite">{members === null ? 'Loading members…' : <><b>{filtered.length} {filtered.length === 1 ? 'member' : 'members'}</b> · Bangalore</>}</p>
+          {members === null
+            ? <div className="lp-grid4">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="lp-mskel" />)}</div>
+            : filtered.length === 0
+              ? <div className="lp-card" style={{ padding: 28, textAlign: 'center' }}>
+                <p style={{ margin: '0 0 12px', color: 'var(--label)' }}>No members match “{query || area}”.</p>
+                <button type="button" className="lp-btn lp-ghost lp-sm" onClick={() => { setQuery(''); setArea(null); }}>Clear search</button>
               </div>
-            </RevealAnimation>
+              : <div className="lp-grid4">{shown.map((m) => <MemberCard key={m.id} m={m} />)}</div>}
+          {filtered.length > shown.length && <button type="button" className="lp-btn lp-ghost" style={{ width: '100%', marginTop: 20 }} onClick={() => setLimit((n) => n + PAGE)}>Show more members</button>}
 
-            <RevealAnimation delay={100}>
-              <div className="py-8">
-                {loading && members.length === 0 ? (
-                  <div className="flex justify-center items-center h-64">
-                    <p className="text-lg text-gray-600">Loading members...</p>
-                  </div>
-                ) : (
-                  <div className="flex flex-wrap justify-center gap-6">
-                    {displayMembers.map((member) => (
-                      <div className="w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)]">
-                        <BrokerCard key={member.id} broker={member} />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </RevealAnimation>
-
-            <RevealAnimation delay={200}>
-              <div className="text-center mt-8">
-                <p className="text-gray-700 mb-6">
-                  Our network consists of handpicked, vetted real estate professionals who adhere to our strict code of conduct.
-                </p>
-              </div>
-            </RevealAnimation>
+          <div className="lp-card lp-join-card">
+            <div><b>Are you a broker in Bangalore?</b><p>Join the network and get your own profile page.</p></div>
+            <a href={REQUEST_INVITE_URL} className="lp-btn lp-red">Request an invite</a>
           </div>
-        </section>
-      </main>
-      <Footer />
-    </>
-  );
-};
-
-export default MeetOurMembers;
+          <p className="lp-mfoot">Browse all profiles: <a href="/bangalore/" className="lp-link">brokers in Bangalore</a></p>
+        </div>
+      </section>
+    </SiteLayout>
+  </>;
+}

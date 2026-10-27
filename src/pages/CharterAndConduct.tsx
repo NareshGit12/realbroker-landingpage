@@ -1,119 +1,37 @@
-
-import { useState, useEffect } from 'react';
-import Seo from '@/components/seo/Seo';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/home/Footer';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-import DocumentHero from '@/components/charter/DocumentHero';
-import DocumentSection from '@/components/charter/DocumentSection';
-import FAQSection from '@/components/charter/FAQSection';
-import { formatNumberedContent } from '@/components/charter/ContentFormatter';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
+import Seo from '@/components/seo/Seo';
+import { supabase } from '@/integrations/supabase/client';
+import DocLayout, { NumberedText } from '@/components/site/DocLayout';
 
-const CharterAndConduct = () => {
-  const [conductText, setConductText] = useState<string>('Loading...');
-  const [isLoading, setIsLoading] = useState(true);
+const FAQS = [
+  { q: 'How are the code of conduct and charter enforced?', a: 'Our code of conduct is enforced through our governance council with input from community members. Violations may result in warnings, temporary restrictions, or in severe cases, removal from the network.' },
+  { q: 'How can I report a potential violation?', a: 'You can report potential violations through the app, or by contacting our support team at support@realbroker.app. All reports are reviewed promptly and handled with discretion.' },
+  { q: 'What happens if someone breaks the code?', a: 'They are notified and given an opportunity to address the issue. Repeated or severe violations result in removal from the platform.' },
+];
+
+export default function CharterAndConduct() {
+  const [text, setText] = useState<string | null>(null);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    const fetchDocuments = async () => {
-      setIsLoading(true);
-      try {
-        // Fetch Code of Conduct
-        const { data: conductData, error: conductError } = await supabase
-          .from('rb_documents')
-          .select('content')
-          .eq('doc_name', 'RB_code_of_conduct_long')
-          .single();
-        
-        if (conductError) throw conductError;
-        
-        // Format the text to ensure consistent formatting
-        const conductFormatted = conductData.content?.trim() || 'No content available';
-        
-        setConductText(conductFormatted);
-        
-        console.log('Conduct text format:', conductFormatted);
-      } catch (error) {
-        console.error('Error fetching documents:', error);
-        toast.error('Failed to load content. Please try again later.');
-        setConductText('Failed to load content. Please try again later.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDocuments();
+    supabase.from('rb_documents').select('content').eq('doc_name', 'RB_code_of_conduct_long').single()
+      .then(({ data, error }) => {
+        if (error || !data?.content) { setFailed(true); return; }
+        setText(data.content.trim());
+      });
   }, []);
 
-  // FAQ data
-  const faqs = [
-    {
-      question: "How are the Code of Conduct and Charter enforced?",
-      answer: "Our Code of Conduct is enforced through our governance council with input from community members. Violations may result in warnings, temporary restrictions, or in severe cases, removal from the network.",
-      value: "item-1"
-    },
-    {
-      question: "How can I report a potential violation?",
-      answer: "You can report potential violations through our confidential reporting system available in your dashboard, or by contacting our support team directly. All reports are reviewed promptly and handled with discretion.",
-      value: "item-2"
-    },
-    {
-      question: "What happens if someone breaks the code?",
-      answer: "If someone breaks the code, they will be notified and given an opportunity to address the issue. Repeated or severe violations will result in removal from the platform. We take our community standards seriously to maintain trust and quality within the network.",
-      value: "item-3"
-    }
-  ];
-
-  return (
-    <>
-      <Seo title="Charter and Code of Conduct | RealBroker" description="The charter and code of conduct every RealBroker member agrees to, covering ethics, data quality, and fair collaboration between brokers." path="/charter-and-conduct" />
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
-      <Navbar />
-
-      <DocumentHero 
-        title="Member Guidelines"
-        subtitle="Built for Trust. Backed by Professionals."
-        description="By joining RealBroker, you agree to these principles. They're designed to protect your deals, relationships, and reputation in the market."
-      />
-
-      <div className="flex-grow container mx-auto px-4 py-0 mb-16">
-        <div className="max-w-4xl mx-auto">
-          {/* Code of Conduct Section */}
-          <DocumentSection
-            content={conductText}
-            isLoading={isLoading}
-            formatContent={formatNumberedContent}
-            title="RealBroker Code of Conduct"
-            subtitle="Built for Trust. Backed by Professionals."
-            description="By joining RealBroker, you agree to a few simple rules. These are here to protect your deals, your relationships, and your reputation in the market."
-            className="document-section conduct-section mb-12"
-          />
-          
-          {/* Network Charter Link */}
-          <div className="text-center my-12">
-            <h3 className="text-2xl font-bold mb-4">Looking for our Network Charter?</h3>
-            <p className="text-muted-foreground mb-6">
-              View our mission and core values that guide the RealBroker Network.
-            </p>
-            <Button asChild variant="outline" className="gap-2">
-              <Link to="/charter">
-                View Network Charter <ExternalLink className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-          
-          {/* FAQs Section */}
-          <FAQSection title="Frequently Asked Questions" faqs={faqs} />
-        </div>
-      </div>
-
-      <Footer />
-    </div>
-    </>
-  );
-};
-
-export default CharterAndConduct;
+  return <>
+    <Seo title="Charter and Code of Conduct | RealBroker" description="The charter and code of conduct every RealBroker member agrees to, covering ethics, data quality, and fair collaboration between brokers." path="/charter-and-conduct" />
+    <DocLayout current="/charter-and-conduct" title="Code of conduct"
+      intro="Built for trust, backed by professionals. By joining RealBroker, you agree to these principles. They protect your deals, your relationships and your reputation in the market.">
+      {failed ? <p>We couldn’t load the code of conduct right now. Please try again later.</p>
+        : text === null ? <p>Loading…</p>
+        : <NumberedText text={text} />}
+      <p>Also read our <Link to="/charter">network charter</Link>.</p>
+      <h2>Frequently asked questions</h2>
+      {FAQS.map((f) => <div key={f.q}><h3>{f.q}</h3><p>{f.a}</p></div>)}
+    </DocLayout>
+  </>;
+}

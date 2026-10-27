@@ -1,1212 +1,190 @@
-<!DOCTYPE html>
+<%
+  const b = broker;
+  const name = (b.full_name || '').trim();
+  const first = name.split(/\s+/)[0];
+  const company = (b.company_name || '').trim();
+  const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+  const areas = (b.areas || []).filter(Boolean);
+  const city = (b.city || 'Bangalore').trim();
+  const since = b.member_since ? new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(new Date(b.member_since)) : null;
+  const sinceYear = b.member_since ? new Date(b.member_since).getFullYear() : null;
+  const rating = b.rating ? Number(b.rating) : null;
+  const digits = String(b.phone_no || '').replace(/\D/g, '');
+  const wa = digits ? (digits.length === 10 ? '91' + digits : digits) : null;
+  const bio = (b.bio || '').trim();
+  const desc = (bio || `${name} is a verified real estate broker${company ? ' at ' + company : ''} in ${city}${areas.length ? ', working in ' + areas.slice(0, 3).join(', ') : ''}.`).replace(/\s+/g, ' ').slice(0, 155);
+  const title = `${name}${company ? ' — ' + company : ''} | Real estate broker in ${city} | RealBroker`;
+  const isHttp = (u) => typeof u === 'string' && u.startsWith('http');
+  const photo = (p) => (p.images || []).find(i => isHttp(i) && !i.startsWith('https://placehold.co/'));
+  const price = (p) => {
+    const v = Number(p.price); if (!v) return 'Price on request';
+    if (v >= 1e7) return '₹ ' + (v / 1e7).toFixed(2).replace(/\.00$/, '') + ' Cr';
+    if (v >= 1e5) return '₹ ' + (v / 1e5).toFixed(2).replace(/\.00$/, '') + ' L';
+    return '₹ ' + new Intl.NumberFormat('en-IN').format(v);
+  };
+  const listings = b.properties || [];
+  const shown = listings.slice(0, 6);
+  const ld = [{
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateAgent',
+    name,
+    url: b.page_url,
+    image: isHttp(b.avatar_url) ? b.avatar_url : undefined,
+    description: bio || undefined,
+    worksFor: company ? { '@type': 'Organization', name: company } : undefined,
+    address: { '@type': 'PostalAddress', addressLocality: city, addressRegion: 'Karnataka', addressCountry: 'IN' },
+    areaServed: areas.length ? areas.map(a => ({ '@type': 'Place', name: `${a}, ${city}` })) : city,
+    telephone: digits ? '+' + (digits.length === 10 ? '91' + digits : digits) : undefined,
+    memberOf: { '@type': 'Organization', name: 'RealBroker', url: b.site_url },
+  }, {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: b.site_url + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Members', item: b.site_url + '/members' },
+      { '@type': 'ListItem', position: 3, name: city, item: b.site_url + b.city_url },
+      { '@type': 'ListItem', position: 4, name, item: b.page_url },
+    ],
+  }];
+  const json = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
+  const ICON = {
+    phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>',
+    wa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>',
+    plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+    mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>',
+    web: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>',
+  };
+%><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= broker.full_name %> - <%= broker.company_name || 'Real Estate Broker' %> | RealBroker</title>
-  <meta name="description" content="<%= broker.bio ? broker.bio.substring(0, 155) : `Connect with ${broker.full_name}, a professional real estate broker at ${broker.company_name || 'RealBroker'}. Specializing in ${broker.city || 'real estate'} properties.` %>">
-  
-  <!-- Open Graph / Facebook -->
+  <title><%= title %></title>
+  <meta name="description" content="<%= desc %>">
+  <link rel="canonical" href="<%= b.page_url %>">
   <meta property="og:type" content="profile">
-  <meta property="og:url" content="https://realbroker.app/<%= broker.vanity_url %>_<%= (broker.company_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-') %>.html">
-  <meta property="og:title" content="<%= broker.full_name %> - <%= broker.company_name || 'Real Estate Broker' %>">
-  <meta property="og:description" content="<%= broker.bio ? broker.bio.substring(0, 155) : `Professional real estate broker specializing in ${broker.city || 'real estate'} properties.` %>">
-  <meta property="og:image" content="<%= broker.avatar_url || 'https://realbroker.app/og-image.png' %>">
-  
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://realbroker.app/<%= broker.vanity_url %>_<%= (broker.company_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-') %>.html">
-  <meta property="twitter:title" content="<%= broker.full_name %> - <%= broker.company_name || 'Real Estate Broker' %>">
-  <meta property="twitter:description" content="<%= broker.bio ? broker.bio.substring(0, 155) : `Professional real estate broker specializing in ${broker.city || 'real estate'} properties.` %>">
-  <meta property="twitter:image" content="<%= broker.avatar_url || 'https://realbroker.app/og-image.png' %>">
-  
-  <meta name="author" content="RealBroker" />
-  <meta name="theme-color" content="#ffffff" />
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="https://realbroker.app/favicon.ico" />
-  <link rel="icon" type="image/png" sizes="16x16" href="https://realbroker.app/favicon-16x16.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="https://realbroker.app/favicon-32x32.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="https://realbroker.app/apple-touch-icon.png" />
-  <link rel="manifest" href="https://realbroker.app/site.webmanifest" />
-  
-  <!-- Schema.org markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "RealEstateAgent",
-    "name": "<%= broker.full_name %>",
-    "image": "<%= broker.avatar_url || '' %>",
-    "url": "https://realbroker.app/<%= broker.vanity_url %>_<%= (broker.company_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-') %>.html",
-    "jobTitle": "Real Estate Broker",
-    "worksFor": {
-      "@type": "Organization",
-      "name": "<%= broker.company_name || 'RealBroker' %>"
-    },
-    <% if (broker.city) { %>
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "<%= broker.city %>"
-    },
-    <% } %>
-    <% if (broker.bio) { %>
-    "description": "<%= broker.bio %>",
-    <% } %>
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "<%= broker.rating || 5 %>",
-      "bestRating": "5"
-    }
-  }
-  </script>
-  
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: hsl(0 0% 100%);
-      min-height: 100vh;
-      color: hsl(0 84% 22%);
-    }
-    
-    /* Header Styles */
-    .header {
-      background: white;
-      border-bottom: 1px solid hsl(0 20% 90%);
-      padding: 1rem 0;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(8px);
-      background: rgba(255, 255, 255, 0.95);
-    }
-    
-    .header-container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-      color: hsl(351 83% 58%);
-      font-weight: 700;
-    }
-    
-    .logo-img {
-      height: 48px;
-      width: auto;
-    }
-    
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-      font-size: 0.875rem;
-      line-height: 1;
-      text-transform: uppercase;
-    }
-    
-    .nav-links {
-      display: none;
-      gap: 2rem;
-    }
-    
-    .nav-link {
-      text-decoration: none;
-      color: hsl(0 0% 0%);
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-    
-    .nav-link:hover {
-      color: hsl(351 83% 58%);
-    }
-    
-    /* Hamburger Menu Button */
-    .hamburger-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: hsl(351 83% 58%);
-      transition: color 0.2s;
-    }
-    
-    .hamburger-btn:hover {
-      color: hsl(351 83% 48%);
-    }
-    
-    .hamburger-icon {
-      width: 24px;
-      height: 24px;
-      stroke: currentColor;
-      stroke-width: 2;
-      fill: none;
-    }
-    
-    /* Mobile Navigation Overlay */
-    .mobile-nav {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 75%;
-      max-width: 300px;
-      height: 100vh;
-      background: white;
-      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
-      transition: right 0.3s ease;
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      padding: 2rem 1.5rem;
-    }
-    
-    .mobile-nav.open {
-      right: 0;
-    }
-    
-    .mobile-nav-header {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 2rem;
-    }
-    
-    .mobile-nav-close {
-      width: 32px;
-      height: 32px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: hsl(0 0% 40%);
-      padding: 0;
-    }
-    
-    .mobile-nav-links {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    
-    .mobile-nav-link {
-      text-decoration: none;
-      color: hsl(0 0% 0%);
-      font-weight: 500;
-      font-size: 1.125rem;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid hsl(0 20% 90%);
-      transition: color 0.2s;
-    }
-    
-    .mobile-nav-link:hover {
-      color: hsl(351 83% 58%);
-    }
-    
-    /* Mobile Nav Overlay (backdrop) */
-    .mobile-nav-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-      z-index: 99;
-    }
-    
-    .mobile-nav-overlay.open {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    @media (min-width: 768px) {
-      .nav-links {
-        display: flex;
-      }
-      
-      .hamburger-btn {
-        display: none;
-      }
-      
-      .mobile-nav,
-      .mobile-nav-overlay {
-        display: none;
-      }
-    }
-    
-    /* Main Container */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem;
-    }
-    
-    /* Broker Card */
-    .broker-card {
-      background: white;
-      border-radius: 1rem;
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-      border: 1px solid hsl(0 20% 90%);
-    }
-    
-    .card-header {
-      background: linear-gradient(135deg, hsl(351 83% 58%) 0%, hsl(351 83% 48%) 100%);
-      height: 120px;
-      position: relative;
-    }
-    
-    /* Mobile-first: centered layout */
-    .avatar-container {
-      position: absolute;
-      bottom: -50px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
-    
-    .avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 5px solid white;
-      object-fit: cover;
-      background: hsl(0 10% 96%);
-    }
-    
-    .card-content {
-      padding: 3rem 1.5rem 1.5rem;
-      text-align: center;
-    }
-
-    .card-left-section {
-      display: none;
-    }
-
-    .card-right-section {
-      width: 100%;
-    }
-
-    /* Desktop layout: profile on left, details on right */
-    @media (min-width: 768px) {
-      .card-header {
-        display: none;
-      }
-
-      .avatar-container {
-        position: static;
-        transform: none;
-      }
-
-      .card-content {
-        display: flex;
-        gap: 2rem;
-        padding: 0;
-        text-align: left;
-      }
-
-      .card-left-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1.5rem;
-        flex-shrink: 0;
-        position: relative;
-        padding: 3rem 2rem 2rem;
-        background: linear-gradient(135deg, hsl(351 83% 58%) 0%, hsl(351 83% 48%) 100%);
-        border-radius: 1rem 0 0 1rem;
-      }
-
-      .card-left-section::before {
-        display: none;
-      }
-
-      .avatar {
-        width: 200px;
-        height: 200px;
-        border: 5px solid white;
-        position: relative;
-        z-index: 10;
-        margin-top: 0;
-      }
-
-      .company-logo {
-        max-width: 200px;
-        max-height: 100px;
-        object-fit: contain;
-      }
-
-      .associations-badges {
-        display: flex;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      .association-badge {
-        width: 48px;
-        height: 48px;
-        object-fit: contain;
-      }
-
-      .card-right-section {
-        flex: 1;
-        padding: 2rem;
-      }
-
-      .rating {
-        justify-content: flex-start;
-      }
-
-      .company-info {
-        align-items: flex-start;
-      }
-
-      .badges {
-        justify-content: flex-start;
-      }
-    }
-    
-    .broker-name {
-      font-size: 2rem;
-      font-weight: bold;
-      margin-bottom: 0.25rem;
-      color: hsl(0 84% 22%);
-    }
-
-    .company-name {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: hsl(351 83% 58%);
-      margin-bottom: 0.5rem;
-    }
-    
-    .rating {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.25rem;
-      margin-bottom: 0.5rem;
-    }
-    
-    .star {
-      color: #fde047;
-      font-size: 1.5rem;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    .rating-value {
-      font-weight: 700;
-      color: white;
-      margin-left: 0.5rem;
-      font-size: 1.125rem;
-    }
-    
-    @media (max-width: 768px) {
-      .rating-value {
-        color: black;
-      }
-    }
-    
-    .company-info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-      color: hsl(0 20% 50%);
-    }
-    
-    .info-row {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .icon {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
-    
-    .divider {
-      width: 100%;
-      height: 1px;
-      background: hsl(0 20% 90%);
-      margin: 1.5rem 0;
-    }
-    
-    .bio {
-      color: hsl(0 0% 0%);
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-      text-align: left;
-    }
-    
-    .expertise {
-      margin-bottom: 1.5rem;
-    }
-    
-    .expertise-title {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: hsl(0 20% 50%);
-      margin-bottom: 0.75rem;
-      text-align: left;
-    }
-    
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: flex-start;
-    }
-    
-    .badge {
-      background: hsl(0 10% 96%);
-      color: hsl(351 83% 58%);
-      padding: 0.375rem 0.75rem;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      border: 1px solid hsl(0 20% 90%);
-    }
-    
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      margin-top: 1.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid hsl(0 20% 90%);
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      color: hsl(0 20% 50%);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .contact-item:hover {
-      color: hsl(351 83% 58%);
-    }
-
-    .contact-icon {
-      width: 1.25rem;
-      height: 1.25rem;
-      color: hsl(351 83% 58%);
-      flex-shrink: 0;
-    }
-
-    .member-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-top: 1.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid hsl(0 20% 90%);
-      color: hsl(0 20% 50%);
-      font-size: 0.875rem;
-    }
-
-    @media (min-width: 768px) {
-      .contact-info, .member-info {
-        text-align: left;
-      }
-    }
-    
-    /* Footer Styles */
-    .footer {
-      background: white;
-      border-top: 1px solid hsl(0 20% 90%);
-      padding: 3rem 0 2rem;
-      margin-top: 4rem;
-    }
-    
-    .footer-container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-    
-    .footer-content {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-    
-    @media (min-width: 768px) {
-      .footer-content {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    
-    @media (min-width: 1024px) {
-      .footer-content {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-    
-    .footer-section h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      color: hsl(0 84% 22%);
-      margin-bottom: 1rem;
-    }
-    
-    .footer-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    
-    .footer-link {
-      color: hsl(0 0% 0%);
-      text-decoration: none;
-      font-size: 0.875rem;
-      transition: color 0.2s;
-    }
-    
-    .footer-link:hover {
-      color: hsl(351 83% 58%);
-    }
-    
-    /* Property Listings Section */
-    .properties-section {
-      max-width: 1200px;
-      margin: 4rem auto 0;
-      padding: 0 1.5rem;
-    }
-
-    .properties-header {
-      margin-bottom: 2rem;
-    }
-
-    .properties-title {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: hsl(0 84% 22%);
-      margin-bottom: 0.5rem;
-    }
-
-    .properties-subtitle {
-      font-size: 1rem;
-      color: hsl(0 20% 50%);
-    }
-
-    .properties-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    /* Mobile: 2x2 grid from 480px */
-    @media (min-width: 480px) {
-      .properties-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-      }
-    }
- 
-    /* Desktop: 3x3 grid from 1024px */
-    @media (min-width: 1024px) {
-      .properties-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-      }
-    }
-
-    .property-card {
-      background: white;
-      border: 1px solid hsl(0 20% 90%);
-      border-radius: 1rem;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
-
-    .property-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-      border-color: hsl(351 83% 58%);
-    }
-
-    .property-image {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      background: hsl(0 10% 96%);
-    }
-
-    .property-content {
-      padding: 1.25rem;
-    }
-
-    .property-title {
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: hsl(0 84% 22%);
-      margin-bottom: 0.75rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      min-height: 2.8rem;
-    }
-
-    .property-details {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-bottom: 0.75rem;
-      font-size: 0.875rem;
-      color: hsl(0 20% 50%);
-    }
-
-    .property-detail-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .property-icon {
-      width: 1rem;
-      height: 1rem;
-      stroke: currentColor;
-      flex-shrink: 0;
-    }
-
-    .property-price {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: hsl(351 83% 58%);
-      margin-top: 0.75rem;
-    }
-
-    .property-type-badge {
-      display: inline-block;
-      background: hsl(351 83% 58% / 0.1);
-      color: hsl(351 83% 58%);
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-    }
-
-    .no-properties {
-      text-align: center;
-      color: hsl(0 20% 50%);
-      padding: 3rem;
-      font-size: 1.125rem;
-    }
-
-    /* Pagination Styles */
-    .pagination {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 3rem;
-    }
-
-    .pagination-button {
-      padding: 0.5rem 1rem;
-      border: 1px solid hsl(0 20% 90%);
-      background: white;
-      color: hsl(0 20% 50%);
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 0.875rem;
-      font-weight: 500;
-    }
-
-    .pagination-button:hover:not(:disabled) {
-      border-color: hsl(351 83% 58%);
-      color: hsl(351 83% 58%);
-      background: hsl(351 83% 58% / 0.05);
-    }
-
-    .pagination-button:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    .pagination-button.active {
-      background: hsl(351 83% 58%);
-      color: white;
-      border-color: hsl(351 83% 58%);
-    }
-
-    .pagination-info {
-      color: hsl(0 20% 50%);
-      font-size: 0.875rem;
-    }
-    
-    .footer-bottom {
-      padding-top: 2rem;
-      border-top: 1px solid hsl(0 20% 90%);
-      text-align: center;
-      color: hsl(0 20% 50%);
-      font-size: 0.875rem;
-    }
-    
-    .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-      color: hsl(351 83% 58%);
-      font-weight: 700;
-    }
-    
-    @media (max-width: 640px) {
-      .broker-name {
-        font-size: 1.5rem;
-      }
-      
-      .card-content {
-        padding: 3rem 1.5rem 1.5rem;
-      }
-      
-      .stats {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-      
-      .container {
-        padding: 2rem 1rem;
-      }
-    }
-  </style>
+  <meta property="og:url" content="<%= b.page_url %>">
+  <meta property="og:title" content="<%= name %><%= company ? ' — ' + company : '' %>">
+  <meta property="og:description" content="<%= desc %>">
+  <% if (isHttp(b.avatar_url)) { %><meta property="og:image" content="<%= b.avatar_url %>"><% } %>
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="/static-pages.css">
+  <script type="application/ld+json"><%- json(ld) %></script>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="header-container">
-      <a href="https://realbroker.app" class="logo">
-        <img 
-          src="https://realbroker.app/lovable-uploads/aee5ebaa-b383-4ca3-9647-ab8921ed5030.png" 
-          alt="RealBroker Logo" 
-          class="logo-img"
-        />
-        <div class="logo-text">
-          <div>REAL</div>
-          <div>BROKER</div>
-        </div>
-      </a>
-      
-      <nav class="nav-links">
-        <a href="https://realbroker.app/members" class="nav-link">Other Members</a>
-        <a href="https://propalyst.com" class="nav-link" target="_blank" rel="noopener noreferrer">Propalyst.com</a>
-      </nav>
-      
-      <!-- Mobile Menu Button -->
-      <button class="hamburger-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
-        <svg class="hamburger-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 12h18M3 6h18M3 18h18" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-    </div>
-  </header>
-  
-  <!-- Mobile Navigation Overlay -->
-  <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
-  
-  <!-- Mobile Navigation -->
-  <nav class="mobile-nav" id="mobileNav">
-    <div class="mobile-nav-header">
-      <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close Menu">
-        <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-    </div>
-    <div class="mobile-nav-links">
-      <a href="https://realbroker.app/members" class="mobile-nav-link">Other Members</a>
-      <a href="https://propalyst.com" class="mobile-nav-link" target="_blank" rel="noopener noreferrer">Propalyst.com</a>
-    </div>
-  </nav>
-  
-  <!-- Main Content -->
-  <div class="container">
-    <div class="broker-card">
-      <div class="card-header">
-        <div class="avatar-container">
-          <img 
-            src="<%= broker.avatar_url || 'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(broker.full_name) %>" 
-            alt="<%= broker.full_name %>"
-            class="avatar"
-          />
-        </div>
-      </div>
-      
-      <div class="card-content">
-        <!-- Left Section: Profile Picture & Company Logo (Desktop Only) -->
-        <div class="card-left-section">
-          <img 
-            src="<%= broker.avatar_url || 'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(broker.full_name) %>" 
-            alt="<%= broker.full_name %>"
-            class="avatar"
-          />
-          
-          <div class="rating">
-            <% for (let i = 0; i < 5; i++) { %>
-              <span class="star"><%= i < Math.floor(broker.rating || 5) ? '★' : '☆' %></span>
-            <% } %>
-            <span class="rating-value"><%= (broker.rating || 5).toFixed(1) %></span>
-          </div>
-        </div>
+  <header class="nav"><div class="nav-in">
+    <a href="/" aria-label="RealBroker home"><img src="/rb-logo.jpg" alt="RealBroker" width="43" height="32"></a>
+    <nav class="nav-links" aria-label="Main"><a href="/members" class="on">Members</a><a href="/product">Product</a><a href="/agreements">Agreements</a></nav>
+    <div class="nav-act"><a class="login" href="<%= b.app_url %>/login">Log in</a><a class="btn red sm" href="<%= b.app_url %>/request-invite">Request an invite</a></div>
+  </div></header>
 
-        <!-- Right Section: Broker Details -->
-        <div class="card-right-section">
-          <h1 class="broker-name"><%= broker.full_name %></h1>
-          
-          <% if (broker.company_name) { %>
-            <div class="company-name"><%= broker.company_name %></div>
-          <% } %>
-
-          <% if (broker.company_logo_url) { %>
-            <img 
-              src="<%= broker.company_logo_url %>" 
-              alt="<%= broker.company_name || 'Company' %> Logo" 
-              class="company-logo"
-              style="max-width: 280px; max-height: 100px; object-fit: contain; margin-top: 0.5rem; margin-bottom: 0.5rem;"
-            />
-          <% } %>
-
-          <% if (broker.city) { %>
-            <div style="color: hsl(0 20% 50%); margin-bottom: 1rem;"><%= broker.city %></div>
-          <% } %>
-
-          <!-- Mobile rating (hidden on desktop) -->
-          <div class="rating" style="display: flex; margin-bottom: 1rem;">
-            <% for (let i = 0; i < 5; i++) { %>
-              <span class="star"><%= i < Math.floor(broker.rating || 5) ? '★' : '☆' %></span>
-            <% } %>
-            <span class="rating-value"><%= (broker.rating || 5).toFixed(1) %></span>
-          </div>
-
-          <% if (broker.bio) { %>
-            <h2 style="font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; color: hsl(0 84% 22%);">About Me</h2>
-            <div class="bio">
-              <%= broker.bio %>
-            </div>
-          <% } %>
-          
-          <% if (broker.areas && broker.areas.length > 0) { %>
-            <div class="expertise">
-              <h2 class="expertise-title">Areas of Expertise</h2>
-              <div class="badges">
-                <% broker.areas.forEach(function(area) { %>
-                  <span class="badge"><%= area %></span>
-                <% }); %>
+  <main class="wrap">
+    <p class="crumbs"><a href="/">Home</a> › <a href="/members">Members</a> › <a href="<%= b.city_url %>"><%= city %></a> › <%= name %></p>
+    <div class="layout">
+      <div>
+        <section class="card top">
+          <div class="cover"<% if (isHttp(b.cover_image)) { %> style="background-image:url('<%= b.cover_image %>')"<% } %>></div>
+          <div class="top-body">
+            <div class="pav"><% if (isHttp(b.avatar_url)) { %><img src="<%= b.avatar_url %>" alt="<%= name %>" width="152" height="152"><% } else { %><%= initials %><% } %></div>
+            <div class="head">
+              <div>
+                <h1><%= name %></h1>
+                <div class="headline"><%= company ? company + ' · ' : '' %>Real estate broker</div>
+                <div class="meta"><%= city %><%= since ? ' · Member since ' + since : '' %></div>
+                <div class="meta2"><% if (rating) { %>★ <b><%= rating.toFixed(1) %></b> · <% } %><b><%= listings.length %> <%= listings.length === 1 ? 'listing' : 'listings' %></b><%= areas.length ? ' · ' + areas.length + (areas.length === 1 ? ' area' : ' areas') : '' %></div>
+              </div>
+              <div class="affs">
+                <% if (company) { %><div class="aff"><% if (isHttp(b.company_logo_url)) { %><img src="<%= b.company_logo_url %>" alt=""><% } else { %><span class="logo"><%= company.slice(0, 2).toUpperCase() %></span><% } %><%= company %></div><% } %>
+                <div class="aff"><span class="logo" style="color:#2E7D32;background:#EAF5EC">✓</span>Verified RealBroker member</div>
               </div>
             </div>
+            <div class="actions">
+              <% if (digits) { %><a class="btn red sm" href="tel:+<%= wa %>"><%- ICON.phone %>Call</a>
+              <a class="btn out sm" href="https://wa.me/<%= wa %>?text=<%= encodeURIComponent('Hi ' + first + ', I found your profile on RealBroker.') %>" target="_blank" rel="noopener"><%- ICON.wa %>WhatsApp</a><% } %>
+              <a class="btn out sm" href="<%= b.app_url %>/<%= b.vanity_url || '' %>"><%- ICON.plus %>Connect</a>
+            </div>
+            <p class="hint">Brokers: log in to connect with <%= first %> on RealBroker.</p>
+          </div>
+        </section>
+
+        <section class="card sec">
+          <h2>About</h2>
+          <p class="bio"><%= bio || `${name} is a verified real estate broker${company ? ' at ' + company : ''} in ${city}.` %></p>
+          <% if (areas.length) { %>
+            <h3 class="sub-h">Areas of expertise</h3>
+            <div class="pills"><% areas.forEach(a => { %><span><%= a %></span><% }) %></div>
           <% } %>
+        </section>
 
-          <!-- Contact Information -->
-          <div class="contact-info">
-            <% if (broker.phone_no) { %>
-              <a href="tel:<%= broker.phone_no %>" class="contact-item">
-                <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <span><%= broker.phone_no %></span>
-              </a>
-            <% } %>
-
-            <% if (broker.email) { %>
-              <a href="mailto:<%= broker.email %>" class="contact-item">
-                <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <span><%= broker.email %></span>
-              </a>
-            <% } %>
-
-            <% if (broker.website) { %>
-              <a href="<%= broker.website.startsWith('http') ? broker.website : 'https://' + broker.website %>" class="contact-item" target="_blank" rel="noopener noreferrer">
-                <svg class="contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                </svg>
-                <span><%= broker.website %></span>
-              </a>
-            <% } %>
-          </div>
-
-          <!-- Member Info -->
-          <div class="member-info">
-            <div style="font-size: 1.125rem; font-weight: 600; color: hsl(0 84% 22%); margin-bottom: 0.25rem;">
-              Member since <%= broker.member_since ? new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(new Date(broker.member_since)) : new Date().getFullYear() %>
-            </div>
-            <% if (broker.inviter_name) { %>
-              <div>Invited by <%= broker.inviter_name %></div>
-            <% } %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <style>
-    @media (min-width: 768px) {
-      .card-right-section .rating {
-        display: none !important;
-      }
-    }
-    @media (max-width: 767px) {
-      .card-left-section .rating {
-        display: none !important;
-      }
-    }
-  </style>
-  
-  <!-- Property Listings Section -->
-  <% if (broker.properties && broker.properties.length > 0) { %>
-  <section class="properties-section">
-    <div class="properties-header">
-      <h2 class="properties-title">Listed Properties</h2>
-      <p class="properties-subtitle">Browse through <%= broker.properties.length %> available <%= broker.properties.length === 1 ? 'property' : 'properties' %></p>
-    </div>
-    
-    <div class="properties-grid" id="propertiesGrid">
-      <% (broker.properties || []).forEach(function(property, index) { %>
-        <a href="<%= property.static_html_url || '#' %>" class="property-card" data-property-index="<%= index %>" target="_blank" rel="noopener noreferrer">
-          <% if (property.images && property.images.length > 0) { %>
-            <img src="<%= property.images[0] %>" alt="<%= property.title %>" class="property-image" />
-          <% } else { %>
-            <div class="property-image"></div>
-          <% } %>
-          
-          <div class="property-content">
-            <% if (property.property_type) { %>
-              <span class="property-type-badge"><%= property.property_type %></span>
-            <% } %>
-            <h3 class="property-title"><%= property.title %></h3>
-            
-            <div class="property-details">
-              <% if (property.bedrooms) { %>
-                <div class="property-detail-item">
-                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  <span><%= property.bedrooms %> BHK</span>
+        <% if (listings.length) { %>
+        <section class="card sec">
+          <h2>Listings <span style="color:#666;font-weight:500">(<%= listings.length %>)</span></h2>
+          <div class="lgrid">
+            <% shown.forEach(p => { const img = photo(p); const rent = p.property_type === 'Rent'; const href = isHttp(p.static_html_url) ? p.static_html_url : null; %>
+              <<%= href ? 'a' : 'div' %> class="lcard"<% if (href) { %> href="<%= href %>" target="_blank" rel="noopener"<% } %>>
+                <div class="lph"><span class="ltag"><%= rent ? 'For rent' : 'For sale' %></span><% if (img) { %><img src="<%= img %>" alt="<%= p.title %>" loading="lazy"><% } else { %>Photos coming soon<% } %></div>
+                <div class="lbody">
+                  <div class="lprice"><%= price(p) %><% if (rent && Number(p.price)) { %> <small>/month</small><% } %></div>
+                  <div class="ltitle"><%= p.title %></div>
+                  <div class="lmeta"><%= [p.bedrooms ? p.bedrooms + ' BHK' : '', p.baths ? p.baths + ' bath' : '', p.sqft ? new Intl.NumberFormat('en-IN').format(p.sqft) + ' sq.ft' : ''].filter(Boolean).join(' · ') %></div>
+                  <% if (p.area) { %><div class="lmeta"><%= p.area %>, <%= city %></div><% } %>
                 </div>
-              <% } %>
-              <% if (property.sqft) { %>
-                <div class="property-detail-item">
-                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                  </svg>
-                  <span><%= new Intl.NumberFormat('en-IN').format(property.sqft) %> sqft</span>
-                </div>
-              <% } %>
-              <% if (property.area) { %>
-                <div class="property-detail-item">
-                  <svg class="property-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span><%= property.area %></span>
-                </div>
-              <% } %>
-            </div>
-            
-            <% if (property.price) { %>
-              <div class="property-price">
-                ₹ <%= new Intl.NumberFormat('en-IN').format(property.price) %>
-              </div>
-            <% } %>
+              </<%= href ? 'a' : 'div' %>>
+            <% }) %>
           </div>
-        </a>
-      <% }); %>
-    </div>
-    
-    <% if (broker.properties.length > 6) { %>
-    <div class="pagination" id="pagination">
-      <button class="pagination-button" id="prevBtn" onclick="changePage(-1)">
-        <svg style="width: 1rem; height: 1rem; display: inline-block; vertical-align: middle;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Previous
-      </button>
-      <span class="pagination-info" id="pageInfo"></span>
-      <button class="pagination-button" id="nextBtn" onclick="changePage(1)">
-        Next
-        <svg style="width: 1rem; height: 1rem; display: inline-block; vertical-align: middle;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-    </div>
-    <% } %>
-  </section>
-  
-  <script>
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileNavClose = document.getElementById('mobileNavClose');
-    const mobileNav = document.getElementById('mobileNav');
-    const mobileNavOverlay = document.getElementById('mobileNavOverlay');
-    
-    function openMobileMenu() {
-      mobileNav.classList.add('open');
-      mobileNavOverlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-    
-    function closeMobileMenu() {
-      mobileNav.classList.remove('open');
-      mobileNavOverlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-    
-    mobileMenuBtn.addEventListener('click', openMobileMenu);
-    mobileNavClose.addEventListener('click', closeMobileMenu);
-    mobileNavOverlay.addEventListener('click', closeMobileMenu);
-    
-    // Close mobile menu on link click
-    document.querySelectorAll('.mobile-nav-link').forEach(link => {
-      link.addEventListener('click', closeMobileMenu);
-    });
-  
-    // Responsive properties per page
-    function getPropertiesPerPage() {
-      return window.innerWidth < 768 ? 6 : 9;
-    }
+          <% if (listings.length > shown.length) { %><a class="btn ghost more" href="<%= b.app_url %>/<%= b.vanity_url || '' %>">See all <%= listings.length %> listings on RealBroker</a><% } %>
+        </section>
+        <% } %>
+      </div>
 
-    let propertiesPerPage = getPropertiesPerPage();
-    let currentPage = 1;
-    const totalProperties = <%= broker.properties.length %>;
-    
-    function showPage(page, shouldScroll = false) {
-      const allCards = document.querySelectorAll('[data-property-index]');
-      const start = (page - 1) * propertiesPerPage;
-      const end = start + propertiesPerPage;
-      const totalPages = Math.ceil(totalProperties / propertiesPerPage);
-      
-      allCards.forEach((card, index) => {
-        if (index >= start && index < end) {
-          card.style.display = '';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-      
-      // Update pagination UI
-      document.getElementById('prevBtn').disabled = page === 1;
-      document.getElementById('nextBtn').disabled = page === totalPages;
-      document.getElementById('pageInfo').textContent = `Page ${page} of ${totalPages}`;
-      
-      // Scroll to properties section only when user changes page, not on initial load
-      if (shouldScroll) {
-        document.querySelector('.properties-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-    
-    function changePage(direction) {
-      const totalPages = Math.ceil(totalProperties / propertiesPerPage);
-      const newPage = currentPage + direction;
-      if (newPage >= 1 && newPage <= totalPages) {
-        currentPage = newPage;
-        showPage(currentPage, true);
-      }
-    }
-    
-    // Handle window resize
-    window.addEventListener('resize', () => {
-      const newPerPage = getPropertiesPerPage();
-      if (newPerPage !== propertiesPerPage) {
-        propertiesPerPage = newPerPage;
-        currentPage = 1; // Reset to first page
-        showPage(1, false);
-      }
-    });
-    
-    // Initialize pagination if needed (without scrolling on initial load)
-    if (totalProperties > 6) {
-      showPage(1, false);
-    }
-  </script>
-  <% } %>
-  
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <div class="footer-logo">
-            <img 
-              src="https://realbroker.app/lovable-uploads/aee5ebaa-b383-4ca3-9647-ab8921ed5030.png" 
-              alt="RealBroker Logo" 
-              style="height: 32px; width: auto;"
-            />
-            <div style="display: flex; flex-direction: column; font-size: 0.75rem; line-height: 1;">
-              <div>REAL</div>
-              <div>BROKER</div>
-            </div>
-          </div>
-          <p style="color: hsl(0 20% 50%); font-size: 0.875rem;">India's Premier Broker Network</p>
-        </div>
-        
-        <div class="footer-section">
-          <h3>Explore</h3>
-          <div class="footer-links">
-            <a href="https://realbroker.app/members" class="footer-link">Other Members</a>
-            <a href="https://propalyst.com" class="footer-link" target="_blank" rel="noopener noreferrer">Propalyst.com</a>
+      <aside class="side">
+        <div class="card">
+          <h3>At a glance</h3>
+          <div class="stats">
+            <div class="stat"><b><%= listings.length %></b><span>Active listings</span></div>
+            <div class="stat"><b><%= areas.length || '—' %></b><span>Areas served</span></div>
+            <div class="stat"><b><%= rating ? rating.toFixed(1) : '—' %></b><span>Rating</span></div>
+            <div class="stat"><b><%= sinceYear || '—' %></b><span>Member since</span></div>
           </div>
         </div>
-        
-        <div class="footer-section">
-          <h3>Resources</h3>
-          <div class="footer-links">
-            <a href="https://realbroker.app/certified-realbroker" class="footer-link">Certified RealBroker Program</a>
-            <a href="https://realbroker.app/charter-and-conduct" class="footer-link">Member Code of Conduct</a>
-            <a href="https://realbroker.app/charter" class="footer-link">Charter</a>
-          </div>
+        <% if (digits || b.email || b.website) { %>
+        <div class="card">
+          <h3>Contact</h3>
+          <% if (digits) { %><a class="crow" href="tel:+<%= wa %>"><%- ICON.phone %><span><small>Phone</small>+<%= wa.replace(/^91(\d{5})(\d{5})$/, '91 $1 $2') %></span></a><% } %>
+          <% if (b.email) { %><a class="crow" href="mailto:<%= b.email %>"><%- ICON.mail %><span><small>Email</small><%= b.email %></span></a><% } %>
+          <% if (b.website) { %><a class="crow" href="<%= b.website.startsWith('http') ? b.website : 'https://' + b.website %>" target="_blank" rel="noopener"><%- ICON.web %><span><small>Website</small><%= b.website.replace(/^https?:\/\//, '') %></span></a><% } %>
         </div>
-        
-        <div class="footer-section">
-          <h3>Company</h3>
-          <div class="footer-links">
-            <a href="https://realbroker.app/privacy" class="footer-link">Privacy Policy</a>
-            <a href="https://realbroker.app/terms-of-use" class="footer-link">Terms of Service</a>
-          </div>
+        <% } %>
+        <% if ((b.nearby || []).length) { %>
+        <div class="card">
+          <h3>Brokers in the same areas</h3>
+          <% b.nearby.forEach(n => { %>
+            <a class="srow" href="<%= n.url %>"><span class="face"><% if (n.avatar) { %><img src="<%= n.avatar %>" alt="" loading="lazy"><% } else { %><%= n.name.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase() %><% } %></span><span><b style="font-size:14px"><%= n.name %></b><small><%= n.company %><%= n.area ? ' · ' + n.area : '' %></small></span></a>
+          <% }) %>
+          <a class="link" href="<%= b.city_url %>" style="display:block;margin-top:8px;font-size:14px">All brokers in <%= city %> ›</a>
         </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <p>&copy; <%= new Date().getFullYear() %> RealBroker.app. All rights reserved.</p>
-      </div>
+        <% } %>
+        <div class="card dark">
+          <b style="font-size:16px">Broker in <%= city %>?</b>
+          <p>Get a profile like this and search 50,000+ broker listings.</p>
+          <a class="btn red sm" style="width:100%" href="<%= b.app_url %>/request-invite">Request an invite</a>
+        </div>
+      </aside>
     </div>
-  </footer>
+  </main>
+
+  <footer class="foot"><div class="wrap">
+    <div class="foot-in">
+      <a href="/"><img src="/rb-logo.jpg" alt="RealBroker" style="height:26px;width:auto"></a>
+      <nav aria-label="Footer"><a href="/members">Members</a><a href="/product">Product</a><a href="/agreements">Agreements</a><a href="/charter-and-conduct">Code of conduct</a><a href="/privacy">Privacy</a></nav>
+    </div>
+    <small>© <%= new Date().getFullYear() %> RealBroker · The private network for Bangalore’s verified brokers</small>
+  </div></footer>
 </body>
 </html>

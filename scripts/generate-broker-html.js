@@ -1,239 +1,199 @@
+// Builds the static, search-engine friendly member pages on realbroker.network:
+//   public/<city>/<name>-<company>.html   one profile page per member (templates/broker-profile.ejs)
+//   public/<city>/index.html              a plain-HTML directory of every member in that city (templates/members-index.ejs)
+//
+// Default: regenerates the members waiting in html_generation_queue, plus the directory pages.
+// REGENERATE_ALL=1: regenerates every member (use after a template change).
+// Run by .github/workflows/generate-static-html.yml (weekly, or by hand with "regenerate all").
+
 import { createClient } from '@supabase/supabase-js';
 import ejs from 'ejs';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.dirname(__dirname);
+const SITE_URL = 'https://realbroker.network';
+const APP_URL = 'https://my.realbroker.app';
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
+const REGENERATE_ALL = /^(1|true|yes)$/i.test(process.env.REGENERATE_ALL || '');
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+if (!SUPABASE_URL || !SUPABASE_KEY) {
   console.error('Missing SUPABASE_URL or SUPABASE_ANON_KEY environment variables');
   process.exit(1);
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-function generateSlug(name, company) {
-  const nameSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-  const companySlug = company ? company.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : '';
-  return companySlug ? `${nameSlug}-${companySlug}` : nameSlug;
+const slugify = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+const generateSlug = (name, company) => [slugify(name), slugify(company)].filter(Boolean).join('-');
+const citySlugOf = (city) => slugify(city) || 'other';
+const norm = (s) => (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+
+const BROKER_COLUMNS = `
+  id, full_name, company_name, company_id, city, bio, avatar_url, cover_image, rating, areas,
+  member_since, vanity_url, role, phone, email, website,
+  company:company_id ( Logo )
+`;
+
+function pagePath(broker) {
+  const citySlug = citySlugOf(broker.city);
+  const filename = `${generateSlug(broker.full_name, broker.company_name)}.html`;
+  return { citySlug, filename, url: `/${citySlug}/${filename}` };
 }
 
-async function generateBrokerHTML(broker, template) {
-  console.log(`Generating HTML for ${broker.full_name}...`);
+function summary(b) {
+  const { url } = pagePath(b);
+  return {
+    id: b.id,
+    name: b.full_name.trim(),
+    company: (b.company_name || '').trim() || 'Independent broker',
+    areas: (b.areas || []).filter(Boolean),
+    avatar: b.avatar_url && b.avatar_url.startsWith('http') ? b.avatar_url : null,
+    cover: b.cover_image && b.cover_image.startsWith('http') ? b.cover_image : null,
+    url,
+  };
+}
 
-  // Get properties with full data (fetch ALL properties)
-  const { data: properties } = await supabase
+/** Up to 3 other members who share an area with this broker, for internal links. */
+function nearbyFor(broker, everyone) {
+  const mine = new Set((broker.areas || []).map(norm));
+  if (!mine.size) return [];
+  return everyone
+    .filter((o) => o.id !== broker.id && (o.areas || []).some((a) => mine.has(norm(a))))
+    .slice(0, 3)
+    .map((o) => {
+      const s = summary(o);
+      const shared = (o.areas || []).find((a) => mine.has(norm(a)));
+      return { ...s, area: shared };
+    });
+}
+
+async function generateBrokerHTML(broker, template, everyone) {
+  // Public page: hide network-only and closed listings.
+  const { data: properties, error } = await supabase
     .from('properties')
-    .select('id, title, price, description, images, property_type, bedrooms, sqft, area, static_html_url')
+    .select('id, title, price, images, property_type, bedrooms, baths, sqft, area, status, visibility, static_html_url, created_at')
     .eq('user_id', broker.id)
     .order('created_at', { ascending: false })
-    .range(0, 9999); // Fetch up to 10,000 properties
+    .range(0, 999);
+  if (error) throw error;
 
-  const brokerData = {
+  const visible = (properties || []).filter((p) =>
+    p.visibility !== 'Network Only' && !['Sold', 'Rented', 'Delisted'].includes(p.status || ''));
+
+  const { citySlug, filename, url } = pagePath(broker);
+  const data = {
     ...broker,
     company_logo_url: broker.company?.Logo || null,
     phone_no: broker.phone,
-    properties: properties || [],
-    properties_count: properties?.length || 0
+    properties: visible,
+    properties_count: visible.length,
+    page_url: `${SITE_URL}${url}`,
+    city_url: `/${citySlug}/`,
+    nearby: nearbyFor(broker, everyone),
+    app_url: APP_URL,
+    site_url: SITE_URL,
   };
 
-  // Render HTML
-  const html = await ejs.render(template, { broker: brokerData });
-
-  // Generate filename and directory structure
-  const slug = generateSlug(broker.full_name, broker.company_name);
-  const citySlug = broker.city ? broker.city.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : 'other';
-  const filename = `${slug}.html`;
-  
-  // Create city directory if it doesn't exist
-  const cityDir = path.join(process.cwd(), 'public', citySlug);
-  await fs.mkdir(cityDir, { recursive: true });
-  
-  const filePath = path.join(cityDir, filename);
-
-  // Save HTML file
+  const html = await ejs.render(template, { broker: data }, { async: true });
+  const dir = path.join(ROOT, 'public', citySlug);
+  await fs.mkdir(dir, { recursive: true });
+  const filePath = path.join(dir, filename);
   await fs.writeFile(filePath, html, 'utf8');
 
-  // Update broker profile with static URL
-  const staticUrl = `/${citySlug}/${filename}`;
-  await supabase
-    .from('profiles')
-    .update({ static_html_url: staticUrl })
-    .eq('id', broker.id);
+  // Keep the link on the profile in sync (needs the service-role key in CI).
+  await supabase.from('profiles').update({ static_html_url: url }).eq('id', broker.id);
 
-  console.log(`✓ Generated ${filename}`);
-  
-  return filename;
+  const stats = await fs.stat(filePath);
+  return { url, size: stats.size };
+}
+
+async function writeDirectories(everyone) {
+  const template = await fs.readFile(path.join(ROOT, 'templates', 'members-index.ejs'), 'utf8');
+  const byCity = new Map();
+  for (const b of everyone) {
+    const slug = citySlugOf(b.city);
+    if (!byCity.has(slug)) byCity.set(slug, { city: (b.city || 'Other').trim(), members: [] });
+    byCity.get(slug).members.push(summary(b));
+  }
+  for (const [slug, { city, members }] of byCity) {
+    members.sort((a, b) => a.name.localeCompare(b.name));
+    const html = await ejs.render(template, { city, members, page_url: `${SITE_URL}/${slug}/`, site_url: SITE_URL, app_url: APP_URL }, { async: true });
+    await fs.mkdir(path.join(ROOT, 'public', slug), { recursive: true });
+    await fs.writeFile(path.join(ROOT, 'public', slug, 'index.html'), html, 'utf8');
+    console.log(`✓ Directory /${slug}/ (${members.length} members)`);
+  }
 }
 
 async function main() {
-  try {
-    console.log('Starting HTML generation from queue...');
+  // Every member, for "brokers in the same areas" links and the directory pages.
+  const { data: all, error: allErr } = await supabase
+    .from('profiles')
+    .select(BROKER_COLUMNS)
+    .ilike('role', '%user%')
+    .not('full_name', 'is', null)
+    .order('member_since', { ascending: true, nullsFirst: false });
+  if (allErr) throw allErr;
+  const everyone = (all || []).filter((b) => b.full_name && b.full_name.trim());
+  console.log(`Members: ${everyone.length}`);
 
-    // Fetch pending queue items for brokers
-    const { data: queueItems, error: queueError } = await supabase
+  let targets = [];
+  let queueItems = [];
+  if (REGENERATE_ALL) {
+    targets = everyone;
+    console.log('REGENERATE_ALL: regenerating every member page');
+  } else {
+    const { data, error } = await supabase
       .from('html_generation_queue')
-      .select('id, entity_id, entity_type, status')
+      .select('id, entity_id')
       .eq('entity_type', 'broker')
       .eq('status', 'pending')
       .order('priority', { ascending: false })
       .order('created_at', { ascending: true });
-
-    if (queueError) {
-      console.error('Error fetching queue:', queueError);
-      throw queueError;
-    }
-
-    console.log('Queue query result:', JSON.stringify(queueItems, null, 2));
-
-    if (!queueItems || queueItems.length === 0) {
-      console.log('No pending brokers in queue.');
-      return;
-    }
-
-    console.log(`Found ${queueItems.length} brokers in queue to process`);
-
-    // Fetch broker profiles for queued items
-    const brokerIds = queueItems.map(item => item.entity_id);
-    console.log('Looking for broker IDs:', brokerIds);
-    
-    const { data: brokers, error } = await supabase
-      .from('profiles')
-      .select(`
-        id, 
-        full_name, 
-        company_name, 
-        company_id,
-        city, 
-        bio, 
-        avatar_url, 
-        rating, 
-        areas, 
-        member_since, 
-        vanity_url, 
-        role,
-        phone,
-        email,
-        website,
-        company:company_id (
-          Logo
-        )
-      `)
-      .in('id', brokerIds);
-
-    if (error) {
-      console.error('Error fetching brokers:', error);
-      throw error;
-    }
-
-    console.log(`Found ${brokers?.length || 0} brokers matching queue items`);
-    console.log('Broker data:', JSON.stringify(brokers, null, 2));
-
-    if (!brokers || brokers.length === 0) {
-      console.log('No brokers found to generate HTML for.');
-      return;
-    }
-
-    console.log(`Found ${brokers.length} brokers to process`);
-
-    // Read EJS template
-    const templatePath = path.join(path.dirname(__dirname), 'templates', 'broker-profile.ejs');
-    const template = await fs.readFile(templatePath, 'utf8');
-
-    // Generate HTML for each broker
-    const results = [];
-    for (const broker of brokers) {
-      const queueItem = queueItems.find(item => item.entity_id === broker.id);
-      
-      try {
-        const startTime = Date.now();
-        
-        // Update queue status to processing
-        await supabase
-          .from('html_generation_queue')
-          .update({ status: 'processing', started_at: new Date().toISOString() })
-          .eq('id', queueItem.id);
-
-        const result = await generateBrokerHTML(broker, template);
-        const generationDuration = Date.now() - startTime;
-        
-        // Get file stats
-        const slug = generateSlug(broker.full_name, broker.company_name);
-        const citySlug = broker.city ? broker.city.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : 'other';
-        const staticUrl = `/${citySlug}/${slug}.html`;
-        const filePath = path.join(process.cwd(), 'public', citySlug, `${slug}.html`);
-        const stats = await fs.stat(filePath);
-        
-        // Update or insert metadata
-        await supabase
-          .from('html_generation_metadata')
-          .upsert({
-            entity_type: 'broker',
-            entity_id: broker.id,
-            html_path: staticUrl,
-            file_size_bytes: stats.size,
-            generation_duration_ms: generationDuration,
-            last_generated_at: new Date().toISOString(),
-            needs_regeneration: false,
-            updated_at: new Date().toISOString()
-          }, {
-            onConflict: 'entity_type,entity_id'
-          });
-        
-        // Mark as completed in queue
-        await supabase
-          .from('html_generation_queue')
-          .update({ 
-            status: 'completed', 
-            completed_at: new Date().toISOString() 
-          })
-          .eq('id', queueItem.id);
-
-        results.push({ broker: broker.full_name, success: true, filename: result });
-      } catch (error) {
-        console.error(`Error generating HTML for ${broker.full_name}:`, error.message);
-        
-        // Mark as failed in queue
-        await supabase
-          .from('html_generation_queue')
-          .update({ 
-            status: 'failed', 
-            error_message: error.message,
-            completed_at: new Date().toISOString()
-          })
-          .eq('id', queueItem.id);
-
-        results.push({ broker: broker.full_name, success: false, error: error.message });
-      }
-    }
-
-    // Summary
-    const successful = results.filter(r => r.success).length;
-    const failed = results.filter(r => !r.success).length;
-    
-    console.log('\n=== Generation Summary ===');
-    console.log(`Total: ${results.length}`);
-    console.log(`Successful: ${successful}`);
-    console.log(`Failed: ${failed}`);
-    
-    if (failed > 0) {
-      console.log('\nFailed brokers:');
-      results.filter(r => !r.success).forEach(r => {
-        console.log(`- ${r.broker}: ${r.error}`);
-      });
-      process.exit(1);
-    }
-
-  } catch (error) {
-    console.error('Fatal error:', error);
-    process.exit(1);
+    if (error) throw error;
+    queueItems = data || [];
+    const ids = new Set(queueItems.map((q) => q.entity_id));
+    targets = everyone.filter((b) => ids.has(b.id));
+    console.log(`Queue: ${queueItems.length} pending, ${targets.length} matching members`);
   }
+
+  const template = await fs.readFile(path.join(ROOT, 'templates', 'broker-profile.ejs'), 'utf8');
+  const results = [];
+  for (const broker of targets) {
+    const queueItem = queueItems.find((q) => q.entity_id === broker.id);
+    const started = Date.now();
+    try {
+      if (queueItem) await supabase.from('html_generation_queue').update({ status: 'processing', started_at: new Date().toISOString() }).eq('id', queueItem.id);
+      const { url, size } = await generateBrokerHTML(broker, template, everyone);
+      await supabase.from('html_generation_metadata').upsert({
+        entity_type: 'broker',
+        entity_id: broker.id,
+        html_path: url,
+        file_size_bytes: size,
+        generation_duration_ms: Date.now() - started,
+        last_generated_at: new Date().toISOString(),
+        needs_regeneration: false,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'entity_type,entity_id' });
+      if (queueItem) await supabase.from('html_generation_queue').update({ status: 'completed', completed_at: new Date().toISOString() }).eq('id', queueItem.id);
+      console.log(`✓ ${url}`);
+      results.push({ broker: broker.full_name, success: true });
+    } catch (e) {
+      console.error(`✗ ${broker.full_name}: ${e.message}`);
+      if (queueItem) await supabase.from('html_generation_queue').update({ status: 'failed', error_message: e.message, completed_at: new Date().toISOString() }).eq('id', queueItem.id);
+      results.push({ broker: broker.full_name, success: false, error: e.message });
+    }
+  }
+
+  await writeDirectories(everyone);
+
+  const failed = results.filter((r) => !r.success);
+  console.log(`\nDone: ${results.length - failed.length} generated, ${failed.length} failed`);
+  if (failed.length) process.exit(1);
 }
 
-main();
+main().catch((e) => { console.error('Fatal error:', e); process.exit(1); });

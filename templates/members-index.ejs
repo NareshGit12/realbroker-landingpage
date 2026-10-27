@@ -1,0 +1,63 @@
+<%
+  const json = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
+  const ini = (n) => n.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+  const title = `Real estate brokers in ${city} — ${members.length} verified members | RealBroker`;
+  const desc = `Browse ${members.length} verified real estate brokers in ${city} on RealBroker, with their areas, listings and contact details.`;
+  const ld = { '@context': 'https://schema.org', '@type': 'ItemList', name: `RealBroker members in ${city}`, numberOfItems: members.length,
+    itemListElement: members.map((m, i) => ({ '@type': 'ListItem', position: i + 1, url: site_url + m.url, name: m.name })) };
+%><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <meta name="description" content="<%= desc %>">
+  <link rel="canonical" href="<%= page_url %>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= page_url %>">
+  <meta property="og:title" content="<%= title %>">
+  <meta property="og:description" content="<%= desc %>">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="/static-pages.css">
+  <script type="application/ld+json"><%- json(ld) %></script>
+</head>
+<body>
+  <header class="nav"><div class="nav-in">
+    <a href="/" aria-label="RealBroker home"><img src="/rb-logo.jpg" alt="RealBroker" width="43" height="32"></a>
+    <nav class="nav-links" aria-label="Main"><a href="/members" class="on">Members</a><a href="/product">Product</a><a href="/agreements">Agreements</a></nav>
+    <div class="nav-act"><a class="login" href="<%= app_url %>/login">Log in</a><a class="btn red sm" href="<%= app_url %>/request-invite">Request an invite</a></div>
+  </div></header>
+  <section class="dhead"><div class="wrap">
+    <p class="crumbs"><a href="/">Home</a> › <a href="/members">Members</a> › <%= city %></p>
+    <h1>Real estate brokers in <%= city %></h1>
+    <p><%= members.length %> verified RealBroker members. <a class="link" href="/members">Search by name, company or area ›</a></p>
+  </div></section>
+  <main class="wrap">
+    <div class="mgrid">
+      <% members.forEach(m => { %>
+        <a class="mcard" href="<%= m.url %>">
+          <div class="mcover"<% if (m.cover) { %> style="background-image:url('<%= m.cover %>')"<% } %>></div>
+          <div class="mav"><% if (m.avatar) { %><img src="<%= m.avatar %>" alt="" loading="lazy"><% } else { %><%= ini(m.name) %><% } %></div>
+          <div class="mbody">
+            <div class="mname"><%= m.name %></div>
+            <div class="mco"><%= m.company %></div>
+            <div class="mareas"><%= m.areas.slice(0, 3).join(', ') %></div>
+            <div style="flex:1"></div>
+            <span class="mbtn">View profile</span>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  </main>
+  <footer class="foot"><div class="wrap">
+    <div class="foot-in">
+      <a href="/"><img src="/rb-logo.jpg" alt="RealBroker" style="height:26px;width:auto"></a>
+      <nav aria-label="Footer"><a href="/members">Members</a><a href="/product">Product</a><a href="/agreements">Agreements</a><a href="/charter-and-conduct">Code of conduct</a><a href="/privacy">Privacy</a></nav>
+    </div>
+    <small>© <%= new Date().getFullYear() %> RealBroker · The private network for Bangalore’s verified brokers</small>
+  </div></footer>
+</body>
+</html>
