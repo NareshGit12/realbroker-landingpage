@@ -2,8 +2,8 @@ name: Generate Static HTML Pages
 
 on:
   schedule:
-    # Run every Sunday at 2 AM UTC
-    - cron: '0 2 * * 0'
+    # Run every day at 2 AM IST (20:30 UTC) so new members show up on the site the next day
+    - cron: '30 20 * * *'
   workflow_dispatch:
     # Allow manual triggering. Tick "regenerate all" after changing the page templates.
     inputs:
@@ -38,6 +38,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
+          npm install --no-save sharp
 
       - name: Ensure public directory exists
         run: mkdir -p public

@@ -31,6 +31,9 @@ const SIDE_BY_SIDE = [
   { icon: Handshake, title: '50/50 split', body: 'Free to join. No listing charges.' },
 ];
 
+// Decided once at load so only the screenshot that will be shown is downloaded.
+const isPhone = typeof window !== 'undefined' && window.matchMedia('(max-width: 760px)').matches;
+
 export default function Page1() {
   const members = useMembers();
   const withPhoto = (members || []).filter((m) => m.avatar);
@@ -57,8 +60,7 @@ export default function Page1() {
             </div>
           </div>
           <div className="lp-home-shot">
-            <div className="lp-hide-m"><BrowserFrame {...SCREENS.properties} /></div>
-            <div className="lp-show-m-block"><PhoneFrame {...SCREENS.week} /></div>
+            {isPhone ? <PhoneFrame {...SCREENS.week} priority /> : <BrowserFrame {...SCREENS.properties} priority />}
           </div>
         </div>
       </section>

@@ -52,10 +52,59 @@ function summary(b) {
     name: b.full_name.trim(),
     company: (b.company_name || '').trim() || 'Independent broker',
     areas: (b.areas || []).filter(Boolean),
-    avatar: b.avatar_url && b.avatar_url.startsWith('http') ? b.avatar_url : null,
-    cover: b.cover_image && b.cover_image.startsWith('http') ? b.cover_image : null,
+    avatar: THUMBS.get(b.avatar_url) || (b.avatar_url && b.avatar_url.startsWith('http') ? b.avatar_url : null),
+    cover: THUMBS.get(b.cover_image) || (b.cover_image && b.cover_image.startsWith('http') ? b.cover_image : null),
     url,
   };
+}
+
+// ---- Small thumbnails for member cards (public/thumbs), so pages don't download full-size photos ----
+const THUMBS = new Map(); // source URL -> /thumbs/<file>.webp
+const hash = (s) => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); };
+
+async function buildThumbs(everyone) {
+  let sharp;
+  try { sharp = (await import('sharp')).default; } catch { console.log('sharp not installed: skipping thumbnails'); return; }
+  const dir = path.join(ROOT, 'public', 'thumbs');
+  await fs.mkdir(dir, { recursive: true });
+  const manifestPath = path.join(dir, 'manifest.json');
+  let manifest = {};
+  try { manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8')); } catch { /* first run */ }
+  const wanted = new Map();
+  for (const b of everyone) {
+    if (b.avatar_url?.startsWith('http')) wanted.set(b.avatar_url, { file: `a-${hash(b.avatar_url)}.webp`, w: 160, h: 160 });
+    if (b.cover_image?.startsWith('http')) wanted.set(b.cover_image, { file: `c-${hash(b.cover_image)}.webp`, w: 560, h: 140 });
+  }
+  let made = 0;
+  for (const [src, t] of wanted) {
+    const out = path.join(dir, t.file);
+    const have = manifest[src] === t.file && await fs.stat(out).then(() => true, () => false);
+    if (!have) {
+      try {
+        const res = await fetch(src);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const buf = Buffer.from(await res.arrayBuffer());
+        await sharp(buf).rotate().resize(t.w, t.h, { fit: 'cover' }).webp({ quality: 78 }).toFile(out);
+        manifest[src] = t.file; made++;
+      } catch (e) { console.log(`thumb failed for ${src}: ${e.message}`); continue; }
+    }
+    THUMBS.set(src, `/thumbs/${t.file}`);
+  }
+  // Drop thumbnails nobody uses any more.
+  const keep = new Set([...wanted.values()].map((t) => t.file));
+  for (const f of await fs.readdir(dir)) if (f.endsWith('.webp') && !keep.has(f)) await fs.unlink(path.join(dir, f));
+  for (const k of Object.keys(manifest)) if (!wanted.has(k)) delete manifest[k];
+  await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 1));
+  console.log(`Thumbnails: ${THUMBS.size} ready, ${made} new`);
+}
+
+/** /members.json: the list the Members and Home pages read (newest members first). */
+async function writeMembersJson(everyone) {
+  const list = [...everyone]
+    .sort((a, b) => String(b.member_since || '').localeCompare(String(a.member_since || '')))
+    .map((b) => { const s = summary(b); return { id: s.id, name: s.name, company: s.company, areas: s.areas, avatar: s.avatar, cover: s.cover, href: s.url, external: false, memberSince: b.member_since || null }; });
+  await fs.writeFile(path.join(ROOT, 'public', 'members.json'), JSON.stringify(list));
+  console.log(`✓ /members.json (${list.length} members)`);
 }
 
 /** Up to 3 other members who share an area with this broker, for internal links. */
@@ -142,6 +191,7 @@ async function main() {
   const isTest = (b) => /\b(test\d*|do not use|not ?valid|guest)\b/i.test(`${b.full_name || ''} ${b.company_name || ''}`);
   const everyone = (all || []).filter((b) => b.full_name && b.full_name.trim() && !isTest(b));
   console.log(`Members: ${everyone.length}`);
+  await buildThumbs(everyone);
 
   let targets = [];
   let queueItems = [];
@@ -192,6 +242,7 @@ async function main() {
   }
 
   await writeDirectories(everyone);
+  await writeMembersJson(everyone);
 
   // A full run also removes pages that no longer belong to a listed member
   // (renamed members' old URLs, test or retired accounts).
@@ -199,7 +250,7 @@ async function main() {
     const keep = new Set(everyone.map((b) => pagePath(b).url));
     const publicDir = path.join(ROOT, 'public');
     for (const dir of await fs.readdir(publicDir, { withFileTypes: true })) {
-      if (!dir.isDirectory() || ['lovable-uploads', 'screens'].includes(dir.name)) continue;
+      if (!dir.isDirectory() || ['lovable-uploads', 'screens', 'thumbs'].includes(dir.name)) continue;
       for (const file of await fs.readdir(path.join(publicDir, dir.name))) {
         if (!file.endsWith('.html') || file === 'index.html') continue;
         if (!keep.has(`/${dir.name}/${file}`)) {

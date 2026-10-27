@@ -51,19 +51,28 @@ export function Cta({ title = 'Join Bangalore’s private broker network.', text
   </section>;
 }
 
-export function BrowserFrame({ src, url, alt, width, height }: { src: string; url: string; alt: string; width: number; height: number }) {
+type Shot = { src: string; src800?: string; alt: string; width: number; height: number };
+
+// priority: the hero image, fetched first; everything else waits until it scrolls near.
+function ShotImg({ shot, sizes, priority }: { shot: Shot; sizes: string; priority?: boolean }) {
+  return <img src={shot.src} srcSet={shot.src800 ? `${shot.src800} 800w, ${shot.src} 1600w` : undefined} sizes={shot.src800 ? sizes : undefined}
+    alt={shot.alt} width={shot.width} height={shot.height} decoding="async"
+    loading={priority ? 'eager' : 'lazy'} {...(priority ? { fetchpriority: 'high' } : {})} />;
+}
+
+export function BrowserFrame({ url, priority, ...shot }: Shot & { url: string; priority?: boolean }) {
   return <div className="lp-frame">
     <div className="lp-frame-bar" aria-hidden="true"><i /><i /><i /><span>{url}</span></div>
-    <img src={src} alt={alt} width={width} height={height} loading="lazy" />
+    <ShotImg shot={shot} sizes="(max-width: 960px) 100vw, 600px" priority={priority} />
   </div>;
 }
 
-export function PhoneFrame({ src, alt, width, height }: { src: string; alt: string; width: number; height: number }) {
-  return <div className="lp-phone-wrap"><div className="lp-phone"><div><img src={src} alt={alt} width={width} height={height} loading="lazy" /></div></div></div>;
+export function PhoneFrame({ priority, ...shot }: Shot & { priority?: boolean }) {
+  return <div className="lp-phone-wrap"><div className="lp-phone"><div><ShotImg shot={shot} sizes="300px" priority={priority} /></div></div></div>;
 }
 
 export const SCREENS = {
-  properties: { src: '/screens/app-properties.webp', width: 1600, height: 1026, url: 'new.realbroker.app/properties', alt: 'RealBroker property search with filters for area, budget and BHK' },
-  network: { src: '/screens/app-network.webp', width: 1600, height: 1092, url: 'new.realbroker.app/network', alt: 'RealBroker network page with verified member cards' },
-  week: { src: '/screens/app-your-week.webp', width: 720, height: 894, alt: 'RealBroker on a phone: search and your week of calls, WhatsApps and views' },
+  properties: { src: '/screens/app-properties.webp', src800: '/screens/app-properties-800.webp', width: 1600, height: 1026, url: 'new.realbroker.app/properties', alt: 'RealBroker property search with filters for area, budget and BHK' },
+  network: { src: '/screens/app-network.webp', src800: '/screens/app-network-800.webp', width: 1600, height: 1092, url: 'new.realbroker.app/network', alt: 'RealBroker network page with verified member cards' },
+  week: { src: '/screens/app-your-week-560.webp', width: 560, height: 695, alt: 'RealBroker on a phone: search and your week of calls, WhatsApps and views' },
 };

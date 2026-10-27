@@ -23,7 +23,7 @@ const routes: SitemapEntry[] = [
 ];
 
 // Static member profile pages live in public/<city>/<slug>.html
-const SKIP_DIRS = new Set(["lovable-uploads", "screens"]);
+const SKIP_DIRS = new Set(["lovable-uploads", "screens", "thumbs"]);
 const publicDir = resolve("public");
 
 const memberEntries: SitemapEntry[] = readdirSync(publicDir)

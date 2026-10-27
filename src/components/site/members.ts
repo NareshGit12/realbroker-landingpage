@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { APP_URL } from './links';
 
 export interface Member {
@@ -40,13 +39,32 @@ const toMember = (p: Row): Member | null => {
 };
 
 let cache: Promise<Member[]> | null = null;
+
+// Fast path: /members.json is written by the static-pages workflow, with small avatar and cover
+// thumbnails, and is served from the CDN. If it's missing, fall back to reading Supabase directly
+// (the client library is loaded only in that case).
+async function fromSnapshot(): Promise<Member[] | null> {
+  try {
+    const res = await fetch('/members.json', { cache: 'no-cache' });
+    if (!res.ok || !(res.headers.get('content-type') || '').includes('json')) return null;
+    const list = (await res.json()) as Member[];
+    return Array.isArray(list) && list.length ? list.filter((m) => !isTestAccount(m.name, m.company)) : null;
+  } catch { return null; }
+}
+
+async function fromDatabase(): Promise<Member[]> {
+  const { supabase } = await import('@/integrations/supabase/client');
+  const { data, error } = await supabase.from('profiles').select(COLUMNS)
+    .or('role.ilike.%user%,role.ilike.%admin%,role.ilike.%ops%')
+    .order('member_since', { ascending: false, nullsFirst: false }).limit(1000);
+  if (error) throw error;
+  return ((data || []) as Row[]).map(toMember).filter((m): m is Member => !!m);
+}
+
 export function loadMembers(): Promise<Member[]> {
   if (!cache) {
-    cache = Promise.resolve(supabase.from('profiles').select(COLUMNS).or('role.ilike.%user%,role.ilike.%admin%,role.ilike.%ops%').order('member_since', { ascending: false, nullsFirst: false }).limit(1000))
-      .then(({ data, error }) => {
-        if (error) throw error;
-        return ((data || []) as Row[]).map(toMember).filter((m): m is Member => !!m);
-      })
+    cache = fromSnapshot()
+      .then((m) => m || fromDatabase())
       .catch((e) => { console.error('Could not load members', e); cache = null; return []; });
   }
   return cache;
@@ -60,10 +78,13 @@ export function useMembers() {
 
 export const initials = (n: string) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 
-/** A stable shuffle so the same visitor sees the same picks during a visit. */
-export function pick<T>(list: T[], count: number, seed = 7): T[] {
+// Fresh on every page load, so the home page shows different members each visit.
+const SESSION_SEED = Math.floor(Math.random() * 233280);
+
+/** Shuffle with a per-visit seed: stable while you stay on the page, different on the next visit. */
+export function pick<T>(list: T[], count: number, salt = 0): T[] {
   const a = [...list];
-  let s = seed;
+  let s = (SESSION_SEED + salt * 7919) % 233280;
   for (let i = a.length - 1; i > 0; i--) { s = (s * 9301 + 49297) % 233280; const j = Math.floor((s / 233280) * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a.slice(0, count);
 }

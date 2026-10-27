@@ -1,83 +1,60 @@
-
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import ScrollToTop from "./components/layout/ScrollToTop";
 import { trackPageView } from "./utils/analytics";
-import TermsOfUse from "./pages/TermsOfUse";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Page1 from "./pages/Page1";
-import NotFound from "./pages/NotFound";
-import CharterAndConduct from "./pages/CharterAndConduct";
-import Charter from "./pages/Charter";
-import MeetOurMembers from "./pages/MeetOurMembers";
-import AdminHTMLGeneration from "./pages/AdminHTMLGeneration";
-import Admin from "./pages/Admin";
-import Login from "./pages/Login";
-import ProtectedRoute from "./components/auth/ProtectedRoute";
-import Product from "./pages/Product";
-import Agreements from "./pages/Agreements";
+
+// The home page ships in the main bundle; every other page loads on demand.
+const MeetOurMembers = lazy(() => import("./pages/MeetOurMembers"));
+const Product = lazy(() => import("./pages/Product"));
+const Agreements = lazy(() => import("./pages/Agreements"));
+const TermsOfUse = lazy(() => import("./pages/TermsOfUse"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const CharterAndConduct = lazy(() => import("./pages/CharterAndConduct"));
+const Charter = lazy(() => import("./pages/Charter"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Login = lazy(() => import("./pages/Login"));
+const Admin = lazy(() => import("./pages/Admin"));
+const AdminHTMLGeneration = lazy(() => import("./pages/AdminHTMLGeneration"));
+const AdminShell = lazy(() => import("./components/AdminShell"));
 
 // Track page views when route changes
 const PageViewTracker = () => {
   const location = useLocation();
-  
   useEffect(() => {
     trackPageView(location.pathname);
   }, [location]);
-  
   return null;
 };
 
-const queryClient = new QueryClient();
+const PageFallback = () => <div className="lp" />;
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <PageViewTracker />
-        <Routes>
-          <Route path="/" element={<Page1 />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/agreements" element={<Agreements />} />
-          {/* Old addresses */}
-          <Route path="/tools" element={<Navigate to="/product" replace />} />
-          <Route path="/smart-agreements" element={<Navigate to="/agreements" replace />} />
-          <Route path="/certified-realbroker" element={<Navigate to="/" replace />} />
-          <Route path="/terms-of-use" element={<TermsOfUse />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/charter-and-conduct" element={<CharterAndConduct />} />
-          <Route path="/charter" element={<Charter />} />
-          <Route path="/members" element={<MeetOurMembers />} />
-          <Route path="/login" element={<Login />} />
-          <Route 
-            path="/admin" 
-            element={
-              <ProtectedRoute requireAdmin>
-                <Admin />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/html-generation" 
-            element={
-              <ProtectedRoute requireAdmin>
-                <AdminHTMLGeneration />
-              </ProtectedRoute>
-            } 
-          />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <BrowserRouter>
+    <ScrollToTop />
+    <PageViewTracker />
+    <Suspense fallback={<PageFallback />}>
+      <Routes>
+        <Route path="/" element={<Page1 />} />
+        <Route path="/members" element={<MeetOurMembers />} />
+        <Route path="/product" element={<Product />} />
+        <Route path="/agreements" element={<Agreements />} />
+        {/* Old addresses */}
+        <Route path="/tools" element={<Navigate to="/product" replace />} />
+        <Route path="/smart-agreements" element={<Navigate to="/agreements" replace />} />
+        <Route path="/certified-realbroker" element={<Navigate to="/" replace />} />
+        <Route path="/terms-of-use" element={<TermsOfUse />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/charter-and-conduct" element={<CharterAndConduct />} />
+        <Route path="/charter" element={<Charter />} />
+        <Route path="/login" element={<AdminShell><Login /></AdminShell>} />
+        <Route path="/admin" element={<AdminShell protect><Admin /></AdminShell>} />
+        <Route path="/admin/html-generation" element={<AdminShell protect><AdminHTMLGeneration /></AdminShell>} />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
+  </BrowserRouter>
 );
 
 export default App;
