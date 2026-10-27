@@ -21,7 +21,7 @@ const COLUMNS = 'id, full_name, company_name, areas, avatar_url, cover_image, st
 type Row = { id: string; full_name: string | null; company_name: string | null; areas: string[] | null; avatar_url: string | null; cover_image: string | null; static_html_url: string | null; vanity_url: string | null; member_since: string | null };
 
 // Test accounts never appear on the public site.
-export const isTestAccount = (name?: string | null, company?: string | null) => /\btest\d*\b/i.test(`${name || ''} ${company || ''}`);
+export const isTestAccount = (name?: string | null, company?: string | null) => /\b(test\d*|do not use|not ?valid|guest)\b/i.test(`${name || ''} ${company || ''}`);
 
 const toMember = (p: Row): Member | null => {
   if (!p.full_name?.trim() || isTestAccount(p.full_name, p.company_name)) return null;

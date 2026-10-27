@@ -139,7 +139,7 @@ async function main() {
     .order('member_since', { ascending: true, nullsFirst: false });
   if (allErr) throw allErr;
   // Test accounts ("test" in the name or company) never get a public page.
-  const isTest = (b) => /\btest\d*\b/i.test(`${b.full_name || ''} ${b.company_name || ''}`);
+  const isTest = (b) => /\b(test\d*|do not use|not ?valid|guest)\b/i.test(`${b.full_name || ''} ${b.company_name || ''}`);
   const everyone = (all || []).filter((b) => b.full_name && b.full_name.trim() && !isTest(b));
   console.log(`Members: ${everyone.length}`);
 
@@ -192,6 +192,23 @@ async function main() {
   }
 
   await writeDirectories(everyone);
+
+  // A full run also removes pages that no longer belong to a listed member
+  // (renamed members' old URLs, test or retired accounts).
+  if (REGENERATE_ALL) {
+    const keep = new Set(everyone.map((b) => pagePath(b).url));
+    const publicDir = path.join(ROOT, 'public');
+    for (const dir of await fs.readdir(publicDir, { withFileTypes: true })) {
+      if (!dir.isDirectory() || ['lovable-uploads', 'screens'].includes(dir.name)) continue;
+      for (const file of await fs.readdir(path.join(publicDir, dir.name))) {
+        if (!file.endsWith('.html') || file === 'index.html') continue;
+        if (!keep.has(`/${dir.name}/${file}`)) {
+          await fs.unlink(path.join(publicDir, dir.name, file));
+          console.log(`- removed stale /${dir.name}/${file}`);
+        }
+      }
+    }
+  }
 
   const failed = results.filter((r) => !r.success);
   console.log(`\nDone: ${results.length - failed.length} generated, ${failed.length} failed`);
