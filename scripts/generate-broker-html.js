@@ -138,7 +138,9 @@ async function main() {
     .not('full_name', 'is', null)
     .order('member_since', { ascending: true, nullsFirst: false });
   if (allErr) throw allErr;
-  const everyone = (all || []).filter((b) => b.full_name && b.full_name.trim());
+  // Test accounts ("test" in the name or company) never get a public page.
+  const isTest = (b) => /\btest\d*\b/i.test(`${b.full_name || ''} ${b.company_name || ''}`);
+  const everyone = (all || []).filter((b) => b.full_name && b.full_name.trim() && !isTest(b));
   console.log(`Members: ${everyone.length}`);
 
   let targets = [];
